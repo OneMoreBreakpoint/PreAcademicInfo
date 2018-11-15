@@ -1,17 +1,17 @@
 package data_layer.domain;
 
 import javax.persistence.*;
-import java.util.Set;
+import java.util.List;
 
 @Entity
-@DiscriminatorValue("STUDENT")
-public class Student extends User{
+@Table(name = "Students")
+public class Student extends User implements Comparable<Student>{
 
     @Column(name = "registration_nr", unique = true, nullable = false)
-    private int registrationNr;
+    private Integer registrationNr;
 
-    @Column(name = "fathers_capital_letters", length = 6, nullable = false)
-    private String fathersCapitalLetters;
+    @Column(name = "fathers_initials", length = 6, columnDefinition = "NVARCHAR(6)", nullable = false)
+    private String fathersInitials;
 
     @Column(name = "group_nr")
     private Short groupNr;
@@ -20,8 +20,11 @@ public class Student extends User{
     private String pathToProfilePhoto;
 
     @OneToMany
-    @JoinColumn(name = "student_id", nullable = false)
-    private Set<Enrollment> enrollments;
+    @JoinColumn(name = "student_id")
+    private List<Enrollment> enrollments;
+
+    @Column(name = "notified_by_email", nullable = false)
+    private boolean notifiedByEmail;
 
 
     public int getRegistrationNr() {
@@ -40,11 +43,11 @@ public class Student extends User{
         this.pathToProfilePhoto = pathToProfilePhoto;
     }
 
-    public Set<Enrollment> getEnrollments() {
+    public List<Enrollment> getEnrollments() {
         return enrollments;
     }
 
-    public void setEnrollments(Set<Enrollment> enrollments) {
+    public void setEnrollments(List<Enrollment> enrollments) {
         this.enrollments = enrollments;
     }
 
@@ -56,11 +59,26 @@ public class Student extends User{
         this.groupNr = groupNr;
     }
 
-    public String getFathersCapitalLetters() {
-        return fathersCapitalLetters;
+    public String getFathersInitials() {
+        return fathersInitials;
     }
 
-    public void setFathersCapitalLetters(String fathersCapitalLetters) {
-        this.fathersCapitalLetters = fathersCapitalLetters;
+    public void setFathersInitials(String fathersInitials) {
+        this.fathersInitials = fathersInitials;
+    }
+
+    public boolean isNotifiedByEmail() {
+        return notifiedByEmail;
+    }
+
+    public void setNotifiedByEmail(boolean notifiedByEmail) {
+        this.notifiedByEmail = notifiedByEmail;
+    }
+
+    @Override
+    public int compareTo(Student o) {
+        String thisfullName = this.getLastName() + " " + this.getFirstName();
+        String thatFullName = o.getLastName() + " " + o.getFirstName();
+        return thisfullName.compareTo(thatFullName);
     }
 }

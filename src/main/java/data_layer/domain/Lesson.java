@@ -1,6 +1,8 @@
 package data_layer.domain;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 
 @Entity
 @Table(name = "Lessons")
@@ -13,6 +15,7 @@ public class Lesson {
     @Column(name = "attended", nullable = false)
     private boolean attended;
 
+    @Max(10) @Min(1)
     @Column(name = "grade")
     private Byte grade;
 

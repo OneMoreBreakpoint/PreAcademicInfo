@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@DiscriminatorValue("PROFESSOR")
+@Table(name = "Professors")
 public class Professor extends User {
 
     @Column(name = "web_page", length = 50)
@@ -14,7 +14,7 @@ public class Professor extends User {
     private String pathToProfilePhoto;
 
     @OneToMany
-    @JoinColumn(name = "professor_id", nullable = false)
+    @JoinColumn(name = "professor_id")
     private List<Teaching> teachingList;
 
     public String getWebPage() {

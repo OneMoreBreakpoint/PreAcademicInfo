@@ -1,7 +1,9 @@
 package data_layer.domain;
 
+import org.hibernate.annotations.SortNatural;
+
 import javax.persistence.*;
-import java.util.SortedSet;
+import java.util.List;
 
 @Entity
 @Table(name = "Teachings")
@@ -11,21 +13,19 @@ public class Teaching {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "coordinator", nullable = false)
-    private boolean coordinator;
-
+    @ManyToMany
+    @JoinTable(name = "TeachingsStudents",
+            joinColumns = @JoinColumn(name = "teaching_id"),
+            inverseJoinColumns = @JoinColumn(name = "student_id"))
+    @SortNatural
+    private List<Student> seminarStudents;
 
     @ManyToMany
     @JoinTable(name = "TeachingsStudents",
             joinColumns = @JoinColumn(name = "teaching_id"),
             inverseJoinColumns = @JoinColumn(name = "student_id"))
-    private SortedSet<Student> seminarStudents;
-
-    @ManyToMany
-    @JoinTable(name = "TeachingsStudents",
-            joinColumns = @JoinColumn(name = "teaching_id"),
-            inverseJoinColumns = @JoinColumn(name = "student_id"))
-    private SortedSet<Student> laboratoryStudents;
+    @SortNatural
+    private List<Student> laboratoryStudents;
 
     @ManyToOne
     @JoinColumn(name = "course_id", nullable = false)
@@ -39,27 +39,19 @@ public class Teaching {
         this.id = id;
     }
 
-    public boolean isCoordinator() {
-        return coordinator;
-    }
-
-    public void setCoordinator(boolean coordinator) {
-        this.coordinator = coordinator;
-    }
-
-    public SortedSet<Student> getSeminarStudents() {
+    public List<Student> getSeminarStudents() {
         return seminarStudents;
     }
 
-    public void setSeminarStudents(SortedSet<Student> seminarStudents) {
+    public void setSeminarStudents(List<Student> seminarStudents) {
         this.seminarStudents = seminarStudents;
     }
 
-    public SortedSet<Student> getLaboratoryStudents() {
+    public List<Student> getLaboratoryStudents() {
         return laboratoryStudents;
     }
 
-    public void setLaboratoryStudents(SortedSet<Student> laboratoryStudents) {
+    public void setLaboratoryStudents(List<Student> laboratoryStudents) {
         this.laboratoryStudents = laboratoryStudents;
     }
 

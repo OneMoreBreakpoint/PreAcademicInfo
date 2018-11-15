@@ -3,22 +3,22 @@ package data_layer.domain;
 import javax.persistence.*;
 
 @Entity
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.TABLE)
     private Integer id;
 
     @Column(name = "username", length = 16, unique = true, nullable = false)
     private String username;
 
-    @Column(name = "password", length = 32, nullable = false)
+    @Column(name = "password", nullable = false)
     private String encryptedPassword;
 
-    @Column(name = "firstname", length = 40, nullable = false)
+    @Column(name = "firstname", length = 40, columnDefinition = "NVARCHAR(40)", nullable = false)
     private String firstName;
 
-    @Column(name = "lastname", length = 40, nullable = false)
+    @Column(name = "lastname", length = 40, columnDefinition = "NVARCHAR(40)", nullable = false)
     private String lastName;
 
     @Column(name = "email", length = 60, nullable = false)

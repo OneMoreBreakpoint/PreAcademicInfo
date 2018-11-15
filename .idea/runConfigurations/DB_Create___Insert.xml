@@ -1,0 +1,9 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="DB Create &amp; Insert" type="Application" factoryName="Application">
+    <option name="MAIN_CLASS_NAME" value="application.DBInserter" />
+    <module name="PreAcademicInfo" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

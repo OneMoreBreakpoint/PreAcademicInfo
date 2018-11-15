@@ -16,11 +16,11 @@ public class Enrollment {
     private Course course;
 
     @OneToMany
-    @JoinColumn(name = "enrollment_id", nullable = false)
+    @JoinColumn(name = "enrollment_id")
     private List<PartialExam> partialExams;
 
     @OneToMany
-    @JoinColumn(name = "enrollment_id", nullable = false)
+    @JoinColumn(name = "enrollment_id")
     private List<Lesson> lessons;
 
     public Integer getId() {
