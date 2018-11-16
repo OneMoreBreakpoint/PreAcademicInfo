@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:with="lang=${#locale.language}" th:lang="${lang}">
+<head>
+    <meta charset="UTF-8">
+    <title>PreAcademic Info</title>
+    <script th:src="@{/dependencies/jquery-3.3.1.min.js}" ></script>
+</head>
+<body>
+
+<div th:replace="fragments/lang-picker :: lang-picker"></div>
+<h1>PreAcademic Info</h1>
+<div id="panel_Login">
+    <img src="../static/images/cs-logo.png" th:src="@{/images/cs-logo.png}" width="125" height="50">
+    <h2>Login</h2>
+    <form action="/login" method="post">
+        <label th:text="|#{login.username}:|" for="lbl_username"></label>
+        <input type="text" name="username" id="lbl_username"/>
+        <label th:text="|#{login.password}:|" for="lbl_password"></label>
+        <input type="password" name="password" id="lbl_password"/>
+        <input type="submit" value="Login"/>
+        <span th:if="${#request.getParameter('error')=='true'}" th:text="#{login.invalid}" class="err"></span>
+    </form>
+</div>
+</body>
+</html>
