@@ -1,6 +1,7 @@
 /*general*/
 .header{
     height: 108px;
+    position: relative;
 }
 
 .header .header-line{
@@ -10,9 +11,8 @@
 .header .lang-picker{
     position: absolute;
     right: 20px;
-    top: 20px;
+    top: 10px;
 }
-
 
 /*anonymous*/
 .header.anonymous h1{
@@ -27,6 +27,7 @@
 
 /*authenticated*/
 .header.authenticated h1{
+    color: var(--color1);
     display: inline
 }
 

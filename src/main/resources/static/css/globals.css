@@ -9,9 +9,10 @@
     --color3-light: #a2a2a2;
 }
 
-.err{
-  color: var(--color2);
+body{
+    min-width: 1200px;
 }
+
 
 *{
     font-size: 16px;
@@ -78,4 +79,9 @@ select:focus{
 
 .invisible{
     opacity: 0;
+}
+
+
+.err{
+    color: var(--color2);
 }
