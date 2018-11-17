@@ -1,0 +1,71 @@
+/*general*/
+.header{
+    height: 108px;
+}
+
+.header .header-line{
+    height: 50%;
+}
+
+.header .lang-picker{
+    position: absolute;
+    right: 20px;
+    top: 20px;
+}
+
+
+/*anonymous*/
+.header.anonymous h1{
+    color: var(--color3);
+    display: inline;
+}
+
+.header.anonymous > .header-line:nth-child(2){
+    text-align: center;
+}
+
+
+/*authenticated*/
+.header.authenticated h1{
+    display: inline
+}
+
+.header.authenticated > .header-line:first-child{
+    text-align: center;
+}
+
+.header.authenticated .logo{
+    position: absolute;
+    left: 20px;
+}
+
+.header.authenticated .header-line:nth-child(2){
+    background-color: var(--color1);
+}
+
+.header.authenticated a{
+    height: 100%;
+    padding: 0 20px 0;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    color: var(--color0);
+    font-size: 20px;
+}
+
+.header.authenticated a:hover{
+    background-color: var(--color1-light);
+    font-size: 20px;
+}
+
+
+.header.authenticated a *{
+    margin: 10px;
+}
+
+.header.authenticated .header-line:nth-child(2) a:nth-child(2),
+.header.authenticated .header-line:nth-child(2) a:nth-child(3),
+.header.authenticated .header-line:nth-child(2) a:nth-child(4){
+    float: right;
+}

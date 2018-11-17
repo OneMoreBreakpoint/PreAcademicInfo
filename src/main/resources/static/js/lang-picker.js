@@ -1,7 +1,8 @@
 $(document).ready(() => {
-    console.log("ready");
-    $("#combo_lang").change((event) => {
-        console.log("change");
-        window.location.replace("?lang=" + event.value);
+    let combo_lang = $("#combo_lang");
+    let iconSrc = "/images/" + $(combo_lang).val() + "-ico.png";
+    $("#img_langPicker").attr("src", iconSrc);
+    $(combo_lang).change((event) => {
+        window.location.replace("?lang=" + event.target.value);
     });
 });
