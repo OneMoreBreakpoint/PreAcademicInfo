@@ -1,43 +1,26 @@
 package data_layer.domain;
 
-import javax.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.validation.constraints.Size;
 import java.util.List;
 
-@Entity
-@Table(name = "Professors")
+@Entity(name = "Professors")
+@Getter
+@Setter
 public class Professor extends User {
 
-    @Column(name = "web_page", length = 50)
+    @Size(max = 50)
     private String webPage;
 
-    @Column(name = "path_to_profile_photo")
     private String pathToProfilePhoto;
 
     @OneToMany
     @JoinColumn(name = "professor_id")
     private List<Teaching> teachingList;
 
-    public String getWebPage() {
-        return webPage;
-    }
-
-    public void setWebPage(String webPage) {
-        this.webPage = webPage;
-    }
-
-    public String getPathToProfilePhoto() {
-        return pathToProfilePhoto;
-    }
-
-    public void setPathToProfilePhoto(String pathToProfilePhoto) {
-        this.pathToProfilePhoto = pathToProfilePhoto;
-    }
-
-    public List<Teaching> getTeachingList() {
-        return teachingList;
-    }
-
-    public void setTeachingList(List<Teaching> teachingList) {
-        this.teachingList = teachingList;
-    }
 }

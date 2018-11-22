@@ -3,10 +3,8 @@ package application;
 import data_layer.domain.*;
 import org.mindrot.jbcrypt.BCrypt;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
+import javax.persistence.*;
+import javax.validation.ConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -246,7 +244,7 @@ public class DBInserter {
         delia.setEncryptedPassword(BCrypt.hashpw("delia", BCrypt.gensalt()));
         delia.setLastName("Brașovean");
         delia.setFirstName("Carmen Delia");
-        delia.setEmail("bcir2055");
+        delia.setEmail("bcir2055@scs.ubbcluj.ro");
         delia.setRegistrationNr(22055);
         delia.setEnrollments(enrollmentList(lftc, pdm));
         delia.setFathersInitials("V.");

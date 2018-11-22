@@ -1,12 +1,15 @@
 package data_layer.domain;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.SortNatural;
 
 import javax.persistence.*;
 import java.util.List;
 
-@Entity
-@Table(name = "Teachings")
+@Entity(name = "Teachings")
+@Getter
+@Setter
 public class Teaching {
 
     @Id
@@ -31,35 +34,4 @@ public class Teaching {
     @JoinColumn(name = "course_id", nullable = false)
     private Course course;
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public List<Student> getSeminarStudents() {
-        return seminarStudents;
-    }
-
-    public void setSeminarStudents(List<Student> seminarStudents) {
-        this.seminarStudents = seminarStudents;
-    }
-
-    public List<Student> getLaboratoryStudents() {
-        return laboratoryStudents;
-    }
-
-    public void setLaboratoryStudents(List<Student> laboratoryStudents) {
-        this.laboratoryStudents = laboratoryStudents;
-    }
-
-    public Course getCourse() {
-        return course;
-    }
-
-    public void setCourse(Course course) {
-        this.course = course;
-    }
 }
