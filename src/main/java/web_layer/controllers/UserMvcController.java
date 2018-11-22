@@ -11,7 +11,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.security.Principal;
 
 @Controller
-public class DefaultMvcController {
+public class UserMvcController {
 
     @Autowired
     private IUserService userService;
@@ -21,7 +21,7 @@ public class DefaultMvcController {
         return new ModelAndView("login.html");
     }
 
-    @GetMapping("/home")
+    @GetMapping("/")
     public String getHomePage(Principal crtUser){
         UserDTO user = userService.getUserByUsername(crtUser.getName());
         if(user instanceof StudentDTO){

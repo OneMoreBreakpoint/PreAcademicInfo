@@ -29,7 +29,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/professor/*").hasRole("PROFESSOR")
                 .anyRequest().authenticated()
                 .and()
-                .formLogin().permitAll().loginPage("/login").defaultSuccessUrl("/home").failureUrl("/login?error=true")
+                .formLogin().permitAll().loginPage("/login").defaultSuccessUrl("/").failureUrl("/login?error=true")
                 .and()
                 .logout().logoutSuccessUrl("/login");
     }
