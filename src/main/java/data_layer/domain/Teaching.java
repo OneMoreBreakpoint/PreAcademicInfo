@@ -17,18 +17,16 @@ public class Teaching {
     private Integer id;
 
     @ManyToMany
-    @JoinTable(name = "TeachingsStudents",
+    @JoinTable(name = "TeachingsGroupsSeminar",
             joinColumns = @JoinColumn(name = "teaching_id"),
-            inverseJoinColumns = @JoinColumn(name = "student_id"))
-    @SortNatural
-    private List<Student> seminarStudents;
+            inverseJoinColumns = @JoinColumn(name = "group_id"))
+    private List<Group> seminarGroups;
 
     @ManyToMany
-    @JoinTable(name = "TeachingsStudents",
+    @JoinTable(name = "TeachingsGroupsLaboratory",
             joinColumns = @JoinColumn(name = "teaching_id"),
-            inverseJoinColumns = @JoinColumn(name = "student_id"))
-    @SortNatural
-    private List<Student> laboratoryStudents;
+            inverseJoinColumns = @JoinColumn(name = "group_id"))
+    private List<Group> laboratoryGroups;
 
     @ManyToOne
     @JoinColumn(name = "course_id", nullable = false)

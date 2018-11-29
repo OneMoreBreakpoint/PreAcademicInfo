@@ -21,12 +21,12 @@ public class Student extends User implements Comparable<Student> {
     @Size(max = 6)
     private String fathersInitials;
 
-    private Short groupNr;
+    @ManyToOne
+    private Group group;
 
     private String pathToProfilePhoto;
 
-    @OneToMany
-    @JoinColumn(name = "student_id")
+    @OneToMany(mappedBy = "student")
     private List<Enrollment> enrollments;
 
     private boolean notifiedByEmail;
