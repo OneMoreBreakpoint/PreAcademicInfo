@@ -23,6 +23,9 @@ public class Enrollment {
     private Integer id;
 
     @ManyToOne
+    private Student student;
+
+    @ManyToOne
     @JoinColumn(name = "course_id", nullable = false)
     private Course course;
 
