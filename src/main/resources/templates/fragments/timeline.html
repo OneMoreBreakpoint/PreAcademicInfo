@@ -13,11 +13,12 @@
 </td>
 
 
-<td th:fragment="lesson-cell (grade, attended, nrOfBonusPoints)" class="lesson-cell">
+<td th:fragment="lesson-cell (lesson)" class="lesson-cell">
     <div class="lesson-cell">
-        <input type="text" th:value="__${grade}__">
-        <input type="checkbox" th:checked="__${attended}__">
-        <input type="number" th:value="__${nrOfBonusPoints}__">
+        <input type="text" th:value="${lesson.grade}" th:if="${lesson.type.toString()=='LABORATORY'}"
+               th:placeholder="#{timeline.head.grade}">
+        <input type="checkbox" th:checked="${lesson.attended}">
+        <input type="number" th:value="${lesson.nrOfBonusPoints}" th:placeholder="#{timeline.head.bonus}">
     </div>
 </td>
 
@@ -58,7 +59,7 @@
             <th th:case="'SEMINAR'">
                 <div>
                     <div th:text="|#{timeline.head.seminar} ${lesson.nr}|"></div>
-                    <div th:text="|(#{timeline.head.grade}/#{timeline.head.attendance}/#{timeline.head.bonus})|"></div>
+                    <div th:text="|(#{timeline.head.attendance}/#{timeline.head.bonus})|"></div>
                 </div>
             </th>
             <th th:case="'LABORATORY'">
@@ -72,13 +73,13 @@
     <th:block th:each="partial : ${enrollments[0].partialExams}">
         <th:block th:switch="${partial.type.toString()}">
             <th th:case="'SEMINAR'" class="exam-cell">
-                <div th:utext="|#{timeline.head.partial}&lt;br&gt;#{timeline.head.seminar} ${partial.nr}|"></div>
+                <div th:utext="|#{timeline.head.partial} #{timeline.head.seminar} ${partial.nr}|"></div>
             </th>
             <th th:case="'LABORATORY'" class="exam-cell">
-                <div th:utext="|#{timeline.head.partial}&lt;br&gt;#{timeline.head.laboratory} ${partial.nr}|"></div>
+                <div th:utext="|#{timeline.head.partial} #{timeline.head.laboratory} ${partial.nr}|"></div>
             </th>
             <th th:case="'COURSE'" class="exam-cell">
-                <div th:utext="|#{timeline.head.partial}&lt;br&gt;#{timeline.head.course} ${partial.nr}|"></div>
+                <div th:utext="|#{timeline.head.partial} #{timeline.head.course} ${partial.nr}|"></div>
             </th>
         </th:block>
     </th:block>
@@ -103,13 +104,13 @@
              class="name-cell"></div>
     </td>
     <th:block th:each="lesson : ${enrl.lessons}">
-        <td th:replace="this :: lesson-cell(${lesson.grade}, ${lesson.attended}, ${lesson.nrOfBonusPoints})"></td>
+        <td th:replace="this :: lesson-cell(${lesson})"></td>
     </th:block>
     <th:block th:each="partial : ${enrl.partialExams}">
         <td th:replace="this :: exam-cell(${partial.grade})"></td>
     </th:block>
     <td class="bonus-cell">
-        <div th:text="${enrl.getTotalBonus()}"></div>
+        <div th:text="${enrl.getTotalBonus()}" class="bonus-cell"></div>
     </td>
     <td th:replace="this :: attendances-cell (${enrl.getSeminarAttendance()}, ${enrl.getLaboratoryAttendance()}, ${enrl.hasMinimumAttendance()})"></td>
     <td th:replace="this :: average-cell (${enrl.getAverageGrade()}, ${enrl.hasMinimumGrade()})"></td>
