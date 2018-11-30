@@ -1,0 +1,7 @@
+#div_filters{
+    display: flex;
+    justify-content: space-around;
+}
+body > *{
+    margin-bottom: 4px;
+}

@@ -31,6 +31,9 @@ public class Teaching {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @ManyToOne
+    private Professor professor;
+
     @ManyToMany
     @JoinTable(name = "TeachingsGroupsSeminar",
             joinColumns = @JoinColumn(name = "teaching_id"),

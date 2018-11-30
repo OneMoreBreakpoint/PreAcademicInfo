@@ -20,8 +20,7 @@ public class Professor extends User {
 
     private String pathToProfilePhoto;
 
-    @OneToMany
-    @JoinColumn(name = "professor_id")
+    @OneToMany(mappedBy = "professor")
     private List<Teaching> teachingList;
 
 }

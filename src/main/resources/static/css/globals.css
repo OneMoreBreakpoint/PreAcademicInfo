@@ -1,4 +1,4 @@
-:root {
+:root{
     --color0: white;
     --color1: #2dab9d;
     --color1-light: #2ec7b9;
@@ -6,64 +6,87 @@
     --color2-light: #ff6c3a;
     --color2-dark: #a21818;
     --color3: #7f7f7f;
-    --color3-light: #a2a2a2;
+    --color3-light: #dcdcdc;
 }
 
-body {
+body{
     min-width: 1200px;
+    padding-right: 15px;
 }
 
-* {
+
+*{
     font-size: 16px;
     font-family: "Verdana", "SansSerif";
     font-weight: bolder;
 }
 
-input[type=text] {
+input[type=text]{
     font-weight: normal;
 }
 
-h1 {
+
+h1{
     font-size: 40px;
     font-weight: bold;
 }
 
-h2 {
+h2{
     font-size: 30px;
     font-weight: bold;
 }
 
-input, select {
+input, select{
     border-bottom-width: 4px;
     border-style: none none solid none;
     border-color: var(--color1);
+    background-color: inherit;
 }
 
-label, input, select {
-    padding: 10px;
+label, input, select{
+    padding: 10px 15px 5px 10px;
 }
 
-input[type=submit], input[type=button], button {
+input[type=submit], input[type=button], button{
     border-style: solid;
     background-color: var(--color1);
     color: var(--color0);
 }
 
-input[type=submit].err, input[type=button].err, button.err {
+input[type=submit].err, input[type=button].err, button.err{
     background-color: var(--color2);
 }
 
-input[type=submit]:hover, input[type=button]:hover, button:hover {
+input[type=submit]:hover, input[type=button]:hover, button:hover{
     cursor: pointer;
     background-color: var(--color1-light);
 }
 
-input[type=submit].err:hover, input[type=button].err:hover, button.err:hover {
+input[type=submit].err:hover, input[type=button].err:hover, button.err:hover{
     cursor: pointer;
     background-color: var(--color2-light);
 }
 
-select {
+input[type=checkbox]{
+    -webkit-appearance: none;
+    border-style: solid;
+    border-width: 4px;
+    padding: 10px;
+    position: relative;
+    top: 8px;
+}
+input[type=checkbox]:checked{
+    background-color: var(--color1);
+}
+input[type=checkbox]:checked::after{
+    content: '\2714';
+    position: absolute;
+    top: 0;
+    left: 3px;
+    color: var(--color0);
+}
+
+select{
     background-image: url("../images/drop-down-arrow.png");
     background-repeat: no-repeat;
     background-position: right;
@@ -71,14 +94,11 @@ select {
     -webkit-appearance: none;
 }
 
-select:focus {
-    background-image: url("../images/drop-down-arrow-reverse.png");
-}
-
-.invisible {
+.invisible{
     opacity: 0;
 }
 
-.err {
+
+.err{
     color: var(--color2);
 }
