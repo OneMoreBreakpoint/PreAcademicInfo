@@ -17,6 +17,10 @@ public class Lesson {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Min(1)
+    @Max(14)
+    private byte nr;
+
     @NotNull
     private boolean attended;
 

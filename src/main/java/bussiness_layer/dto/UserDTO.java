@@ -1,5 +1,6 @@
 package bussiness_layer.dto;
 
+import data_layer.domain.User;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -17,18 +18,24 @@ public abstract class UserDTO {
     @NotNull
     private String username;
 
-    @Size(min = 6)
-    @NotNull
-    private String password;
-
     @Size(max = 40)
-    //TODO(All) this should also be not null? same for last name and email
+    @NotNull
     private String firstName;
 
     @Size(max = 40)
+    @NotNull
     private String lastName;
 
     @Email(regexp = UBB_EMAIL_FORMAT)
+    @NotNull
     private String email;
+
+    public UserDTO(User entity){
+        this.username = entity.getUsername();
+        this.firstName = entity.getFirstName();
+        this.lastName = entity.getLastName();
+        this.email = entity.getEmail();
+    }
+
 
 }

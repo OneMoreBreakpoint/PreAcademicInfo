@@ -51,7 +51,7 @@ public class DBInserter {
         mada.setUsername("aiir2030");
         mada.setEncryptedPassword(BCrypt.hashpw("mada", BCrypt.gensalt()));
         mada.setLastName("Abrudan");
-        mada.setFirstName("Ioana-Mădălina");
+        mada.setFirstName("Ioana-Madalina");
         mada.setEmail("cnir2083@scs.ubbcluj.ro");
         mada.setRegistrationNr(22030);
         mada.setFathersInitials("I.");
@@ -71,7 +71,7 @@ public class DBInserter {
         alba.setUsername("agir2034");
         alba.setEncryptedPassword(BCrypt.hashpw("alba", BCrypt.gensalt()));
         alba.setLastName("Alba");
-        alba.setFirstName("Grigore Cătălin");
+        alba.setFirstName("Grigore Catalin");
         alba.setEmail("cnir2083@scs.ubbcluj.ro");
         alba.setRegistrationNr(12034);
         alba.setFathersInitials("G.I.");
@@ -90,8 +90,8 @@ public class DBInserter {
         Student stef = new Student();
         stef.setUsername("asir2036");
         stef.setEncryptedPassword(BCrypt.hashpw("stef", BCrypt.gensalt()));
-        stef.setLastName("Andraș");
-        stef.setFirstName("Ștefan Daniel");
+        stef.setLastName("Andras");
+        stef.setFirstName("Stefan Daniel");
         stef.setEmail("cnir2083@scs.ubbcluj.ro");
         stef.setRegistrationNr(12036);
         stef.setFathersInitials("D.S.");
@@ -121,8 +121,8 @@ public class DBInserter {
         Student baies = new Student();
         baies.setUsername("bair2040");
         baies.setEncryptedPassword(BCrypt.hashpw("baies", BCrypt.gensalt()));
-        baies.setLastName("Băieș");
-        baies.setFirstName("Alex Laurențiu");
+        baies.setLastName("Baies");
+        baies.setFirstName("Alex Laurentiu");
         baies.setEmail("cnir2083.scs.ubbcluj.ro");
         baies.setRegistrationNr(12040);
         baies.setFathersInitials("T.M.");
@@ -131,8 +131,8 @@ public class DBInserter {
         Student balan = new Student();
         balan.setUsername("bpir2041");
         balan.setEncryptedPassword(BCrypt.hashpw("balan", BCrypt.gensalt()));
-        balan.setLastName("Bălan");
-        balan.setFirstName("Paul Cătălin");
+        balan.setLastName("Balan");
+        balan.setFirstName("Paul Catalin");
         balan.setEmail("cnir2083@scs.ubccluj.ro");
         balan.setRegistrationNr(12041);
         balan.setFathersInitials("A.");
@@ -141,7 +141,7 @@ public class DBInserter {
         Student iulia = new Student();
         iulia.setUsername("biir2042");
         iulia.setEncryptedPassword(BCrypt.hashpw("iulia", BCrypt.gensalt()));
-        iulia.setLastName("Bărăian");
+        iulia.setLastName("Baraian");
         iulia.setFirstName("Iulia Maria");
         iulia.setEmail("cnir2083@scs.ubbcluj.ro");
         iulia.setRegistrationNr(12042);
@@ -151,7 +151,7 @@ public class DBInserter {
         Student denis = new Student();
         denis.setUsername("bdir2043");
         denis.setEncryptedPassword(BCrypt.hashpw("denis", BCrypt.gensalt()));
-        denis.setLastName("Bărnuțiu");
+        denis.setLastName("Barnutiu");
         denis.setFirstName("Denis Vasile");
         denis.setEmail("cnir2083@scs.ubbcluj.ro");
         denis.setRegistrationNr(12043);
@@ -162,7 +162,7 @@ public class DBInserter {
         dragos.setUsername("bdir2045");
         dragos.setEncryptedPassword(BCrypt.hashpw("dragos", BCrypt.gensalt()));
         dragos.setLastName("Berlea");
-        dragos.setFirstName("Dragoș Teodor");
+        dragos.setFirstName("Dragos Teodor");
         dragos.setEmail("cnir2083@scs.ubbcluj.ro");
         dragos.setRegistrationNr(12045);
         dragos.setFathersInitials("N.");
@@ -171,7 +171,7 @@ public class DBInserter {
         Student vlad = new Student();
         vlad.setUsername("bvir2046");
         vlad.setEncryptedPassword(BCrypt.hashpw("vlad", BCrypt.gensalt()));
-        vlad.setLastName("Bîrsan");
+        vlad.setLastName("Birsan");
         vlad.setFirstName("Vlad Ioan");
         vlad.setEmail("bvir2046@scs.ubbcluj.ro");
         vlad.setRegistrationNr(12046);
@@ -182,7 +182,7 @@ public class DBInserter {
         Student mire = new Student();
         mire.setUsername("bmir2047");
         mire.setEncryptedPassword(BCrypt.hashpw("mire", BCrypt.gensalt()));
-        mire.setLastName("Bocșa");
+        mire.setLastName("Bocsa");
         mire.setFirstName("Mirela Alexandra");
         mire.setEmail("bmir2047@scs.ubbcluj.ro");
         mire.setRegistrationNr(22047);
@@ -193,7 +193,7 @@ public class DBInserter {
         bodiu.setUsername("bcir2425");
         bodiu.setEncryptedPassword(BCrypt.hashpw("bodiu", BCrypt.gensalt()));
         bodiu.setLastName("Bodiu");
-        bodiu.setFirstName("Cătălin");
+        bodiu.setFirstName("Catalin");
         bodiu.setEmail("cnir2083@scs.ubbcluj.ro");
         bodiu.setRegistrationNr(12425);
         bodiu.setFathersInitials("D");
@@ -212,7 +212,7 @@ public class DBInserter {
         Student gabi = new Student();
         gabi.setUsername("biir2052");
         gabi.setEncryptedPassword(BCrypt.hashpw("gabi", BCrypt.gensalt()));
-        gabi.setLastName("Borșan");
+        gabi.setLastName("Borsan");
         gabi.setFirstName("Ioan Gabriel");
         gabi.setEmail("cnir2083@scs.ubbcluj.ro");
         gabi.setRegistrationNr(12052);
@@ -222,7 +222,7 @@ public class DBInserter {
         Student bosinta = new Student();
         bosinta.setUsername("bbir2053");
         bosinta.setEncryptedPassword(BCrypt.hashpw("bosinta", BCrypt.gensalt()));
-        bosinta.setLastName("Boșîntă");
+        bosinta.setLastName("Bosinta");
         bosinta.setFirstName("Bogdan Viorel");
         bosinta.setEmail("cnir2083@scs.ubbcluj.ro");
         bosinta.setRegistrationNr(12053);
@@ -232,7 +232,7 @@ public class DBInserter {
         Student ana = new Student();
         ana.setUsername("bair2054");
         ana.setEncryptedPassword(BCrypt.hashpw("ana", BCrypt.gensalt()));
-        ana.setLastName("Boșutar");
+        ana.setLastName("Bosutar");
         ana.setFirstName("Ana Maria");
         ana.setEmail("cnir2083@scs.ubbcluj.ro");
         ana.setRegistrationNr(22054);
@@ -243,7 +243,7 @@ public class DBInserter {
         Student delia = new Student();
         delia.setUsername("bcir2055");
         delia.setEncryptedPassword(BCrypt.hashpw("delia", BCrypt.gensalt()));
-        delia.setLastName("Brașovean");
+        delia.setLastName("Brasovean");
         delia.setFirstName("Carmen Delia");
         delia.setEmail("bcir2055@scs.ubbcluj.ro");
         delia.setRegistrationNr(22055);
@@ -267,14 +267,14 @@ public class DBInserter {
         norberth.setFirstName("Norberth");
         norberth.setEmail("cnir2083@scs.ubbcluj.ro");
         norberth.setRegistrationNr(12083);
-        norberth.setFathersInitials("Ș.");
+        norberth.setFathersInitials("S.");
         norberth.setEnrollments(enrollmentList(norberth, lftc, pdm, pdav, ss));
         DBInserter.norberth = norberth;
 
         Student paul = new Student();
         paul.setUsername("cpir2084");
         paul.setEncryptedPassword(BCrypt.hashpw("paul", BCrypt.gensalt()));
-        paul.setLastName("Cuș");
+        paul.setLastName("Cus");
         paul.setFirstName("Paul Gabriel");
         paul.setEmail("cpir2084@scs.ubbcluj.ro");
         paul.setRegistrationNr(12084);
@@ -314,7 +314,7 @@ public class DBInserter {
         Student mihnea = new Student();
         mihnea.setUsername("tmir2199");
         mihnea.setEncryptedPassword(BCrypt.hashpw("taranu", BCrypt.gensalt()));
-        mihnea.setLastName("Țăranu");
+        mihnea.setLastName("Taranu");
         mihnea.setFirstName("Mihnea Andrei");
         mihnea.setEmail("cnir2083@scs.ubbcluj.ro");
         mihnea.setRegistrationNr(12199);
@@ -648,11 +648,13 @@ public class DBInserter {
         t_lftc.setSeminarGroups(new ArrayList<>());
         t_lftc.getSeminarGroups().add(gr232);
         t_lftc.setCourse(lftc);
+        t_lftc.setProfessor(guran);
 
         Teaching t_flct = new Teaching();
         t_flct.setLaboratoryGroups(new ArrayList<>());
         t_flct.getLaboratoryGroups().add(gr933);
         t_flct.setCourse(flct);
+        t_flct.setProfessor(guran);
 
         List<Teaching> teachings = new ArrayList<>();
         teachings.add(t_lftc);
@@ -674,6 +676,7 @@ public class DBInserter {
         t_lftc.setSeminarGroups(new ArrayList<>());
         t_lftc.getSeminarGroups().add(gr231);
         t_lftc.setCourse(lftc);
+        t_lftc.setProfessor(mihis);
 
         List<Teaching> teachings = new ArrayList<>();
         teachings.add(t_lftc);
@@ -692,6 +695,7 @@ public class DBInserter {
         t_flct.setLaboratoryGroups(new ArrayList<>());
         t_flct.getLaboratoryGroups().add(gr933);
         t_flct.setCourse(flct);
+        t_flct.setProfessor(motogna);
 
         List<Teaching> teachings = new ArrayList<>();
         teachings.add(t_flct);
@@ -711,11 +715,13 @@ public class DBInserter {
         t_pdm.getLaboratoryGroups().add(gr231);
         t_pdm.getLaboratoryGroups().add(gr232);
         t_pdm.setCourse(pdm);
+        t_pdm.setProfessor(lazar);
 
         Teaching t_mdp = new Teaching();
         t_mdp.setLaboratoryGroups(new ArrayList<>());
         t_mdp.getLaboratoryGroups().add(gr933);
         t_mdp.setCourse(mdp);
+        t_mdp.setProfessor(lazar);
 
         List<Teaching> teachings = new ArrayList<>();
         teachings.add(t_pdm);
@@ -733,11 +739,13 @@ public class DBInserter {
 
         Teaching t_pdav = new Teaching();
         t_pdav.setCourse(pdav);
+        t_pdav.setProfessor(forest);
 
         Teaching t_retele = new Teaching();
         t_retele.setLaboratoryGroups(new ArrayList<>());
         t_retele.getLaboratoryGroups().add(gr221);
         t_retele.setCourse(retele);
+        t_retele.setProfessor(forest);
 
         List<Teaching> teachings = new ArrayList<>();
         teachings.add(t_pdav);
@@ -760,6 +768,7 @@ public class DBInserter {
         t_pdav.setSeminarGroups(new ArrayList<>());
         t_pdav.getSeminarGroups().add(gr933);
         t_pdav.setCourse(pdav);
+        t_pdav.setProfessor(camelia);
 
         List<Teaching> teachings = new ArrayList<>();
         teachings.add(t_pdav);
@@ -781,6 +790,7 @@ public class DBInserter {
         t_pdav.getSeminarGroups().add(gr231);
         t_pdav.getSeminarGroups().add(gr232);
         t_pdav.setCourse(pdav);
+        t_pdav.setProfessor(grigo);
 
         List<Teaching> teachings = new ArrayList<>();
         teachings.add(t_pdav);
@@ -799,6 +809,7 @@ public class DBInserter {
         t_ss.setLaboratoryGroups(new ArrayList<>());
         t_ss.getLaboratoryGroups().add(gr232);
         t_ss.setCourse(ss);
+        t_ss.setProfessor(suciu);
 
         List<Teaching> teachings = new ArrayList<>();
         teachings.add(t_ss);
@@ -818,6 +829,7 @@ public class DBInserter {
         t_ss.getLaboratoryGroups().add(gr231);
         t_ss.getLaboratoryGroups().add(gr933);
         t_ss.setCourse(ss);
+        t_ss.setProfessor(ticle);
 
         List<Teaching> teachings = new ArrayList<>();
         teachings.add(t_ss);
@@ -884,39 +896,50 @@ public class DBInserter {
                     int nrOfLaboratories = enrollment.getCourse().getNrOfLaboratories();
                     int nrOfLessons =  + nrOfLaboratories + nrOfSeminars;
                     if(nrOfSeminars == 0){
-                        for(int i=0; i<nrOfLessons; i++){
+                        for(int i=1; i<=nrOfLessons; i++){
                             Lesson l = new Lesson();
                             l.setType(Lesson.LessonType.LABORATORY);
+                            l.setNr((byte)i);
                             lessons.add(l);
                         }
                     }else if(nrOfSeminars == nrOfLaboratories){
                         boolean pingPong = true;
-                        for(int i=0; i<nrOfLessons; i++){
+                        for(int i=1, j=1; i<=nrOfLessons; i++){
                             Lesson l = new Lesson();
                             if(pingPong){
                                 l.setType(Lesson.LessonType.SEMINAR);
+                                l.setNr((byte)j);
                             }else{
                                 l.setType(Lesson.LessonType.LABORATORY);
+                                l.setNr((byte)j++);
                             }
                             pingPong = !pingPong;
                             lessons.add(l);
                         }
                     }else if(nrOfSeminars == 7 && nrOfLaboratories == 14){
-                        for(int i=0; i<nrOfSeminars; i++){
+                        for(int i=1, j=1; i<=nrOfSeminars; i++, j+=2){
                             Lesson l1 = new Lesson(), l2 = new Lesson(), l3 = new Lesson();
                             l1.setType(Lesson.LessonType.SEMINAR);
+                            l1.setNr((byte)i);
                             l2.setType(Lesson.LessonType.LABORATORY);
+                            l2.setNr((byte)j);
                             l3.setType(Lesson.LessonType.LABORATORY);
+                            int jj = j+1;
+                            l3.setNr((byte)jj);
                             lessons.add(l1);
                             lessons.add(l2);
                             lessons.add(l3);
                         }
                     }else if(nrOfSeminars == 14 && nrOfLaboratories == 7){
-                        for(int i=0; i<nrOfLaboratories; i++){
+                        for(int i=1, j=1; i<nrOfLaboratories; i++, j+=2){
                             Lesson l1 = new Lesson(), l2 = new Lesson(), l3 = new Lesson();
                             l1.setType(Lesson.LessonType.SEMINAR);
+                            l1.setNr((byte)j);
                             l2.setType(Lesson.LessonType.LABORATORY);
+                            l2.setNr((byte)i);
                             l3.setType(Lesson.LessonType.SEMINAR);
+                            int jj = j+1;
+                            l3.setNr((byte)jj);
                             lessons.add(l1);
                             lessons.add(l2);
                             lessons.add(l3);
@@ -940,21 +963,24 @@ public class DBInserter {
                     String courseCode = enrollment.getCourse().getCode();
                     if(courseCode.equals("MLR8114")) { // SS
                         List<PartialExam> exams = new ArrayList<>();
-                        for(int i=0; i<4; i++){
+                        for(int i=1; i<=4; i++){
                             PartialExam exam = new PartialExam();
                             exam.setType(PartialExam.PartialExamType.LABORATORY);
+                            exam.setNr((byte)i);
                             exams.add(exam);
                         }
                         enrollment.setPartialExams(exams);
                     } else if(courseCode.equals("MLR5023") || courseCode.equals("MLE5023")) { // LFTC, FLCT
                         List<PartialExam> exams = new ArrayList<>();
-                        for(int i=0; i<2; i++){
+                        for(int i=1; i<=2; i++){
                             PartialExam exam = new PartialExam();
                             exam.setType(PartialExam.PartialExamType.COURSE);
+                            exam.setNr((byte)i);
                             exams.add(exam);
                         }
                         PartialExam exam = new PartialExam();
                         exam.setType(PartialExam.PartialExamType.SEMINAR);
+                        exam.setNr((byte)1);
                         exams.add(exam);
                         enrollment.setPartialExams(exams);
                     }

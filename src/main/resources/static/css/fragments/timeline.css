@@ -1,0 +1,83 @@
+.timeline{
+    overflow-x: auto;
+    white-space: nowrap;
+    height: 70vh;
+    position: relative;
+}
+.timeline th, .timeline td{
+    background-color: var(--color0);
+    padding: 10px;
+}
+
+/*sticky left side*/
+.timeline th:nth-child(2), .timeline td:nth-child(2){
+    border-right: 1px ridge;
+    position: sticky;
+    left: 0px;
+}
+.timeline td:nth-child(2){
+    z-index: 1;
+}
+.timeline th:nth-child(2){
+    z-index: 3;
+}
+
+/*sticky right side - mostly with js*/
+.timeline th:nth-last-child(3), .timeline td:nth-last-child(3) {
+    border-left: 1px ridge;
+}
+
+/*sticky head*/
+.timeline th{
+    background-color: var(--color0);
+    position: sticky;
+    top: 0px;
+    z-index: 2;
+    border-bottom: 1px ridge;
+}
+
+/*header-cell styling*/
+.timeline th > div{
+    background-color: var(--color1);
+    color: var(--color0);
+    padding: 10px;
+}
+.timeline th > div > div:nth-child(2){
+    font-size: 12px;
+}
+
+/*photo-cell styling*/
+.timeline svg.photo-cell, .timeline img.photo-cell{
+    border-radius: 50px;
+    width: 40px;
+    height: 40px;
+}
+.timeline svg.photo-cell{
+    color: var(--color3-light);
+}
+.timeline td.photo-cell {
+    text-align: center;
+}
+
+/*name & lesson & exam cell styling*/
+.timeline td div:not(.photo-cell){
+    font-weight: normal;
+    border-radius: 20px;
+    border-width: 0;
+    background-color: var(--color3-light);
+    padding: 10px;
+    display: inline-flex;
+    justify-content: space-around;
+    width: 87%;
+}
+
+.timeline div.attendances-cell.err, .timeline div.average-cell.err{
+    background-color: var(--color2);
+    color: black;
+}
+
+.lesson-cell input[type=text], .lesson-cell input[type=number], .exam-cell input[type=text]{
+    width: 40px;
+    padding: 0px;
+    text-align: center;
+}

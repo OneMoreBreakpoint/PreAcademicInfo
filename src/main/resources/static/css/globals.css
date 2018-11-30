@@ -6,11 +6,12 @@
     --color2-light: #ff6c3a;
     --color2-dark: #a21818;
     --color3: #7f7f7f;
-    --color3-light: #a2a2a2;
+    --color3-light: #dcdcdc;
 }
 
 body{
     min-width: 1200px;
+    padding-right: 15px;
 }
 
 
@@ -39,10 +40,11 @@ input, select{
     border-bottom-width: 4px;
     border-style: none none solid none;
     border-color: var(--color1);
+    background-color: inherit;
 }
 
 label, input, select{
-    padding: 10px;
+    padding: 10px 15px 5px 10px;
 }
 
 input[type=submit], input[type=button], button{
@@ -65,16 +67,31 @@ input[type=submit].err:hover, input[type=button].err:hover, button.err:hover{
     background-color: var(--color2-light);
 }
 
+input[type=checkbox]{
+    -webkit-appearance: none;
+    border-style: solid;
+    border-width: 4px;
+    padding: 10px;
+    position: relative;
+    top: 8px;
+}
+input[type=checkbox]:checked{
+    background-color: var(--color1);
+}
+input[type=checkbox]:checked::after{
+    content: '\2714';
+    position: absolute;
+    top: 0;
+    left: 3px;
+    color: var(--color0);
+}
+
 select{
     background-image: url("../images/drop-down-arrow.png");
     background-repeat: no-repeat;
     background-position: right;
     background-size: 15px 20px;
     -webkit-appearance: none;
-}
-
-select:focus{
-    background-image: url("../images/drop-down-arrow-reverse.png");
 }
 
 .invisible{

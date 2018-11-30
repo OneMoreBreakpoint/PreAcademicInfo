@@ -47,6 +47,10 @@
     border-width: 2px;
 }
 
+#form_login input[type=text], #form_login input[type=password]{
+    background-color: var(--color0);
+}
+
 #form_login input[type=submit]{
     grid-column: 3;
     border-width: 1px;

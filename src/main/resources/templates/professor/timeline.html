@@ -4,16 +4,42 @@
 <head>
     <meta charset="UTF-8">
     <title>PreAcademic Info</title>
-    <script th:src="@{/dependencies/jquery-3.3.1.min.js}" ></script>
+    <link rel="stylesheet" th:href="@{/css/globals.css}"/>
+    <link rel="stylesheet" th:href="@{/css/fragments/header.css}"/>
+    <link rel="stylesheet" th:href="@{/css/fragments/timeline.css}">
+    <link rel="stylesheet" th:href="@{/css/professor/timeline.css}">
+    <script th:src="@{/dependencies/jquery-3.3.1.min.js}"></script>
     <script th:src="@{/js/lang-picker.js}"></script>
+    <script th:src="@{/js/fragments/timeline.js}"></script>
     <script defer src="https://use.fontawesome.com/releases/v5.5.0/js/all.js"
             integrity="sha384-GqVMZRt5Gn7tB9D9q7ONtcp4gtHIUEW/yG7h98J7IpE3kpi+srfFyyB/04OV6pG0"
             crossorigin="anonymous"></script>
-    <link rel="stylesheet" th:href="@{/css/globals.css}"/>
-    <link rel="stylesheet" th:href="@{/css/header.css}"/>
-
 </head>
 <body>
 <div th:replace="fragments/header :: header(true)"></div>
+<div id="div_filters">
+    <div>
+        <label th:text="|#{timeline.filter.group}:|" for="combo_groupCode"></label>
+        <select id="combo_groupCode">
+            <option th:each="group : ${groups}" th:text="${group.code}" th:value="${group.code}"
+                    th:selected="${group.code == crtGroupCode}"></option>
+        </select>
+    </div>
+    <div>
+        <input type="checkbox" id="check_excludePassingGrade"/>
+        <label for="check_excludePassingGrade" th:text="#{timeline.filter.excludePassingGrade}"></label>
+    </div>
+    <div>
+        <input type="checkbox" id="check_excludePassingAttendances"/>
+        <label for="check_excludePassingGrade" th:text="#{timeline.filter.excludePassingAttendances}"></label>
+    </div>
+</div>
+<div class="timeline">
+    <table>
+        <thead th:replace="/fragments/timeline :: thead"></thead>
+        <tbody th:replace="/fragments/timeline :: tbody"></tbody>
+    </table>
+</div>
+
 </body>
 </html>

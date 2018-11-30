@@ -17,6 +17,10 @@ public class PartialExam {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Min(1)
+    @Max(4)
+    private byte nr;
+
     @Max(10)
     @Min(1)
     private Byte grade;
