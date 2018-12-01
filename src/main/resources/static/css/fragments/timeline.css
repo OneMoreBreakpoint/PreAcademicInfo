@@ -1,7 +1,7 @@
 .timeline{
     overflow-x: auto;
     white-space: nowrap;
-    height: 70vh;
+    max-height: 70vh;
     position: relative;
     font-size: 14px;
 }
@@ -112,4 +112,8 @@
 .timeline input[type=checkbox]:checked::after{
     top: -3px;
     font-size: 13px;
+}
+.timeline input[disabled]{
+    background-color: inherit;
+    border-style: none
 }

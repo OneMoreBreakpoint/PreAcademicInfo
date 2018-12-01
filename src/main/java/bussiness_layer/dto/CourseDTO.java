@@ -31,10 +31,13 @@ public class CourseDTO {
     @Min(7)
     private Byte nrOfLaboratories;
 
+    private ProfessorDTO coordinator;
+
     public CourseDTO(Course entity){
         this.id = entity.getId();
         this.code = entity.getCode();
         this.nrOfSeminars = entity.getNrOfSeminars();
         this.nrOfLaboratories = entity.getNrOfLaboratories();
+        this.coordinator = new ProfessorDTO(entity.getCoordinator());
     }
 }

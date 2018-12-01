@@ -18,20 +18,30 @@
 </td>
 
 
-<td th:fragment="lesson-cell (lesson)" class="lesson-cell">
-    <div class="lesson-cell">
-        <input type="checkbox" th:checked="${lesson.attended}">
-        <input type="text" th:value="${lesson.grade}" th:if="${lesson.type.toString()=='LABORATORY'}"
-               th:placeholder="#{timeline.head.grade}">
-        <input type="number" th:value="${lesson.nrOfBonusPoints}" th:placeholder="#{timeline.head.bonus}">
-    </div>
+<td th:fragment="lesson-cell (lesson, teaching, crtGroup, teachingHandler)" class="lesson-cell"
+    th:if="${(lesson.type.toString().equals('LABORATORY') && teachingHandler.professorHasLaboratoryRightsOverGroup(teaching,crtGroup))
+                    || (lesson.type.toString()=='SEMINAR' && teachingHandler.professorHasSeminarRightsOverGroup(teaching, crtGroup))
+                    || teachingHandler.professorHasCoordinatorRights(teaching)}"
+    th:with="hasEditRights=${(lesson.type.toString()=='LABORATORY' && teachingHandler.professorHasLaboratoryRightsOverGroup(teaching, crtGroup))
+                            || (lesson.type.toString()=='SEMINAR' && teachingHandler.professorHasSeminarRightsOverGroup(teaching, crtGroup))}">
+
+    <input type="checkbox" th:checked="${lesson.attended}" th:disabled="${!hasEditRights}">
+    <input type="text" th:value="${lesson.grade}" th:if="${lesson.type.toString()=='LABORATORY'}"
+           th:placeholder="#{timeline.head.grade}" th:disabled="${!hasEditRights}">
+    <input type="number" th:value="${lesson.nrOfBonusPoints}" th:placeholder="#{timeline.head.bonus}"
+           th:disabled="${!hasEditRights}">
 </td>
 
 
-<td th:fragment="exam-cell (grade)" class="exam-cell">
-    <div class="exam-cell">
-        <input type="text" th:value="__${grade}__" th:placeholder="#{timeline.head.grade}">
-    </div>
+<td th:fragment="exam-cell (partial, teaching, crtGroup, teachingHandler)" class="exam-cell"
+    th:if="${(partial.type.toString()=='LABORATORY' && teachingHandler.professorHasLaboratoryRightsOverGroup(teaching, crtGroup))
+             || (partial.type.toString()=='SEMINAR' && teachingHandler.professorHasSeminarRightsOverGroup(teaching, crtGroup))
+             || teachingHandler.professorHasCoordinatorRights(teaching)}"
+    th:with="hasEditRights=${(partial.type.toString()=='LABORATORY' && teachingHandler.professorHasLaboratoryRightsOverGroup(teaching, crtGroup))
+                            || (partial.type.toString()=='SEMINAR' && teachingHandler.professorHasSeminarRightsOverGroup(teaching, crtGroup))
+                            || (partial.type.toString()=='COURSE' && teachingHandler.professorHasCoordinatorRights(teaching))}">
+
+    <input type="text" th:value="${partial.grade}" th:placeholder="#{timeline.head.grade}" th:disabled="${!hasEditRights}">
 </td>
 
 
@@ -53,16 +63,20 @@
 </td>
 
 
-<thead th:fragment="t-head-row (enrollmentTemplate)">
+<thead th:fragment="t-head-row (enrollmentTemplate, teaching, crtGroup, teachingHandler)">
 <tr>
     <th th:text="#{timeline.head.profilePhotoThumb}" class="photo-cell"></th>
     <th th:text="#{timeline.head.fullName}" class="name-cell"></th>
     <th:block th:each="lesson : ${enrollmentTemplate.lessons}">
         <th:block th:switch="${lesson.type.toString()}">
             <th th:case="'SEMINAR'" class="lesson-cell"
+                th:if="${teachingHandler.professorHasSeminarRightsOverGroup(teaching, crtGroup)
+                            || teachingHandler.professorHasCoordinatorRights(teaching)}"
                 th:text="|#{timeline.head.seminar} ${lesson.nr} (#{timeline.head.attendance}/#{timeline.head.bonus})|">
             </th>
             <th th:case="'LABORATORY'" class="lesson-cell"
+                th:if="${teachingHandler.professorHasLaboratoryRightsOverGroup(teaching, crtGroup)
+                            || teachingHandler.professorHasCoordinatorRights(teaching)}"
                 th:text="|#{timeline.head.laboratory} ${lesson.nr} (#{timeline.head.attendance}/#{timeline.head.grade}/#{timeline.head.bonus})|">
             </th>
         </th:block>
@@ -70,12 +84,17 @@
     <th:block th:each="partial : ${enrollmentTemplate.partialExams}">
         <th:block th:switch="${partial.type.toString()}">
             <th th:case="'SEMINAR'" class="exam-cell"
-                th:text="|#{timeline.head.partial} #{timeline.head.seminar} ${partial.nr}|"
+                th:if="${teachingHandler.professorHasSeminarRightsOverGroup(teaching, crtGroup)
+                            || teachingHandler.professorHasCoordinatorRights(teaching)}"
+                th:text="|#{timeline.head.partial} #{timeline.head.seminar} ${partial.nr}|">
             </th>
             <th th:case="'LABORATORY'" class="exam-cell"
+                th:if="${teachingHandler.professorHasLaboratoryRightsOverGroup(teaching, crtGroup)
+                            || teachingHandler.professorHasCoordinatorRights(teaching)}"
                 th:text="|#{timeline.head.partial} #{timeline.head.laboratory} ${partial.nr}|">
             </th>
             <th th:case="'COURSE'" class="exam-cell"
+                th:if="${teachingHandler.professorHasCoordinatorRights(teaching)}"
                 th:text="|#{timeline.head.partial} #{timeline.head.course} ${partial.nr}|">
             </th>
         </th:block>
@@ -87,14 +106,14 @@
 </thead>
 
 
-<tr th:fragment="t-data-row (enrollment)" th:object="${enrollment}">
+<tr th:fragment="t-data-row (enrollment, teaching, crtGroup, teachingHandler)" th:object="${enrollment}">
     <td th:replace="this :: photo-cell (*{student.pathToProfilePhoto})"></td>
     <td th:replace="this :: name-cell (*{student})"></td>
     <th:block th:each="lesson : *{lessons}">
-        <td th:replace="this :: lesson-cell(${lesson})"></td>
+        <td th:replace="this :: lesson-cell(${lesson}, ${teaching}, ${crtGroup}, ${teachingHandler})"></td>
     </th:block>
     <th:block th:each="partial : *{partialExams}">
-        <td th:replace="this :: exam-cell(${partial.grade})"></td>
+        <td th:replace="this :: exam-cell(${partial}, ${teaching}, ${crtGroup}, ${teachingHandler})"></td>
     </th:block>
     <td th:replace="this :: bonus-cell (${enrollment})"></td>
     <td th:replace="this :: attendances-cell (${enrollment})"></td>
