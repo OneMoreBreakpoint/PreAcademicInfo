@@ -1,4 +1,4 @@
-package utils;
+package utils.handlers;
 
 import bussiness_layer.dto.CourseDTO;
 import bussiness_layer.dto.GroupDTO;
@@ -32,18 +32,6 @@ public class TeachingHandler {
 
     public static boolean professorHasCoordinatorRights(Teaching teaching){
         return teaching.getProfessor().equals(teaching.getCourse().getCoordinator());
-    }
-
-    public static boolean professorHasAnyRightsOverGroup(TeachingDTO teaching, Short groupCode){
-        return professorHasSeminarRightsOverGroup(teaching, groupCode)
-                || professorHasLaboratoryRightsOverGroup(teaching, groupCode)
-                || professorHasCoordinatorRights(teaching);
-    }
-
-    public static boolean professorHasAnyRightsOverGroup(Teaching teaching, Short groupCode){
-        return professorHasSeminarRightsOverGroup(teaching, groupCode)
-                || professorHasLaboratoryRightsOverGroup(teaching, groupCode)
-                || professorHasCoordinatorRights(teaching);
     }
 
 }

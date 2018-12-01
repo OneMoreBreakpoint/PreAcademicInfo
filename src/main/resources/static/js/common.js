@@ -26,3 +26,11 @@ function buildQueryObject(queryString){
     }
     return crtQueryObject;
 }
+
+/**
+ * @param domId - id with pattern "<nameOfDomElement>-<numericId>" (ex: "div-32")
+ * @returns {number} - <numericId>
+ */
+function getNumericIdFromDomId(domId){
+    return parseInt(domId.split('-')[1]);
+}
