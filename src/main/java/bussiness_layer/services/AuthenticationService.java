@@ -30,7 +30,7 @@ public class AuthenticationService implements AuthenticationManager, UserDetails
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         String username = authentication.getPrincipal().toString();
         String password = authentication.getCredentials().toString();
-        User user = userRepo.findOneByUsername(username);
+        User user = userRepo.findByUsername(username);
         if(user == null || !BCrypt.checkpw(password, user.getEncryptedPassword())){
             throw new BadCredentialsException("Invalid username or password");
         }
@@ -44,7 +44,7 @@ public class AuthenticationService implements AuthenticationManager, UserDetails
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepo.findOneByUsername(username);
+        User user = userRepo.findByUsername(username);
         if(user == null){
             throw new UsernameNotFoundException("Invalid username");
         }

@@ -2,11 +2,14 @@ package bussiness_layer.dto;
 
 import data_layer.domain.Professor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.validation.constraints.Size;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 public class ProfessorDTO extends UserDTO{
     @Size(max = 50)
@@ -17,5 +20,19 @@ public class ProfessorDTO extends UserDTO{
         super(entity);
         this.webPage = entity.getWebPage();
         this.pathToProfilePhoto = entity.getPathToProfilePhoto();
+    }
+
+    @Override
+    public int hashCode() {
+        return super.getUsername().hashCode();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if(!(o instanceof ProfessorDTO)){
+            return false;
+        }
+        ProfessorDTO that = (ProfessorDTO)o;
+        return this.getUsername().equals(that.getUsername());
     }
 }

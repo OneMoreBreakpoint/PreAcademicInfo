@@ -1,10 +1,10 @@
 package data_layer.repositories;
 
-import data_layer.domain.User;
+import data_layer.domain.Course;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface IUserRepository extends JpaRepository<User, Integer> {
-    User findByUsername(String username);
+public interface ICourseRepository extends JpaRepository<Course, Integer> {
+    Course findByCode(String code);
 }

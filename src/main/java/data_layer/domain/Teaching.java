@@ -6,6 +6,7 @@ import org.hibernate.annotations.SortNatural;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 @Entity(name = "Teachings")
 @Getter
@@ -23,13 +24,13 @@ public class Teaching {
     @JoinTable(name = "TeachingsGroupsSeminar",
             joinColumns = @JoinColumn(name = "teaching_id"),
             inverseJoinColumns = @JoinColumn(name = "group_id"))
-    private List<Group> seminarGroups;
+    private Set<Group> seminarGroups;
 
     @ManyToMany
     @JoinTable(name = "TeachingsGroupsLaboratory",
             joinColumns = @JoinColumn(name = "teaching_id"),
             inverseJoinColumns = @JoinColumn(name = "group_id"))
-    private List<Group> laboratoryGroups;
+    private Set<Group> laboratoryGroups;
 
     @ManyToOne
     @JoinColumn(name = "course_id", nullable = false)

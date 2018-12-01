@@ -19,7 +19,7 @@ public class UserService implements IUserService {
 
     @Override
     public UserDTO getUserByUsername(String username) {
-        User user = userRepo.findOneByUsername(username);
+        User user = userRepo.findByUsername(username);
         if(user == null){
             throw new UsernameNotFoundException("Invalid username");
         }

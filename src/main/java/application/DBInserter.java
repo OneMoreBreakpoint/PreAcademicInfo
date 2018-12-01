@@ -6,6 +6,7 @@ import org.mindrot.jbcrypt.BCrypt;
 import javax.persistence.*;
 import javax.validation.ConstraintViolationException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 public class DBInserter {
@@ -643,15 +644,15 @@ public class DBInserter {
         guran.setWebPage("http://www.cs.ubbcluj.ro/~dana");
 
         Teaching t_lftc = new Teaching();
-        t_lftc.setLaboratoryGroups(new ArrayList<>());
+        t_lftc.setLaboratoryGroups(new HashSet<>());
         t_lftc.getLaboratoryGroups().add(gr231);
-        t_lftc.setSeminarGroups(new ArrayList<>());
+        t_lftc.setSeminarGroups(new HashSet<>());
         t_lftc.getSeminarGroups().add(gr232);
         t_lftc.setCourse(lftc);
         t_lftc.setProfessor(guran);
 
         Teaching t_flct = new Teaching();
-        t_flct.setLaboratoryGroups(new ArrayList<>());
+        t_flct.setLaboratoryGroups(new HashSet<>());
         t_flct.getLaboratoryGroups().add(gr933);
         t_flct.setCourse(flct);
         t_flct.setProfessor(guran);
@@ -671,9 +672,9 @@ public class DBInserter {
         mihis.setWebPage("http://www.cs.ubbcluj.ro/~mihis/");
 
         Teaching t_lftc = new Teaching();
-        t_lftc.setLaboratoryGroups(new ArrayList<>());
+        t_lftc.setLaboratoryGroups(new HashSet<>());
         t_lftc.getLaboratoryGroups().add(gr232);
-        t_lftc.setSeminarGroups(new ArrayList<>());
+        t_lftc.setSeminarGroups(new HashSet<>());
         t_lftc.getSeminarGroups().add(gr231);
         t_lftc.setCourse(lftc);
         t_lftc.setProfessor(mihis);
@@ -692,8 +693,8 @@ public class DBInserter {
         motogna.setWebPage("https://motogna.wordpress.com/");
 
         Teaching t_flct = new Teaching();
-        t_flct.setLaboratoryGroups(new ArrayList<>());
-        t_flct.getLaboratoryGroups().add(gr933);
+        t_flct.setSeminarGroups(new HashSet<>());
+        t_flct.getSeminarGroups().add(gr933);
         t_flct.setCourse(flct);
         t_flct.setProfessor(motogna);
 
@@ -711,14 +712,14 @@ public class DBInserter {
         lazar.setWebPage("http://www.cs.ubbcluj.ro/~ilazar/");
 
         Teaching t_pdm = new Teaching();
-        t_pdm.setLaboratoryGroups(new ArrayList<>());
+        t_pdm.setLaboratoryGroups(new HashSet<>());
         t_pdm.getLaboratoryGroups().add(gr231);
         t_pdm.getLaboratoryGroups().add(gr232);
         t_pdm.setCourse(pdm);
         t_pdm.setProfessor(lazar);
 
         Teaching t_mdp = new Teaching();
-        t_mdp.setLaboratoryGroups(new ArrayList<>());
+        t_mdp.setLaboratoryGroups(new HashSet<>());
         t_mdp.getLaboratoryGroups().add(gr933);
         t_mdp.setCourse(mdp);
         t_mdp.setProfessor(lazar);
@@ -742,7 +743,7 @@ public class DBInserter {
         t_pdav.setProfessor(forest);
 
         Teaching t_retele = new Teaching();
-        t_retele.setLaboratoryGroups(new ArrayList<>());
+        t_retele.setLaboratoryGroups(new HashSet<>());
         t_retele.getLaboratoryGroups().add(gr221);
         t_retele.setCourse(retele);
         t_retele.setProfessor(forest);
@@ -762,10 +763,10 @@ public class DBInserter {
         camelia.setWebPage("https://www.cs.ubbcluj.ro/~camelia/");
 
         Teaching t_pdav = new Teaching();
-        t_pdav.setLaboratoryGroups(new ArrayList<>());
+        t_pdav.setLaboratoryGroups(new HashSet<>());
         t_pdav.getLaboratoryGroups().add(gr231);
         t_pdav.getLaboratoryGroups().add(gr232);
-        t_pdav.setSeminarGroups(new ArrayList<>());
+        t_pdav.setSeminarGroups(new HashSet<>());
         t_pdav.getSeminarGroups().add(gr933);
         t_pdav.setCourse(pdav);
         t_pdav.setProfessor(camelia);
@@ -784,9 +785,9 @@ public class DBInserter {
         grigo.setWebPage("https://www.cs.ubbcluj.ro/~grigo/");
 
         Teaching t_pdav = new Teaching();
-        t_pdav.setLaboratoryGroups(new ArrayList<>());
+        t_pdav.setLaboratoryGroups(new HashSet<>());
         t_pdav.getLaboratoryGroups().add(gr933);
-        t_pdav.setSeminarGroups(new ArrayList<>());
+        t_pdav.setSeminarGroups(new HashSet<>());
         t_pdav.getSeminarGroups().add(gr231);
         t_pdav.getSeminarGroups().add(gr232);
         t_pdav.setCourse(pdav);
@@ -806,7 +807,7 @@ public class DBInserter {
         suciu.setWebPage("https://www.cs.ubbcluj.ro/~mihai-suciu/");
 
         Teaching t_ss = new Teaching();
-        t_ss.setLaboratoryGroups(new ArrayList<>());
+        t_ss.setLaboratoryGroups(new HashSet<>());
         t_ss.getLaboratoryGroups().add(gr232);
         t_ss.setCourse(ss);
         t_ss.setProfessor(suciu);
@@ -825,7 +826,7 @@ public class DBInserter {
         ticle.setWebPage("http://www.cs.ubbcluj.ro/~daniel/");
 
         Teaching t_ss = new Teaching();
-        t_ss.setLaboratoryGroups(new ArrayList<>());
+        t_ss.setLaboratoryGroups(new HashSet<>());
         t_ss.getLaboratoryGroups().add(gr231);
         t_ss.getLaboratoryGroups().add(gr933);
         t_ss.setCourse(ss);
@@ -931,7 +932,7 @@ public class DBInserter {
                             lessons.add(l3);
                         }
                     }else if(nrOfSeminars == 14 && nrOfLaboratories == 7){
-                        for(int i=1, j=1; i<nrOfLaboratories; i++, j+=2){
+                        for(int i=1, j=1; i<=nrOfLaboratories; i++, j+=2){
                             Lesson l1 = new Lesson(), l2 = new Lesson(), l3 = new Lesson();
                             l1.setType(Lesson.LessonType.SEMINAR);
                             l1.setNr((byte)j);

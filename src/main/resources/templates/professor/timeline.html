@@ -21,7 +21,7 @@
 <div id="div_filters">
     <div>
         <label th:text="|#{timeline.filter.group}:|" for="combo_groupCode"></label>
-        <select id="combo_groupCode">
+        <select id="combo_groupCode" th:with="groups=${teaching.getAllGroups()}">
             <option th:each="group : ${groups}" th:text="${group.code}" th:value="${group.code}"
                     th:selected="${group.code == crtGroupCode}"></option>
         </select>
@@ -37,12 +37,10 @@
 </div>
 <div class="timeline" id="timeline">
     <table>
-        <thead>
-        <tr th:replace="/fragments/timeline :: t-head-row (${enrollments[0]})"></tr>
-        </thead>
+        <tr th:replace="/fragments/timeline :: t-head-row (${enrollments[0]}, ${teaching}, ${crtGroupCode}, ${teachingHandler})"></tr>
         <tbody>
         <th:block th:each="enrl : ${enrollments}">
-            <tr th:replace="/fragments/timeline :: t-data-row (${enrl})"></tr>
+            <tr th:replace="/fragments/timeline :: t-data-row (${enrl}, ${teaching}, ${crtGroupCode}, ${teachingHandler})"></tr>
         </th:block>
         </tbody>
     </table>
