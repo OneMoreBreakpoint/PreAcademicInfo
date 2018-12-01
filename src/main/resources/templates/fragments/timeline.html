@@ -92,7 +92,8 @@
 </thead>
 
 
-<tr th:fragment="t-data-row (enrollment, teaching, crtGroup, teachingHandler)" th:object="${enrollment}" th:id="|enrollmentRow-${enrollment.id}|">
+<tr th:fragment="t-data-row (enrollment, teaching, crtGroup, teachingHandler)" th:object="${enrollment}"
+     th:id="|enrollmentRow-${enrollment.id}|" class="enrollment-row">
     <td th:replace="this :: photo-cell (*{student.pathToProfilePhoto})"></td>
     <td th:replace="this :: name-cell (*{student})"></td>
     <th:block th:each="lesson : *{lessons}">
