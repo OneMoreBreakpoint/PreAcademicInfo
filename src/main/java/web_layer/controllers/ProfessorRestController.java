@@ -1,9 +1,27 @@
 package web_layer.controllers;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import bussiness_layer.dto.EnrollmentDTO;
+import bussiness_layer.services.IProfessorService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
-public class ProfessorRestController implements IProfessorRestController {
+@RequestMapping("/app/professor")
+public class ProfessorRestController {
 
+    @Autowired
+    private IProfessorService service;
+
+    @PutMapping("/enrollments")
+    public ResponseEntity<?> putEnrollments(@RequestBody ArrayList<EnrollmentDTO> enrollments){
+        System.out.println(enrollments);
+        service.updateEnrollments(enrollments);
+        return ResponseEntity.ok(null);
+    }
 }

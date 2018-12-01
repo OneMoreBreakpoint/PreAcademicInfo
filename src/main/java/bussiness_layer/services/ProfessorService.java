@@ -12,6 +12,7 @@ import utils.handlers.TeachingHandler;
 import utils.exceptions.ResourceNotFoundException;
 
 import javax.transaction.Transactional;
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,6 +34,12 @@ public class ProfessorService implements IProfessorService {
 
     @Autowired
     private ICourseRepository courseRepository;
+
+    @Autowired
+    private IPartialExamRepository partialExamRepository;
+
+    @Autowired
+    private ILessonRepository lessonRepository;
 
 
     @Override
@@ -62,6 +69,27 @@ public class ProfessorService implements IProfessorService {
             throw new ResourceNotFoundException();
         }
         return new TeachingDTO(teaching);
+    }
+
+    @Override
+    public void updateEnrollments(List<EnrollmentDTO> enrollments) {
+        List<Enrollment> enrollmentEntities = enrollments.stream()
+                .map(EnrollmentDTO::toEntity)
+                .collect(Collectors.toList());
+        List<Lesson> lessons = enrollmentEntities.stream()
+                .map(Enrollment::getLessons)
+                .flatMap(Collection::stream)
+                .collect(Collectors.toList());
+        List<PartialExam> partialExams = enrollmentEntities.stream()
+                .map(Enrollment::getPartialExams)
+                .flatMap(Collection::stream)
+                .collect(Collectors.toList());
+        System.out.println(lessons);
+        System.out.println(partialExams);
+        lessonRepository.saveAll(lessons);
+        partialExamRepository.saveAll(partialExams);
+        lessonRepository.flush();
+        partialExamRepository.flush();
     }
 
     private void stripUnauthorizedLessonsAndExams(List<EnrollmentDTO> enrollments, Teaching teaching, Short groupCode) {

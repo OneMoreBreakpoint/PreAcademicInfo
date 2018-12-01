@@ -27,4 +27,16 @@ public class StudentDTO extends UserDTO {
         this.pathToProfilePhoto = entity.getPathToProfilePhoto();
         this.notifiedByEmail = entity.isNotifiedByEmail();
     }
+
+    public Student toEntity(){
+        Student student = new Student();
+        student.setUsername(this.getUsername());
+        student.setFirstName(this.getFirstName());
+        student.setLastName(this.getLastName());
+        student.setEmail(this.getEmail());
+        student.setFathersInitials(this.fathersInitials);
+        student.setPathToProfilePhoto(this.pathToProfilePhoto);
+        student.setNotifiedByEmail(this.notifiedByEmail);
+        return student;
+    }
 }
