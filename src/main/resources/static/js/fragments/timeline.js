@@ -1,9 +1,5 @@
 $(document).ready(function () {
-    if($(document).height() <= $(window).height()){
-        stickRightColumns();
-    }else{
-        dropStickyHeadersFeature();
-    }
+    stickRightColumns();
 });
 
 function stickRightColumns() {
@@ -21,11 +17,5 @@ function stickRightColumns() {
     $(column_bonus).css({
         "position": "sticky",
         "right": `${$(column_average).outerWidth() + $(column_attendance).outerWidth()}px`
-    });
-}
-
-function dropStickyHeadersFeature(){
-    $(".timeline td, .timeline th").css({
-       "position": "static"
     });
 }

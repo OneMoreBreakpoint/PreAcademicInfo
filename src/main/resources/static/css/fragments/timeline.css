@@ -13,157 +13,103 @@
     font-size: 12px;
 }
 .timeline th, .timeline td{
-    background-color: var(--color0);
-    padding: 1px;
+    padding: 10px;
     text-align: center;
+}
+.timeline th{
+    background-color: var(--color1);
+    color: var(--color0);
+}
+.timeline tr:nth-child(odd) td{
+    background-color: var(--color3-light);
+}
+.timeline tr:nth-child(even) td{
+    background-color: var(--color3);
 }
 
 /*sticky left side*/
-.timeline th:nth-child(2), .timeline td:nth-child(2){
+.timeline th.name-cell, .timeline td.name-cell{
     position: sticky;
     left: 0px;
-    box-shadow: 1px 0px 7px;
+    box-shadow: 1px 0px 7px black;
 }
-.timeline td:nth-child(2){
+.timeline td.name-cell{
     z-index: 1;
 }
-.timeline th:nth-child(2){
+.timeline th.name-cell{
     z-index: 3;
 }
-.timeline th:nth-child(1), .timeline td:nth-child(1){
-    box-shadow: 0px 1px 7px;
+.timeline th:nth-child(-n+1),
+.timeline td:nth-child(-n+1){
+    box-shadow: 0px 1px 7px black;
 }
 
 /*sticky right side - mostly with js*/
-.timeline th:nth-last-child(3), .timeline td:nth-last-child(3) {
-    box-shadow: -1px 0px 7px;
+.timeline th.bonus-cell,
+.timeline td.bonus-cell {
+    box-shadow: -1px 0px 7px black;
 }
-.timeline th:nth-last-child(1),
-.timeline td:nth-last-child(1),
-.timeline th:nth-last-child(2),
-.timeline td:nth-last-child(2){
-    box-shadow: 0px -1px 7px;
+.timeline th:nth-last-child(-n+2),
+.timeline td:nth-last-child(-n+2){
+    box-shadow: 0px -1px 7px black;
 }
 
 /*sticky head*/
 .timeline th{
-    background-color: var(--color0);
     position: sticky;
     top: 0;
     z-index: 2;
     box-shadow: 1px 0px 7px;
 }
 
-/*row-styling*/
-.timeline tr td{
-    border-bottom: 1px ridge;
-}
-.timeline tr:nth-child(odd) td:not(.name-cell):not(.photo-cell) {
-    background-color: var(--color3-light);
-}
-.timeline tr:nth-child(even) td:not(.name-cell):not(.photo-cell){
-    background-color: var(--color3);
-}
-
-/*header-cell styling*/
-.timeline th > div{
-    background-color: var(--color1);
-    color: var(--color0);
-    padding: 10px;
-    height: 40px;
-    display: inline-flex;
-    flex-direction:column;
-    justify-content: center;
-    align-items:center;
-}
-.timeline th:nth-child(2) > div{
-    width: 85%;
-}
-.timeline th > div > div:nth-child(2){
-    font-size: 12px;
-}
-
 /*photo-cell styling*/
-.timeline svg.photo-cell, .timeline img.photo-cell{
+.timeline svg.photo-cell,
+.timeline img.photo-cell{
     border-radius: 50px;
     height: auto;
-    width: 85%;
+    width: 80%;
 }
-.timeline svg.photo-cell{
+.timeline tr:nth-child(odd) svg.photo-cell{
+    color: var(--color3);
+}
+.timeline tr:nth-child(even) svg.photo-cell{
     color: var(--color3-light);
-}
-.timeline td.photo-cell {
-    text-align: center;
 }
 
 /**-cell styling*/
-.timeline td div:not(.photo-cell){
+.timeline td{
     font-weight: normal;
-    border-radius: 15px;
-    border-width: 0;
-    padding: 10px;
-    display: inline-flex;
-    justify-content: space-around;
 }
-
-.timeline td > div.name-cell,
-.timeline td > div.lesson-cell{
-    width: 85%;
-}
-
-.timeline td > div.exam-cell,
-.timeline td > div.bonus-cell,
-.timeline td > div.attendances-cell,
-.timeline td > div.average-cell{
-    width: 70%;
-}
-
-.timeline td div.lesson-cell,
-.timeline td div.exam-cell{
-    border-radius: 0;
-}
-
-.timeline div.attendances-cell.err, .timeline div.average-cell.err{
+.timeline td.attendances-cell.err,
+.timeline td.average-cell.err{
     background-color: var(--color2-light);
     color: black;
 }
-
 .lesson-cell input[type=text],
 .lesson-cell input[type=number],
 .exam-cell input[type=text]{
     text-align: center;
     font-weight: normal;
     width: 70px;
+    height: 30px;
     padding: 0px;
-    border: 0px none;
     box-sizing: border-box;
     border: 1px solid var(--color3);
     background-color: var(--color0);
-
-}
-
-.lesson-cell input[type=text]:hover,
-.lesson-cell input[type=number]:hover,
-.exam-cell input[type=text]:hover
-.lesson-cell input[type=text]:focus,
-.lesson-cell input[type=number]:focus,
-.exam-cell input[type=text]:focus{
-    border: 1px solid var(--color3);
 }
 
 .timeline input[type=checkbox]{
     padding: 7px;
     border-width: 2px;
-    border-color: var(--color4);
+    border-style: groove;
+    border-color: var(--color3-dark);
     top: 3px;
 }
-
 .timeline input[type=checkbox]:checked{
+    border-color: var(--color4);
     background-color: var(--color4);
 }
-
 .timeline input[type=checkbox]:checked::after{
-    left: 1px;
-    top: -4px;
-    font-size: 16px;
+    top: -3px;
+    font-size: 13px;
 }
