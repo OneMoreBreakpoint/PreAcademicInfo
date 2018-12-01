@@ -4,12 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <title>PreAcademic Info</title>
-    <link rel="stylesheet" th:href="@{/css/globals.css}"/>
+    <link rel="stylesheet" th:href="@{/css/common.css}"/>
     <link rel="stylesheet" th:href="@{/css/fragments/header.css}"/>
     <link rel="stylesheet" th:href="@{/css/fragments/timeline.css}">
     <link rel="stylesheet" th:href="@{/css/professor/timeline.css}">
     <script th:src="@{/dependencies/jquery-3.3.1.min.js}"></script>
-    <script th:src="@{/js/lang-picker.js}"></script>
+    <script th:src="@{/js/common.js}"></script>
+    <script th:src="@{/js/fragments/lang-picker.js}"></script>
     <script th:src="@{/js/fragments/timeline.js}"></script>
     <script defer src="https://use.fontawesome.com/releases/v5.5.0/js/all.js"
             integrity="sha384-GqVMZRt5Gn7tB9D9q7ONtcp4gtHIUEW/yG7h98J7IpE3kpi+srfFyyB/04OV6pG0"
@@ -34,12 +35,17 @@
         <label for="check_excludePassingGrade" th:text="#{timeline.filter.excludePassingAttendances}"></label>
     </div>
 </div>
-<div class="timeline">
+<div class="timeline" id="timeline">
     <table>
-        <thead th:replace="/fragments/timeline :: thead"></thead>
-        <tbody th:replace="/fragments/timeline :: tbody"></tbody>
+        <thead>
+        <tr th:replace="/fragments/timeline :: t-head-row (${enrollments[0]})"></tr>
+        </thead>
+        <tbody>
+        <th:block th:each="enrl : ${enrollments}">
+            <tr th:replace="/fragments/timeline :: t-data-row (${enrl})"></tr>
+        </th:block>
+        </tbody>
     </table>
 </div>
-
 </body>
 </html>

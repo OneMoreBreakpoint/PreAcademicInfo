@@ -3,6 +3,7 @@ $(document).ready(() => {
     let iconSrc = "/images/" + $(combo_lang).val() + "-ico.png";
     $("#img_langPicker").attr("src", iconSrc);
     $(combo_lang).change((event) => {
-        window.location.replace("?lang=" + event.target.value);
+        let newUrl = updateQueryParams(window.location.toString(), {lang: event.target.value});
+        window.location.replace(newUrl);
     });
 });

@@ -13,11 +13,16 @@
 </td>
 
 
+<td th:fragment="name-cell (student)" class="name-cell" th:object="${student}"
+    th:text="|*{lastName} *{fathersInitials} *{firstName}|">
+</td>
+
+
 <td th:fragment="lesson-cell (lesson)" class="lesson-cell">
     <div class="lesson-cell">
+        <input type="checkbox" th:checked="${lesson.attended}">
         <input type="text" th:value="${lesson.grade}" th:if="${lesson.type.toString()=='LABORATORY'}"
                th:placeholder="#{timeline.head.grade}">
-        <input type="checkbox" th:checked="${lesson.attended}">
         <input type="number" th:value="${lesson.nrOfBonusPoints}" th:placeholder="#{timeline.head.bonus}">
     </div>
 </td>
@@ -25,97 +30,76 @@
 
 <td th:fragment="exam-cell (grade)" class="exam-cell">
     <div class="exam-cell">
-        <input type="text" th:value="__${grade}__">
+        <input type="text" th:value="__${grade}__" th:placeholder="#{timeline.head.grade}">
     </div>
 </td>
 
 
-<td th:fragment="attendances-cell (semAttendance, labAttendance, hasMinimum)" class="attendances-cell">
-    <th:block
-            th:with="semAtt=${#numbers.formatDecimal(__${semAttendance}__, 1, 2)}, labAtt=${#numbers.formatDecimal(__${labAttendance}__,1,2)}">
-        <div class="attendances-cell" th:text="|${semAtt}% / ${labAtt}%|"
-             th:classappend="__${hasMinimum}__ ? '' : 'err'"></div>
-    </th:block>
+<td th:fragment="bonus-cell (enrollment)" class="bonus-cell" th:text="${enrollment.getTotalBonus()}">
 </td>
 
 
-<td th:fragment="average-cell (average, hasMinimum)" class="average-cell">
-    <th:block th:with="avg=${#numbers.formatDecimal(__${average}__, 1, 2)}">
-        <div class="average-cell" th:text="${avg}" th:classappend="__${hasMinimum}__ ? '' : 'err'"></div>
-    </th:block>
+<td th:fragment="attendances-cell (enrollment)" class="attendances-cell"
+    th:with="semAtt=${enrollment.getSeminarAttendance()}, labAtt=${enrollment.getLaboratoryAttendance()}"
+    th:text="|${#numbers.formatDecimal(semAtt,1,2)}% / ${#numbers.formatDecimal(labAtt,1,2)}%|"
+    th:classappend="${enrollment.hasMinimumAttendance()} ? '' : 'err'">
 </td>
 
 
-<thead th:fragment="thead">
+<td th:fragment="average-cell (enrollment)" class="average-cell"
+    th:with="avg=${enrollment.getAverageGrade()}"
+    th:text="${#numbers.formatDecimal(avg,1,2)}"
+    th:classappend="${enrollment.hasMinimumGrade()} ? '' : 'err'">
+</td>
+
+
+<thead th:fragment="t-head-row (enrollmentTemplate)">
 <tr>
-    <th>
-        <div th:text="#{timeline.head.profilePhotoThumb}"></div>
-    </th>
-    <th>
-        <div th:text="#{timeline.head.fullName}"></div>
-    </th>
-    <th:block th:each="lesson : ${enrollments[0].lessons}">
+    <th th:text="#{timeline.head.profilePhotoThumb}" class="photo-cell"></th>
+    <th th:text="#{timeline.head.fullName}" class="name-cell"></th>
+    <th:block th:each="lesson : ${enrollmentTemplate.lessons}">
         <th:block th:switch="${lesson.type.toString()}">
-            <th th:case="'SEMINAR'">
-                <div>
-                    <div th:text="|#{timeline.head.seminar} ${lesson.nr}|"></div>
-                    <div th:text="|(#{timeline.head.attendance}/#{timeline.head.bonus})|"></div>
-                </div>
+            <th th:case="'SEMINAR'" class="lesson-cell"
+                th:text="|#{timeline.head.seminar} ${lesson.nr} (#{timeline.head.attendance}/#{timeline.head.bonus})|">
             </th>
-            <th th:case="'LABORATORY'">
-                <div>
-                    <div th:text="|#{timeline.head.laboratory} ${lesson.nr}|"></div>
-                    <div th:text="|(#{timeline.head.grade}/#{timeline.head.attendance}/#{timeline.head.bonus})|"></div>
-                </div>
+            <th th:case="'LABORATORY'" class="lesson-cell"
+                th:text="|#{timeline.head.laboratory} ${lesson.nr} (#{timeline.head.attendance}/#{timeline.head.grade}/#{timeline.head.bonus})|">
             </th>
         </th:block>
     </th:block>
-    <th:block th:each="partial : ${enrollments[0].partialExams}">
+    <th:block th:each="partial : ${enrollmentTemplate.partialExams}">
         <th:block th:switch="${partial.type.toString()}">
-            <th th:case="'SEMINAR'" class="exam-cell">
-                <div th:utext="|#{timeline.head.partial} #{timeline.head.seminar} ${partial.nr}|"></div>
+            <th th:case="'SEMINAR'" class="exam-cell"
+                th:text="|#{timeline.head.partial} #{timeline.head.seminar} ${partial.nr}|"
             </th>
-            <th th:case="'LABORATORY'" class="exam-cell">
-                <div th:utext="|#{timeline.head.partial} #{timeline.head.laboratory} ${partial.nr}|"></div>
+            <th th:case="'LABORATORY'" class="exam-cell"
+                th:text="|#{timeline.head.partial} #{timeline.head.laboratory} ${partial.nr}|">
             </th>
-            <th th:case="'COURSE'" class="exam-cell">
-                <div th:utext="|#{timeline.head.partial} #{timeline.head.course} ${partial.nr}|"></div>
+            <th th:case="'COURSE'" class="exam-cell"
+                th:text="|#{timeline.head.partial} #{timeline.head.course} ${partial.nr}|">
             </th>
         </th:block>
     </th:block>
-    <th>
-        <div th:utext="#{timeline.head.bonus}"></div>
-    </th>
-    <th>
-        <div th:utext="#{timeline.head.totalAttendances}"></div>
-    </th>
-    <th>
-        <div th:utext="#{timeline.head.averageGrade}"></div>
-    </th>
+    <th class="bonus-cell" th:text="#{timeline.head.bonus}"></th>
+    <th class="attendances-cell" th:text="#{timeline.head.totalAttendances}"></th>
+    <th class="average-cell" th:text="#{timeline.head.averageGrade}"></th>
 </tr>
 </thead>
 
 
-<tbody th:fragment="tbody">
-<tr th:each="enrl : ${enrollments}">
-    <td th:replace="this :: photo-cell (${enrl.student.pathToProfilePhoto})"></td>
-    <td class="name-cell">
-        <div th:object="${enrl.student}" th:text="|*{lastName} *{fathersInitials} *{firstName}|"
-             class="name-cell"></div>
-    </td>
-    <th:block th:each="lesson : ${enrl.lessons}">
+<tr th:fragment="t-data-row (enrollment)" th:object="${enrollment}">
+    <td th:replace="this :: photo-cell (*{student.pathToProfilePhoto})"></td>
+    <td th:replace="this :: name-cell (*{student})"></td>
+    <th:block th:each="lesson : *{lessons}">
         <td th:replace="this :: lesson-cell(${lesson})"></td>
     </th:block>
-    <th:block th:each="partial : ${enrl.partialExams}">
+    <th:block th:each="partial : *{partialExams}">
         <td th:replace="this :: exam-cell(${partial.grade})"></td>
     </th:block>
-    <td class="bonus-cell">
-        <div th:text="${enrl.getTotalBonus()}" class="bonus-cell"></div>
-    </td>
-    <td th:replace="this :: attendances-cell (${enrl.getSeminarAttendance()}, ${enrl.getLaboratoryAttendance()}, ${enrl.hasMinimumAttendance()})"></td>
-    <td th:replace="this :: average-cell (${enrl.getAverageGrade()}, ${enrl.hasMinimumGrade()})"></td>
+    <td th:replace="this :: bonus-cell (${enrollment})"></td>
+    <td th:replace="this :: attendances-cell (${enrollment})"></td>
+    <td th:replace="this :: average-cell (${enrollment})"></td>
 </tr>
-</tbody>
 
 </body>
 </html>

@@ -11,17 +11,15 @@ import org.springframework.web.servlet.ModelAndView;
 import java.security.Principal;
 
 @Controller
-public class UserMvcController {
+public class UserMvcController implements IUserMvcController{
 
     @Autowired
     private IUserService userService;
 
-    @GetMapping("/login")
     public ModelAndView getLoginPage(){
         return new ModelAndView("login.html");
     }
 
-    @GetMapping("/")
     public String getHomePage(Principal crtUser){
         UserDTO user = userService.getUserByUsername(crtUser.getName());
         if(user instanceof StudentDTO){
