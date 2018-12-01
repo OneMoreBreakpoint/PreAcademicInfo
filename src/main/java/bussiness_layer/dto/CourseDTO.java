@@ -40,4 +40,14 @@ public class CourseDTO {
         this.nrOfLaboratories = entity.getNrOfLaboratories();
         this.coordinator = new ProfessorDTO(entity.getCoordinator());
     }
+
+    public Course toEntity(){
+        Course entity = new Course();
+        entity.setId(this.id);
+        entity.setCode(this.code);
+        entity.setNrOfSeminars(this.nrOfSeminars);
+        entity.setNrOfLaboratories(this.nrOfLaboratories);
+        entity.setCoordinator(this.coordinator.toEntity());
+        return entity;
+    }
 }

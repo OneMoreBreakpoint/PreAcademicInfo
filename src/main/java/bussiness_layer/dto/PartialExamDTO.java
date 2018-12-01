@@ -29,4 +29,13 @@ public class PartialExamDTO {
         this.grade = entity.getGrade();
         this.type = entity.getType();
     }
+
+    public PartialExam toEntity(){
+        PartialExam entity = new PartialExam();
+        entity.setId(this.id);
+        entity.setNr(this.nr);
+        entity.setGrade(this.grade);
+        entity.setType(this.type);
+        return entity;
+    }
 }

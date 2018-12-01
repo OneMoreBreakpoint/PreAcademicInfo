@@ -6,9 +6,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-public class StudentMvcController implements IStudentMvcController {
+@RequestMapping("/student")
+public class StudentMvcController {
 
-    public ModelAndView getTimelinePage(){
+    @GetMapping("/timeline")
+    public ModelAndView getTimelinePage() {
         return new ModelAndView("/student/timeline");
     }
 }

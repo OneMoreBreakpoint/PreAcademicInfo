@@ -4,20 +4,20 @@ import data_layer.domain.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
+import java.io.Serializable;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Data
 @NoArgsConstructor
-public class EnrollmentDTO {
+public class EnrollmentDTO implements Serializable {
 
     private Integer id;
     private StudentDTO student;
     private List<PartialExamDTO> partialExams;
     private List<LessonDTO> lessons;
     private CourseDTO course;
+
 
     public EnrollmentDTO(Enrollment entity){
         this.id = entity.getId();
@@ -70,5 +70,15 @@ public class EnrollmentDTO {
                 .map(lesson -> (int)lesson.getNrOfBonusPoints())
                 .reduce((x,y) -> x+y)
                 .orElse(0);
+    }
+
+    public Enrollment toEntity(){
+        Enrollment entity = new Enrollment();
+        entity.setId(this.id);
+        entity.setStudent(this.student.toEntity());
+        entity.setPartialExams(this.partialExams.stream().map(partialExamDTO -> partialExamDTO.toEntity()).collect(Collectors.toList()));
+        entity.setLessons(this.lessons.stream().map(lessonDTO -> lessonDTO.toEntity()).collect(Collectors.toList()));
+        entity.setCourse(this.course.toEntity());
+        return entity;
     }
 }

@@ -36,5 +36,17 @@ public class LessonDTO {
         this.grade = entity.getGrade();
         this.type = entity.getType();
         this.nrOfBonusPoints = entity.getNrOfBonusPoints();
+        this.attended = entity.isAttended();
+    }
+
+    public Lesson toEntity(){
+        Lesson entity = new Lesson();
+        entity.setId(this.id);
+        entity.setNr(this.nr);
+        entity.setGrade(this.grade);
+        entity.setType(this.type);
+        entity.setNrOfBonusPoints(this.nrOfBonusPoints);
+        entity.setAttended(this.attended);
+        return entity;
     }
 }

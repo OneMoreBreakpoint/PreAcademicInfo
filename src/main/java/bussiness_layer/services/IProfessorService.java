@@ -10,4 +10,5 @@ import java.util.SortedSet;
 public interface IProfessorService {
     List<EnrollmentDTO> getEnrollmentsByCourseAndGroup(String profUsername, String courseCode, Short groupCode);
     TeachingDTO getTeachingByProfessorAndCourse(String profUsername, String courseCode);
+    void updateEnrollments(List<EnrollmentDTO> enrollments);
 }

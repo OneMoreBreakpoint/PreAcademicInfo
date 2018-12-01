@@ -32,6 +32,25 @@ $(document).ready(function () {
     enrollments = enrollmentMap;
 })();
 
+function convertEnrollmentMapToEnrollmentList() {
+    let enrollmentList = [], enrollmentMap = enrollments;
+    for(let key in enrollmentMap){
+        enrollmentList.push(enrollmentMap[key]);
+    }
+    for(i=0; i < enrollmentList.length; i++){
+        let lessons = [], partialExams = [];
+        for(let key in enrollmentList[i].lessons){
+            lessons.push(enrollmentList[i].lessons[key]);
+        }
+        for(let key in enrollmentList[i].partialExams){
+            partialExams.push(enrollmentList[i].partialExams[key]);
+        }
+        enrollmentList[i].lessons = lessons;
+        enrollmentList[i].partialExams = partialExams;
+    }
+    return enrollmentList;
+}
+
 function stickRightColumns() {
     let column_average = $("th:nth-last-child(1), td:nth-last-child(1)");
     let column_attendance = $("th:nth-last-child(2), td:nth-last-child(2)");
@@ -53,6 +72,7 @@ function stickRightColumns() {
 function assignHandlers() {
     assignTimelineHandlers();
     assignFilterHandlers();
+    assignActionHandlers();
 }
 
 function assignTimelineHandlers() {
@@ -78,7 +98,7 @@ function assignTimelineHandlers() {
 }
 
 function assignFilterHandlers() {
-    $("#div_filters input[type=checkbox]").change((event) => {
+    $("#div_filters input[type=checkbox]").change(() => {
         let enrlRows = $(".timeline tr.enrollment-row");
         $(enrlRows).show();
         if ($("#check_excludePassingGrade").is(":checked")) {
@@ -101,6 +121,25 @@ function assignFilterHandlers() {
         }else{
             event.target.value = crtGroupCode;
         }
+    });
+}
+
+function assignActionHandlers() {
+    $("#btn_submitChanges").click(()=>{
+        let reqBody = JSON.stringify(convertEnrollmentMapToEnrollmentList());
+        console.log(reqBody);
+        $.ajax({
+            url: "/app/professor/enrollments",
+            type: "PUT",
+            data: reqBody,
+            contentType: "application/json; charset=utf-8",
+            success: (response, textStatus, xhr)=>{
+                console.log(xhr.status);
+            },
+            error: ()=>{
+                console.log("error");
+            }
+        });
     });
 }
 

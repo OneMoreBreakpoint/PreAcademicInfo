@@ -35,4 +35,15 @@ public class ProfessorDTO extends UserDTO{
         ProfessorDTO that = (ProfessorDTO)o;
         return this.getUsername().equals(that.getUsername());
     }
+
+    public Professor toEntity(){
+        Professor entity = new Professor();
+        entity.setUsername(this.getUsername());
+        entity.setFirstName(this.getFirstName());
+        entity.setLastName(this.getLastName());
+        entity.setEmail(this.getEmail());
+        entity.setWebPage(this.webPage);
+        entity.setPathToProfilePhoto(this.pathToProfilePhoto);
+        return entity;
+    }
 }
