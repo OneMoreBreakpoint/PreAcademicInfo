@@ -1,6 +1,10 @@
+let dataHasBeenChanged = false;
+let crtGroupCode;
+
 $(document).ready(function () {
     stickRightColumns();
     console.log(enrollments);
+    crtGroupCode = $("#combo_groupCode").val();
     assignHandlers();
 });
 
@@ -47,6 +51,11 @@ function stickRightColumns() {
 }
 
 function assignHandlers() {
+    assignTimelineHandlers();
+    assignFilterHandlers();
+}
+
+function assignTimelineHandlers() {
     let enrlRows = $(".timeline tbody > tr");
     $(enrlRows).each((index, enrlRow) => {
         let photoCell = $(enrlRow).children("td.photo-cell").first();
@@ -65,7 +74,34 @@ function assignHandlers() {
         $(examCells).each((index, examCell) => {
             assignExamCellHandlers(enrlRow, examCell);
         });
-    })
+    });
+}
+
+function assignFilterHandlers() {
+    $("#div_filters input[type=checkbox]").change((event) => {
+        let enrlRows = $(".timeline tr.enrollment-row");
+        $(enrlRows).show();
+        if ($("#check_excludePassingGrade").is(":checked")) {
+            $(enrlRows).filter((index, enrlRow) => {
+                let enrlId = getNumericIdFromDomId(enrlRow.id);
+                return hasMinimumGrade(enrollments[enrlId].averageGrade);
+            }).hide();
+        }
+        if ($("#check_excludePassingAttendances").is(":checked")) {
+            $(enrlRows).filter((index, enrlRow) => {
+                let enrlId = getNumericIdFromDomId(enrlRow.id);
+                return hasMinimumAttendance(enrollments[enrlId].seminarAttendance, enrollments[enrlId].laboratoryAttendance);
+            }).hide();
+        }
+    });
+    $("#combo_groupCode").change((event)=>{
+        if(!dataHasBeenChanged || confirm(msgs.leavePage)){
+            let newUrl = updateQueryParams(window.location.toString(),{group: event.target.value});
+            window.location.replace(newUrl);
+        }else{
+            event.target.value = crtGroupCode;
+        }
+    });
 }
 
 function assignLessonCellHandlers(enrlRow, lessonCell) {
@@ -77,24 +113,27 @@ function assignLessonCellHandlers(enrlRow, lessonCell) {
         let lessonId = getNumericIdFromDomId(lessonCell.id);
         let checkedState = $(event.target).is(':checked');
         enrollments[enrlId].lessons[lessonId].attended = checkedState;
+        dataHasBeenChanged = true;
         updateTotalAttendance(enrlRow);
     });
     $(gradeField).change((event) => {
         let lessonId = getNumericIdFromDomId(lessonCell.id);
         let actualValue = getValidGrade(event.target.value);
-        if(actualValue != event.target.value){
+        if (actualValue != event.target.value) {
             $(gradeField).val(actualValue);
         }
         enrollments[enrlId].lessons[lessonId].grade = actualValue;
+        dataHasBeenChanged = true;
         updateAverageGrade(enrlRow);
     });
     $(bonusField).change((event) => {
         let lessonId = getNumericIdFromDomId(lessonCell.id);
         let actualValue = getValidBonus(event.target.value);
-        if(actualValue != event.target.value){
+        if (actualValue != event.target.value) {
             $(bonusField).val(actualValue);
         }
         enrollments[enrlId].lessons[lessonId].bonus = actualValue;
+        dataHasBeenChanged = true;
         updateTotalBonus(enrlRow);
     });
 }
@@ -105,10 +144,11 @@ function assignExamCellHandlers(enrlRow, examCell) {
     $(gradeField).change((event) => {
         let examId = getNumericIdFromDomId(examCell.id);
         let actualValue = getValidGrade(event.target.value);
-        if(actualValue != event.target.value){
+        if (actualValue != event.target.value) {
             $(gradeField).val(actualValue);
         }
         enrollments[enrlId].lessons[examId].grade = actualValue;
+        dataHasBeenChanged = true;
         updateAverageGrade(enrlRow);
     });
 }
@@ -119,10 +159,11 @@ function updateTotalBonus(enrlRow) {
     let lessons = enrollments[enrlId].lessons;
     let totalBonusValue = 0;
     for (let id in lessons) {
-        if(lessons[id].bonus != undefined){
+        if (lessons[id].bonus != undefined) {
             totalBonusValue += lessons[id].bonus;
         }
     }
+    enrollments[enrlId].totalBonus = totalBonusValue;
     $(totalBonusCell).text(totalBonusValue);
 }
 
@@ -149,11 +190,13 @@ function updateTotalAttendance(enrlRow) {
     let precisionLab = (totalLabAttendance < 100 ? 2 : 0), precisionSem = (totalSemAttendance < 100 ? 2 : 0);
     let totalAttendance = `${totalSemAttendance.toFixed(precisionSem)}% / ${totalLabAttendance.toFixed(precisionLab)}%`;
     $(totalAttendanceCell).text(totalAttendance);
-    if(!hasMinimumAttendance(totalSemAttendance, totalLabAttendance)){
+    if (!hasMinimumAttendance(totalSemAttendance, totalLabAttendance)) {
         $(totalAttendanceCell).addClass('err');
-    }else{
+    } else {
         $(totalAttendanceCell).removeClass('err');
     }
+    enrollments[enrlId].seminarAttendance = totalSemAttendance;
+    enrollments[enrlId].laboratoryAttendance = totalLabAttendance;
 }
 
 function updateAverageGrade(enrlRow) {
@@ -162,17 +205,18 @@ function updateAverageGrade(enrlRow) {
     let averageCell = $(enrlRow).children("td.average-cell").first();
     let n = 0, sum = 0;
     let lessons = enrollments[enrlId].lessons;
-    for(let id in lessons){
-        if(lessons[id].grade != undefined){
-            sum+=lessons[id].grade;
+    for (let id in lessons) {
+        if (lessons[id].grade != undefined) {
+            sum += lessons[id].grade;
             n++;
         }
     }
-    let average = (n > 0 ? sum/n : 0.0);
+    let average = (n > 0 ? sum / n : 0.0);
+    enrollments[enrlId].averageGrade = average;
     $(averageCell).text(average.toFixed(2));
-    if(!hasMinimumGrade(average)){
+    if (!hasMinimumGrade(average)) {
         $(averageCell).addClass('err');
-    }else{
+    } else {
         $(averageCell).removeClass('err');
     }
 }
@@ -189,34 +233,30 @@ function getNrOfSeminars() {
     }
 }
 
-function hasMinimumAttendance(seminarAttendance, laboratoryAttendance){
+function hasMinimumAttendance(seminarAttendance, laboratoryAttendance) {
     return seminarAttendance >= 75 && laboratoryAttendance >= 90;
 }
 
-function hasMinimumGrade(grade){
+function hasMinimumGrade(grade) {
     return grade >= 5;
 }
 
 function getValidGrade(actualValue) {
-    if(typeof(actualValue) === "string"){
-        actualValue = parseInt(actualValue);
-    }
-    if(actualValue > 10){
-        return 10;
-    }else if(actualValue < 1){
-        return 1;
-    }
-    return actualValue;
+    return getValidNumber(actualValue, 1, 10);
 }
 
 function getValidBonus(actualValue) {
-    if(typeof(actualValue) === "string"){
+    return getValidNumber(actualValue, -10, 10);
+}
+
+function getValidNumber(actualValue, minValue, maxValue) {
+    if (typeof(actualValue) === "string") {
         actualValue = parseInt(actualValue);
     }
-    if(actualValue > 10){
-        return 10;
-    }else if(actualValue < -10){
-        return -10;
+    if (actualValue > maxValue) {
+        return maxValue;
+    } else if (actualValue < minValue) {
+        return minValue;
     }
     return actualValue;
 }
