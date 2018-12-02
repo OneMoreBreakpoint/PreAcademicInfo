@@ -11,7 +11,7 @@ import java.util.List;
 
 public class DBInserter {
 
-    private static Group gr231,gr232,gr221,gr933;
+    private static Group gr231,gr232,gr221,gr933, gr0;
     private static Professor guran, mihis, motogna, lazar, forest, grigo, camelia, suciu, ticle;
     private static Course lftc, flct, pdm, mdp, pdav, ss, retele;
     private static Student mihnea, norberth, antal, vlad, ana, beltechi, boros;
@@ -320,7 +320,7 @@ public class DBInserter {
         mihnea.setEmail("cnir2083@scs.ubbcluj.ro");
         mihnea.setRegistrationNr(12199);
         mihnea.setFathersInitials("P.L.");
-        mihnea.setEnrollments(enrollmentList(mihnea, pdm));
+        mihnea.setEnrollments(enrollmentList(mihnea, pdm, retele));
         DBInserter.mihnea = mihnea;
 
         gr231 = new Group();
@@ -635,6 +635,39 @@ public class DBInserter {
 
     }
 
+    private static void initStudsGr0(){
+        Student andrei = new Student();
+        andrei.setUsername("pair0000");
+        andrei.setEncryptedPassword(BCrypt.hashpw("andrei", BCrypt.gensalt()));
+        andrei.setLastName("Pop");
+        andrei.setFirstName("Andrei");
+        andrei.setEmail("cnir2083@scs.ubbcluj.ro");
+        andrei.setRegistrationNr(10000);
+        andrei.setFathersInitials("P.");
+        andrei.setEnrollments(enrollmentList(andrei, lftc));
+
+        Student vlad = new Student();
+        vlad.setUsername("ivir0001");
+        vlad.setEncryptedPassword(BCrypt.hashpw("vlad", BCrypt.gensalt()));
+        vlad.setLastName("Istrate");
+        vlad.setFirstName("Vlad");
+        vlad.setEmail("cnir2083@scs.ubbcluj.ro");
+        vlad.setRegistrationNr(10001);
+        vlad.setFathersInitials("I.");
+        vlad.setEnrollments(enrollmentList(vlad, retele));
+
+        gr0 = new Group();
+        gr0.setCode((short)0);
+        gr0.setStudents(new ArrayList<>());
+        gr0.getStudents().add(andrei);
+        gr0.getStudents().add(vlad);
+
+        gr0.getStudents().forEach(student -> {
+            student.setGroup(gr0);
+            student.setNotifiedByEmail(false);
+        });
+    }
+
     private static void initProfGuran(){
         guran.setUsername("guran");
         guran.setEncryptedPassword(BCrypt.hashpw("guran", BCrypt.gensalt()));
@@ -648,12 +681,14 @@ public class DBInserter {
         t_lftc.getLaboratoryGroups().add(gr231);
         t_lftc.setSeminarGroups(new HashSet<>());
         t_lftc.getSeminarGroups().add(gr232);
+        t_lftc.getSeminarGroups().add(gr0);
         t_lftc.setCourse(lftc);
         t_lftc.setProfessor(guran);
 
         Teaching t_flct = new Teaching();
         t_flct.setLaboratoryGroups(new HashSet<>());
         t_flct.getLaboratoryGroups().add(gr933);
+        t_flct.getLaboratoryGroups().add(gr0);
         t_flct.setCourse(flct);
         t_flct.setProfessor(guran);
 
@@ -745,6 +780,8 @@ public class DBInserter {
         Teaching t_retele = new Teaching();
         t_retele.setLaboratoryGroups(new HashSet<>());
         t_retele.getLaboratoryGroups().add(gr221);
+        t_retele.getLaboratoryGroups().add(gr231);
+        t_retele.getLaboratoryGroups().add(gr0);
         t_retele.setCourse(retele);
         t_retele.setProfessor(forest);
 
@@ -889,6 +926,7 @@ public class DBInserter {
         groups.add(gr232);
         groups.add(gr221);
         groups.add(gr933);
+        groups.add(gr0);
         groups.forEach(group -> {
             group.getStudents().forEach(student -> {
                 student.getEnrollments().forEach(enrollment -> {
@@ -958,6 +996,7 @@ public class DBInserter {
         groups.add(gr232);
         groups.add(gr221);
         groups.add(gr933);
+        groups.add(gr0);
         groups.forEach(group->{
             group.getStudents().forEach(student -> {
                 student.getEnrollments().forEach(enrollment -> {
@@ -1000,6 +1039,7 @@ public class DBInserter {
             groups.add(gr232);
             groups.add(gr221);
             groups.add(gr933);
+            groups.add(gr0);
             groups.forEach(group -> {
                 group.getStudents().forEach(student -> {
                     student.getEnrollments().forEach(enrollment -> {
@@ -1050,6 +1090,7 @@ public class DBInserter {
         initStudsGr232();
         initStudsGr933();
         initStudsGr221();
+        initStudsGr0();
         System.out.println("init courses");
         initCourses();
         System.out.println("init professors");

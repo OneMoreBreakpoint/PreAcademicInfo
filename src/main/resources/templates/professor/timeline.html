@@ -26,9 +26,13 @@
 <div id="div_filters">
     <div>
         <label th:text="|#{timeline.filter.group}:|" for="combo_groupCode"></label>
-        <select id="combo_groupCode" th:with="groups=${teaching.getAllGroups()}">
-            <option th:each="group : ${groups}" th:text="${group.code}" th:value="${group.code}"
-                    th:selected="${group.code == crtGroupCode}"></option>
+        <select id="combo_groupCode">
+            <th:block th:each="group : ${teaching.allGroups}" th:switch="${group.code}">
+                <option th:case="0" th:text="#{timeline.filter.extensionGroup}" th:value="${group.code}"
+                        th:selected="${group.code == crtGroupCode}"></option>
+                <option th:case="*" th:text="${group.code}" th:value="${group.code}"
+                        th:selected="${group.code == crtGroupCode}"></option>
+            </th:block>
         </select>
     </div>
     <div>
