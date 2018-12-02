@@ -34,4 +34,6 @@ public class PartialExam {
         LABORATORY,
         COURSE
     }
+
+
 }

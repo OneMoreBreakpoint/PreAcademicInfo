@@ -30,6 +30,8 @@ public class LessonDTO {
 
     private Byte nrOfBonusPoints;
 
+    private boolean readonly;
+
     public LessonDTO(Lesson entity){
         this.id = entity.getId();
         this.nr = entity.getNr();
@@ -48,5 +50,20 @@ public class LessonDTO {
         entity.setNrOfBonusPoints(this.nrOfBonusPoints);
         entity.setAttended(this.attended);
         return entity;
+    }
+
+    public boolean isReadable(TeachingDTO teaching, Short groupCode){
+        return teaching.hasCoordinatorRights() ||
+                (this.getType() == Lesson.LessonType.LABORATORY && teaching.hasLaboratoryRightsOverGroup(groupCode))
+                || (this.getType() == Lesson.LessonType.SEMINAR && teaching.hasSeminarRightsOverGroup(groupCode));
+    }
+
+    public boolean isWritable(TeachingDTO teaching, Short groupCode){
+        return (this.getType() == Lesson.LessonType.LABORATORY && teaching.hasLaboratoryRightsOverGroup(groupCode))
+                || (this.getType() == Lesson.LessonType.SEMINAR && teaching.hasSeminarRightsOverGroup(groupCode));
+    }
+
+    public boolean isReadOnly(TeachingDTO teaching, Short groupCode){
+        return this.isReadable(teaching, groupCode) && !this.isWritable(teaching, groupCode);
     }
 }

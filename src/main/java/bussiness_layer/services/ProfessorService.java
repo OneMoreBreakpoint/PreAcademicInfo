@@ -6,7 +6,6 @@ import data_layer.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import utils.exceptions.AccessForbiddenException;
-import utils.handlers.TeachingHandler;
 import utils.exceptions.ResourceNotFoundException;
 
 import javax.transaction.Transactional;
@@ -42,9 +41,12 @@ public class ProfessorService implements IProfessorService {
             throw new ResourceNotFoundException();
         }
         Teaching teaching = teachingRepository.findByProfessorAndCourse(profUsername, courseCode);
-        if ((teaching == null) || (!TeachingHandler.professorHasSeminarRightsOverGroup(teaching, groupCode)
-                && !TeachingHandler.professorHasLaboratoryRightsOverGroup(teaching, groupCode)
-                && !TeachingHandler.professorHasCoordinatorRights(teaching))) {
+        if(teaching == null){
+            throw new ResourceNotFoundException();
+        }
+        TeachingDTO teachingDTO = new TeachingDTO(teaching);
+        if (!teachingDTO.hasSeminarRightsOverGroup(groupCode) && !teachingDTO.hasLaboratoryRightsOverGroup(groupCode)
+                && !teachingDTO.hasCoordinatorRights()) {
             throw new ResourceNotFoundException();
         }
         List<Enrollment> enrollments = enrollmentRepository.findByCourseAndGroup(courseCode, groupCode);
@@ -52,7 +54,7 @@ public class ProfessorService implements IProfessorService {
             throw new ResourceNotFoundException();
         }
         List<EnrollmentDTO> enrollmentDTOS = enrollments.stream().map(EnrollmentDTO::new).collect(Collectors.toList());
-        stripUnauthorizedReadLessonsAndExams(enrollmentDTOS, teaching, groupCode);
+        stripUnauthorizedReadLessonsAndExams(enrollmentDTOS, teachingDTO, groupCode);
         return enrollmentDTOS;
     }
 
@@ -63,7 +65,7 @@ public class ProfessorService implements IProfessorService {
             throw new ResourceNotFoundException();
         }
         TeachingDTO teachingDTO = new TeachingDTO(teaching);
-        if (TeachingHandler.professorHasCoordinatorRights(teachingDTO)) { //coordinator can view all groups
+        if (teachingDTO.hasCoordinatorRights()) { //coordinator can view all groups
             Set<GroupDTO> allGroupsTakingThisCourse = groupRepository.findByCourse(courseCode).stream()
                     .map(GroupDTO::new).collect(Collectors.toSet());
             teachingDTO.getAllGroups().addAll(allGroupsTakingThisCourse);
@@ -91,71 +93,85 @@ public class ProfessorService implements IProfessorService {
         partialExamRepository.flush();
     }
 
-    private void stripUnauthorizedReadLessonsAndExams(List<EnrollmentDTO> enrollments, Teaching teaching, Short groupCode) {
+    private void stripUnauthorizedReadLessonsAndExams(List<EnrollmentDTO> enrollments, TeachingDTO teaching, Short groupCode) {
         enrollments.forEach(enrollment -> {
+            //keep only readable lessons and exams
             List<LessonDTO> authLessons = enrollment.getLessons().stream()
-                    .filter(lesson ->
-                            (lesson.getType() == Lesson.LessonType.LABORATORY && TeachingHandler.professorHasLaboratoryRightsOverGroup(teaching, groupCode))
-                                    || (lesson.getType() == Lesson.LessonType.SEMINAR && TeachingHandler.professorHasSeminarRightsOverGroup(teaching, groupCode))
-                                    || TeachingHandler.professorHasCoordinatorRights(teaching))
+                    .filter(lessonDTO -> lessonDTO.isReadable(teaching, groupCode))
                     .collect(Collectors.toList());
             List<PartialExamDTO> authExams = enrollment.getPartialExams().stream()
-                    .filter(exam ->
-                            (exam.getType() == PartialExam.PartialExamType.LABORATORY && TeachingHandler.professorHasLaboratoryRightsOverGroup(teaching, groupCode))
-                                    || (exam.getType() == PartialExam.PartialExamType.SEMINAR && TeachingHandler.professorHasSeminarRightsOverGroup(teaching, groupCode))
-                                    || TeachingHandler.professorHasCoordinatorRights(teaching)) //TODO: check if it works (should add COURSE?)
+                    .filter(exam -> exam.isReadable(teaching, groupCode))
                     .collect(Collectors.toList());
+            //mark lessons and exams as readonly if it is the case
+            authLessons.forEach(lessonDTO -> lessonDTO.setReadonly(lessonDTO.isReadOnly(teaching, groupCode)));
+            authExams.forEach(examDTO -> examDTO.setReadonly(examDTO.isReadOnly(teaching, groupCode)));
             enrollment.setLessons(authLessons);
             enrollment.setPartialExams(authExams);
         });
     }
 
-    private void authorizeUpdateLessonsAndExams(List<Enrollment> enrollmentsNeedingUpdate, String profUsername){
-        if(enrollmentsNeedingUpdate.size() == 0){
+    private Set<Integer> getAuthorizedLessonIds(Collection<Enrollment> authEnrollments, TeachingDTO teachingDTO){
+        Set<Integer> authLessonsIds = new HashSet<>();
+        for (Enrollment authEnrl : authEnrollments) {
+            Short groupCode = authEnrl.getStudent().getGroup().getCode();
+            authLessonsIds.addAll(authEnrl.getLessons().stream()
+                    .map(LessonDTO::new)
+                    .filter(lesson ->lesson.isWritable(teachingDTO, groupCode))
+                    .map(LessonDTO::getId).collect(Collectors.toSet()));
+        }
+        return authLessonsIds;
+    }
+
+    private Set<Integer> getAuthorizedExamIds(Collection<Enrollment> authEnrollments, TeachingDTO teachingDTO){
+        Set<Integer> authExamsIds = new HashSet<>();
+        for (Enrollment authEnrl : authEnrollments) {
+            Short groupCode = authEnrl.getStudent().getGroup().getCode();
+            authExamsIds.addAll(authEnrl.getPartialExams().stream()
+                    .map(PartialExamDTO::new)
+                    .filter(exam -> exam.isWritable(teachingDTO, groupCode))
+                    .map(PartialExamDTO::getId).collect(Collectors.toSet()));
+        }
+        return authExamsIds;
+    }
+
+    private List<Integer> getLessonIdsFromEnrollments(List<Enrollment> enrollments){
+        return enrollments.stream().map(Enrollment::getLessons).flatMap(Collection::stream)
+                .map(Lesson::getId).collect(Collectors.toList());
+    }
+
+    private List<Integer> getExamIdsFromEnrollments(List<Enrollment> enrollments){
+        return enrollments.stream().map(Enrollment::getPartialExams).flatMap(Collection::stream)
+                .map(PartialExam::getId).collect(Collectors.toList());
+    }
+
+    private void authorizeUpdateLessonsAndExams(List<Enrollment> enrollmentsNeedingUpdate, String profUsername) {
+        if (enrollmentsNeedingUpdate.size() == 0) {
             return;
         }
         String courseCode = enrollmentsNeedingUpdate.get(0).getCourse().getCode();
         Teaching teaching = teachingRepository.findByProfessorAndCourse(profUsername, courseCode);
-        if(teaching == null){
+        if (teaching == null) {
             throw new AccessForbiddenException();
         }
-        Set<Group> allGroups = new HashSet<>();
-        if(TeachingHandler.professorHasCoordinatorRights(teaching)){
-            allGroups.addAll(groupRepository.findByCourse(courseCode));
-        }else{
-            allGroups.addAll(teaching.getLaboratoryGroups());
-            allGroups.addAll(teaching.getSeminarGroups());
+        TeachingDTO teachingDTO = new TeachingDTO(teaching);
+        if (teachingDTO.hasCoordinatorRights()) {
+            Collection<GroupDTO> allGroups = groupRepository.findByCourse(courseCode).stream()
+                    .map(GroupDTO::new).collect(Collectors.toList());
+            teachingDTO.getAllGroups().addAll(allGroups);
         }
-        Set<Short> allGroupCodes = allGroups.stream().map(Group::getCode).collect(Collectors.toSet());
-        List<Enrollment> authEnrollments = enrollmentRepository.findByCourseAndGroups(courseCode, allGroupCodes);
-        Set<Integer> authLessonsIds = new HashSet<>();
-        Set<Integer> authExamsIds = new HashSet<>();
-        for(Enrollment authEnrl : authEnrollments){
-            authLessonsIds.addAll( authEnrl.getLessons().stream().filter(lesson->{
-                Short groupCode = authEnrl.getStudent().getGroup().getCode();
-                return (lesson.getType() == Lesson.LessonType.LABORATORY && TeachingHandler.professorHasLaboratoryRightsOverGroup(teaching, groupCode))
-                        || (lesson.getType() == Lesson.LessonType.SEMINAR && TeachingHandler.professorHasSeminarRightsOverGroup(teaching, groupCode));
-            }).map(Lesson::getId).collect(Collectors.toSet()) );
-            authExamsIds.addAll( authEnrl.getPartialExams().stream().filter(exam->{
-                Short groupCode = authEnrl.getStudent().getGroup().getCode();
-                return (exam.getType() == PartialExam.PartialExamType.LABORATORY && TeachingHandler.professorHasLaboratoryRightsOverGroup(teaching, groupCode))
-                        || (exam.getType() == PartialExam.PartialExamType.SEMINAR && TeachingHandler.professorHasSeminarRightsOverGroup(teaching, groupCode))
-                        || (exam.getType() == PartialExam.PartialExamType.COURSE && TeachingHandler.professorHasCoordinatorRights(teaching));
-            }).map(PartialExam::getId).collect(Collectors.toSet()) );
-        }
-        List<Integer> toBeUpdatedLessonsIds = enrollmentsNeedingUpdate.stream()
-                .map(Enrollment::getLessons).flatMap(Collection::stream)
-                .map(Lesson::getId).collect(Collectors.toList());
-        List<Integer> toBeUpdatedExamsIds = enrollmentsNeedingUpdate.stream()
-                .map(Enrollment::getPartialExams).flatMap(Collection::stream)
-                .map(PartialExam::getId).collect(Collectors.toList());
-        for(Integer id : toBeUpdatedLessonsIds){
-            if(!authLessonsIds.contains(id)){
+        Set<Short> allGroupCodes = teachingDTO.getAllGroups().stream().map(GroupDTO::getCode).collect(Collectors.toSet());
+        List<Enrollment> allEnrollments = enrollmentRepository.findByCourseAndGroups(courseCode, allGroupCodes);
+        Set<Integer> authLessonsIds = getAuthorizedLessonIds(allEnrollments, teachingDTO);
+        Set<Integer> authExamsIds = getAuthorizedExamIds(allEnrollments, teachingDTO);
+        List<Integer> toBeUpdatedLessonsIds = getLessonIdsFromEnrollments(enrollmentsNeedingUpdate);
+        List<Integer> toBeUpdatedExamsIds = getExamIdsFromEnrollments(enrollmentsNeedingUpdate);
+        for (Integer id : toBeUpdatedLessonsIds) {
+            if (!authLessonsIds.contains(id)) {
                 throw new AccessForbiddenException();
             }
         }
-        for(Integer id : toBeUpdatedExamsIds){
-            if(!authExamsIds.contains(id)){
+        for (Integer id : toBeUpdatedExamsIds) {
+            if (!authExamsIds.contains(id)) {
                 throw new AccessForbiddenException();
             }
         }
