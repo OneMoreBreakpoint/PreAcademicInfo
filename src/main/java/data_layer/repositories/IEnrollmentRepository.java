@@ -15,4 +15,8 @@ public interface IEnrollmentRepository extends JpaRepository<Enrollment, Integer
             "ORDER BY e.student.lastName, e.student.firstName, e.student.fathersInitials")
     List<Enrollment> findByCourseAndGroup(String courseCode, Short groupCode);
 
+    @Query("SELECT e FROM Enrollments e " +
+            "WHERE e.course.code = (?1) AND e.student.group.code IN (?2)")
+    List<Enrollment> findByCourseAndGroups(String courseCode, Iterable<Short> groupCodes);
+
 }

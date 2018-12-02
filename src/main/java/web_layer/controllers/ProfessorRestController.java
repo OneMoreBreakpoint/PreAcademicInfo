@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -19,9 +20,9 @@ public class ProfessorRestController {
     private IProfessorService service;
 
     @PutMapping("/enrollments")
-    public ResponseEntity<?> putEnrollments(@RequestBody ArrayList<EnrollmentDTO> enrollments){
+    public ResponseEntity<?> putEnrollments(@RequestBody ArrayList<EnrollmentDTO> enrollments, Principal crtUser){
         System.out.println(enrollments);
-        service.updateEnrollments(enrollments);
+        service.updateEnrollments(crtUser.getName(), enrollments);
         return ResponseEntity.ok(null);
     }
 }

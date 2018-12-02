@@ -134,7 +134,9 @@ function assignActionHandlers() {
             data: reqBody,
             contentType: "application/json; charset=utf-8",
             success: (response, textStatus, xhr)=>{
-                console.log(xhr.status);
+                if(xhr.status = 200){
+
+                }
             },
             error: ()=>{
                 console.log("error");
