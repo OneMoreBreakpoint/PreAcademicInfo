@@ -3,6 +3,7 @@ package bussiness_layer.dto;
 import data_layer.domain.Teaching;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import utils.handlers.TeachingHandler;
 
 import java.util.List;
 import java.util.Set;
@@ -17,20 +18,17 @@ public class TeachingDTO {
     private ProfessorDTO professor;
     private Set<GroupDTO> seminarGroups;
     private Set<GroupDTO> laboratoryGroups;
+    private SortedSet<GroupDTO> allGroups;
     private CourseDTO course;
 
-    public TeachingDTO(Teaching entity){
+    public TeachingDTO(Teaching entity) {
         this.id = entity.getId();
         this.professor = new ProfessorDTO(entity.getProfessor());
         this.seminarGroups = entity.getSeminarGroups().stream().map(GroupDTO::new).collect(Collectors.toSet());
         this.laboratoryGroups = entity.getLaboratoryGroups().stream().map(GroupDTO::new).collect(Collectors.toSet());
+        this.allGroups = new TreeSet<>();
+        this.allGroups.addAll(seminarGroups);
+        this.allGroups.addAll(laboratoryGroups);
         this.course = new CourseDTO(entity.getCourse());
-    }
-
-    public SortedSet<GroupDTO> getAllGroups(){
-        SortedSet<GroupDTO> allGroups = new TreeSet<>();
-        allGroups.addAll(seminarGroups);
-        allGroups.addAll(laboratoryGroups);
-        return allGroups;
     }
 }

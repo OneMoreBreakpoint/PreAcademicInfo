@@ -1,9 +1,6 @@
 package bussiness_layer.services;
 
-import bussiness_layer.dto.EnrollmentDTO;
-import bussiness_layer.dto.LessonDTO;
-import bussiness_layer.dto.PartialExamDTO;
-import bussiness_layer.dto.TeachingDTO;
+import bussiness_layer.dto.*;
 import data_layer.domain.*;
 import data_layer.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +11,7 @@ import utils.exceptions.ResourceNotFoundException;
 import javax.transaction.Transactional;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -68,7 +66,13 @@ public class ProfessorService implements IProfessorService {
         if (teaching == null) {
             throw new ResourceNotFoundException();
         }
-        return new TeachingDTO(teaching);
+        TeachingDTO teachingDTO = new TeachingDTO(teaching);
+        if(TeachingHandler.professorHasCoordinatorRights(teachingDTO)){ //coordinator can view all groups
+            Set<GroupDTO> allGroupsTakingThisCourse = groupRepository.findByCourse(courseCode).stream()
+                    .map(GroupDTO::new).collect(Collectors.toSet());
+            teachingDTO.getAllGroups().addAll(allGroupsTakingThisCourse);
+        }
+        return teachingDTO;
     }
 
     @Override
