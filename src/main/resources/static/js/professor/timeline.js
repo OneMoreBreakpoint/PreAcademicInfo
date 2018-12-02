@@ -19,11 +19,15 @@ $(document).ready(function () {
         }
         for (let j = 0; j < lessonList.length; j++) {
             let lesson = lessonList[j];
-            lessonMap[lesson.id] = lesson;
+            if(lesson.readonly == false){ //strip readonly lessons
+                lessonMap[lesson.id] = lesson;
+            }
         }
         for (let j = 0; j < examList.length; j++) {
             let exam = examList[j];
-            examMap[exam.id] = exam;
+            if(exam.readonly == false){ //strip readonly exams
+                examMap[exam.id] = exam;
+            }
         }
         enrollment.lessons = lessonMap;
         enrollment.partialExams = examMap;
@@ -35,7 +39,7 @@ $(document).ready(function () {
 function convertEnrollmentMapToEnrollmentList() {
     let enrollmentList = [], enrollmentMap = enrollments;
     for(let key in enrollmentMap){
-        enrollmentList.push(enrollmentMap[key]);
+        enrollmentList.push(deepClone(enrollmentMap[key]));
     }
     for(i=0; i < enrollmentList.length; i++){
         let lessons = [], partialExams = [];
@@ -67,6 +71,18 @@ function stickRightColumns() {
         "position": "sticky",
         "right": `${$(column_average).outerWidth() + $(column_attendance).outerWidth()}px`
     });
+}
+
+function setDataHasBeenChangedFlag(value) {
+    if(dataHasBeenChanged !== value){
+        dataHasBeenChanged = value;
+        $("#btn_submitChanges").prop('disabled', !value);
+    }
+    if(dataHasBeenChanged){
+        window.onbeforeunload = ()=>{return true}; //browsers won't run code inside handler from security reasons
+    }else{
+        window.onbeforeunload = undefined;
+    }
 }
 
 function assignHandlers() {
@@ -114,13 +130,11 @@ function assignFilterHandlers() {
             }).hide();
         }
     });
-    $("#combo_groupCode").change((event)=>{
-        if(!dataHasBeenChanged || confirm(msgs.leavePage)){
-            let newUrl = updateQueryParams(window.location.toString(),{group: event.target.value});
-            window.location.replace(newUrl);
-        }else{
-            event.target.value = crtGroupCode;
-        }
+    let combo_groupCode = $("#combo_groupCode");
+    $(combo_groupCode).change((event)=>{
+        let newUrl = updateQueryParams(window.location.toString(),{group: event.target.value});
+        window.location.replace(newUrl);
+        setTimeout(()=>{$(combo_groupCode).val(crtGroupCode)}, 1); //if user did not leave page
     });
 }
 
@@ -135,11 +149,12 @@ function assignActionHandlers() {
             contentType: "application/json; charset=utf-8",
             success: (response, textStatus, xhr)=>{
                 if(xhr.status = 200){
-
+                    displayModal("#modal_success", true);
+                    setDataHasBeenChangedFlag(false);
                 }
             },
             error: ()=>{
-                console.log("error");
+                displayModal("#modal_failure", true);
             }
         });
     });
@@ -154,7 +169,7 @@ function assignLessonCellHandlers(enrlRow, lessonCell) {
         let lessonId = getNumericIdFromDomId(lessonCell.id);
         let checkedState = $(event.target).is(':checked');
         enrollments[enrlId].lessons[lessonId].attended = checkedState;
-        dataHasBeenChanged = true;
+        setDataHasBeenChangedFlag(true);
         updateTotalAttendance(enrlRow);
     });
     $(gradeField).change((event) => {
@@ -164,7 +179,7 @@ function assignLessonCellHandlers(enrlRow, lessonCell) {
             $(gradeField).val(actualValue);
         }
         enrollments[enrlId].lessons[lessonId].grade = actualValue;
-        dataHasBeenChanged = true;
+        setDataHasBeenChangedFlag(true);
         updateAverageGrade(enrlRow);
     });
     $(bonusField).change((event) => {
@@ -174,7 +189,7 @@ function assignLessonCellHandlers(enrlRow, lessonCell) {
             $(bonusField).val(actualValue);
         }
         enrollments[enrlId].lessons[lessonId].bonus = actualValue;
-        dataHasBeenChanged = true;
+        setDataHasBeenChangedFlag(true);
         updateTotalBonus(enrlRow);
     });
 }
@@ -189,7 +204,7 @@ function assignExamCellHandlers(enrlRow, examCell) {
             $(gradeField).val(actualValue);
         }
         enrollments[enrlId].lessons[examId].grade = actualValue;
-        dataHasBeenChanged = true;
+        setDataHasBeenChangedFlag(true);
         updateAverageGrade(enrlRow);
     });
 }

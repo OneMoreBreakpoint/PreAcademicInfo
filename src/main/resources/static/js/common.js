@@ -34,3 +34,11 @@ function buildQueryObject(queryString){
 function getNumericIdFromDomId(domId){
     return parseInt(domId.split('-')[1]);
 }
+
+/**
+ * @param jsObj {object}
+ * @returns {object}
+ */
+function deepClone(jsObj) {
+    return JSON.parse(JSON.stringify(jsObj));
+}

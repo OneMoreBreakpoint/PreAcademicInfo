@@ -1,14 +1,15 @@
 :root{
-    --color0: white;
+    --color0-light: white;
+    --color0-dark: black;
     --color1: #2dab9d;
     --color1-light: #2ec7b9;
     --color2: #ff4f19;
     --color2-light: #ff9d49;
     --color2-dark: #a21818;
-    --color3: #b2b2b2;
-    --color3-light: #dcdcdc;
-    --color3-dark: #7a7a7a;
-    --color4: #2b9b48;
+    --color3: #2b9b48;
+    --color4: #b2b2b2;
+    --color4-light: #dcdcdc;
+    --color4-dark: #7a7a7a;
 }
 
 body{
@@ -36,7 +37,7 @@ h2{
     font-weight: bold;
 }
 
-input, select{
+input[type=text], input[type=number], input[type=checkbox], select{
     border-bottom-width: 4px;
     border-style: none none solid none;
     border-color: var(--color1);
@@ -47,14 +48,19 @@ label, input, select{
     padding: 10px 15px 5px 10px;
 }
 
-input[type=submit], input[type=button], button{
-    border-style: solid;
-    background-color: var(--color1);
-    color: var(--color0);
+input[type=button][disabled]{
+    background-color: var(--color4) !important;
+}
+input[type=button][disabled]:hover{
+    cursor: unset !important;
 }
 
-input[type=submit].err, input[type=button].err, button.err{
-    background-color: var(--color2);
+input[type=submit], input[type=button], button{
+    border-style: none;
+    background-color: var(--color1);
+    color: var(--color0-light);
+    padding: 10px;
+    text-align: center;
 }
 
 input[type=submit]:hover, input[type=button]:hover, button:hover{
@@ -73,7 +79,9 @@ input[type=checkbox]{
     border-width: 3px;
     padding: 8px;
     position: relative;
-    top: 8px;
+    font-weight: normal;
+    top: 5px;
+    background-color: var(--color0-light);
 }
 input[type=checkbox]:checked{
     background-color: var(--color1);
@@ -84,7 +92,10 @@ input[type=checkbox]:checked::after{
     position: absolute;
     top: -4px;
     left: 1px;
-    color: var(--color0);
+    color: var(--color0-light);
+}
+input[type=checkbox][disabled]{
+    background-color: var(--color4-dark) !important;
 }
 
 input[type=checkbox] + label{
@@ -99,11 +110,23 @@ select{
     -webkit-appearance: none;
 }
 
+/*special classes*/
 .invisible{
     opacity: 0;
 }
 
-
 .err{
     color: var(--color2);
+}
+
+input[type=button].err{
+    background-color: var(--color2);
+}
+
+.ok{
+    color: var(--color3);
+}
+
+input[type=button].ok{
+    background-color: var(--color3);
 }

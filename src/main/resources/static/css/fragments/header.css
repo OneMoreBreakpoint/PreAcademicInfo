@@ -1,75 +1,77 @@
 /*general*/
-.header {
+.header{
     height: 108px;
     position: sticky;
     top:0;
     width: 100%;
-    background-color: var(--color0);
+    background-color: var(--color0-light);
     z-index: 999;
     margin-bottom: 30px;
 }
 
-.header .header-line {
+.header .header-line{
     height: 50%;
 }
 
-.header .lang-picker {
+.header .lang-picker{
     position: absolute;
     right: 20px;
     top: 10px;
 }
 
 /*anonymous*/
-.header.anonymous h1 {
-    color: var(--color3);
+.header.anonymous h1{
+    color: var(--color4);
     display: inline;
 }
 
-.header.anonymous > .header-line:nth-child(2) {
+.header.anonymous > .header-line:nth-child(2){
     text-align: center;
 }
 
+
 /*authenticated*/
-.header.authenticated h1 {
+.header.authenticated h1{
     color: var(--color1);
     display: inline
 }
 
-.header.authenticated > .header-line:first-child {
+.header.authenticated > .header-line:first-child{
     text-align: center;
 }
 
-.header.authenticated .logo {
+.header.authenticated .logo{
     position: absolute;
     left: 20px;
 }
 
-.header.authenticated .header-line:nth-child(2) {
+.header.authenticated .header-line:nth-child(2){
     background-color: var(--color1);
 }
 
-.header.authenticated a {
+.header.authenticated a{
     height: 100%;
     padding: 0 20px 0;
     display: inline-flex;
     justify-content: center;
     align-items: center;
     text-decoration: none;
-    color: var(--color0);
+    color: var(--color0-light);
     font-size: 20px;
 }
 
-.header.authenticated a:hover {
+.header.authenticated a:hover{
     background-color: var(--color1-light);
     font-size: 20px;
 }
 
-.header.authenticated a * {
+
+.header.authenticated a *{
     margin: 10px;
 }
 
 .header.authenticated .header-line:nth-child(2) a:nth-child(2),
 .header.authenticated .header-line:nth-child(2) a:nth-child(3),
-.header.authenticated .header-line:nth-child(2) a:nth-child(4) {
+.header.authenticated .header-line:nth-child(2) a:nth-child(4){
     float: right;
 }

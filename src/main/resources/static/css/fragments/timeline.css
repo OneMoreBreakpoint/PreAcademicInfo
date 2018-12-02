@@ -1,6 +1,7 @@
 .timeline{
     overflow-x: auto;
     white-space: nowrap;
+    min-height: 100px;
     max-height: 70vh;
     position: relative;
     font-size: 14px;
@@ -18,20 +19,20 @@
 }
 .timeline th{
     background-color: var(--color1);
-    color: var(--color0);
+    color: var(--color0-light);
 }
 .timeline tr:nth-child(odd) td{
-    background-color: var(--color3-light);
+    background-color: var(--color4-light);
 }
 .timeline tr:nth-child(even) td{
-    background-color: var(--color3);
+    background-color: var(--color4);
 }
 
 /*sticky left side*/
 .timeline th.name-cell, .timeline td.name-cell{
     position: sticky;
     left: 0px;
-    box-shadow: 1px 0px 7px black;
+    box-shadow: 1px 0px 7px var(--color0-dark);
 }
 .timeline td.name-cell{
     z-index: 1;
@@ -41,17 +42,17 @@
 }
 .timeline th:nth-child(-n+1),
 .timeline td:nth-child(-n+1){
-    box-shadow: 0px 1px 7px black;
+    box-shadow: 0px 1px 7px var(--color0-dark);
 }
 
 /*sticky right side - mostly with js*/
 .timeline th.bonus-cell,
 .timeline td.bonus-cell {
-    box-shadow: -1px 0px 7px black;
+    box-shadow: -1px 0px 7px var(--color0-dark);
 }
 .timeline th:nth-last-child(-n+2),
 .timeline td:nth-last-child(-n+2){
-    box-shadow: 0px -1px 7px black;
+    box-shadow: 0px -1px 7px var(--color0-dark);
 }
 
 /*sticky head*/
@@ -70,10 +71,10 @@
     width: 80%;
 }
 .timeline tr:nth-child(odd) svg.photo-cell{
-    color: var(--color3);
+    color: var(--color4);
 }
 .timeline tr:nth-child(even) svg.photo-cell{
-    color: var(--color3-light);
+    color: var(--color4-light);
 }
 
 /**-cell styling*/
@@ -83,35 +84,40 @@
 .timeline td.attendances-cell.err,
 .timeline td.average-cell.err{
     background-color: var(--color2-light);
-    color: black;
+    color: var(--color0-dark);
 }
 .lesson-cell input[type=text],
 .lesson-cell input[type=number],
-.exam-cell input[type=text]{
+.exam-cell input[type=number]{
     text-align: center;
     font-weight: normal;
     width: 70px;
     height: 30px;
     padding: 0px;
     box-sizing: border-box;
-    border: 1px solid var(--color3);
-    background-color: var(--color0);
+    border: 1px solid var(--color4);
+    background-color: var(--color0-light);
 }
 
 .timeline input[type=checkbox]{
     padding: 7px;
     border-width: 2px;
     border-style: groove;
-    border-color: var(--color3-dark);
-    top: 3px;
+    border-color: var(--color4-dark);
+    top: 5px;
 }
 .timeline input[type=checkbox]:checked{
-    border-color: var(--color4);
-    background-color: var(--color4);
+    border-color: var(--color3);
+    background-color: var(--color3);
 }
 .timeline input[type=checkbox]:checked::after{
     top: -3px;
     font-size: 13px;
+}
+.timeline input[type=checkbox][disabled]::after{
+    font-size: 12px;
+    top: -2px;
+    left: 2px;
 }
 .timeline input[disabled]{
     background-color: inherit;

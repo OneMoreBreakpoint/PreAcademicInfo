@@ -21,7 +21,6 @@ public class ProfessorRestController {
 
     @PutMapping("/enrollments")
     public ResponseEntity<?> putEnrollments(@RequestBody ArrayList<EnrollmentDTO> enrollments, Principal crtUser){
-        System.out.println(enrollments);
         service.updateEnrollments(crtUser.getName(), enrollments);
         return ResponseEntity.ok(null);
     }
