@@ -1,6 +1,7 @@
 package bussiness_layer.dto;
 
 import data_layer.domain.PartialExam;
+import data_layer.domain.Teaching;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import javax.validation.constraints.Max;
@@ -20,9 +21,9 @@ public class PartialExamDTO {
     @Min(1)
     private Byte grade;
 
-    private PartialExam.PartialExamType type;
-
     private boolean readonly;
+
+    private PartialExam.PartialExamType type;
 
     public PartialExamDTO(PartialExam entity){
         this.id = entity.getId();
@@ -40,19 +41,7 @@ public class PartialExamDTO {
         return entity;
     }
 
-    public boolean isReadable(TeachingDTO teaching, Short groupCode){
-        return teaching.hasCoordinatorRights()
-                || (this.getType() == PartialExam.PartialExamType.LABORATORY && teaching.hasLaboratoryRightsOverGroup(groupCode))
-                || (this.getType() == PartialExam.PartialExamType.SEMINAR && teaching.hasSeminarRightsOverGroup(groupCode));
-    }
 
-    public boolean isWritable(TeachingDTO teaching, Short groupCode){
-        return (this.getType() == PartialExam.PartialExamType.LABORATORY && teaching.hasLaboratoryRightsOverGroup(groupCode))
-                ||(this.getType() == PartialExam.PartialExamType.SEMINAR && teaching.hasSeminarRightsOverGroup(groupCode))
-                ||(this.getType() == PartialExam.PartialExamType.COURSE && teaching.hasCoordinatorRights());
-    }
 
-    public boolean isReadOnly(TeachingDTO teaching, Short groupCode){
-        return this.isReadable(teaching, groupCode) && !this.isWritable(teaching, groupCode);
-    }
+
 }

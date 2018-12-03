@@ -27,51 +27,6 @@ public class EnrollmentDTO implements Serializable {
         this.course = new CourseDTO(entity.getCourse());
     }
 
-    public double getSeminarAttendance(){
-        double nrOfAttendances = this.lessons.stream()
-                .filter(lesson -> lesson.getType() == Lesson.LessonType.SEMINAR)
-                .filter(LessonDTO::isAttended)
-                .count();
-        int nrOfSeminars = this.course.getNrOfSeminars();
-        return nrOfSeminars > 0 ? (nrOfAttendances/nrOfSeminars) * 100 : 100;
-    }
-
-    public double getLaboratoryAttendance(){
-        double nrOfAttendances = this.lessons.stream()
-                .filter(lesson -> lesson.getType() == Lesson.LessonType.LABORATORY)
-                .filter(LessonDTO::isAttended)
-                .count();
-        int nrOfLabs = this.course.getNrOfLaboratories();
-        return nrOfLabs > 0 ? (nrOfAttendances/nrOfLabs) * 100 : 100;
-    }
-
-    public double getAverageGrade(){
-        int sum=0, n=0;
-        for(LessonDTO lesson : this.lessons){
-            if(lesson.getGrade() != null){
-                sum += lesson.getGrade();
-                n++;
-            }
-        }
-        return n > 0 ? sum/n : 0.0;
-    }
-
-    public boolean hasMinimumAttendance(){
-        return this.getSeminarAttendance() >= 75 && this.getLaboratoryAttendance() >= 90;
-    }
-
-    public boolean hasMinimumGrade(){
-        return this.getAverageGrade() >= 5;
-    }
-
-    public int getTotalBonus(){
-        return this.lessons.stream()
-                .filter(lesson -> lesson.getNrOfBonusPoints() != null)
-                .map(lesson -> (int)lesson.getNrOfBonusPoints())
-                .reduce((x,y) -> x+y)
-                .orElse(0);
-    }
-
     public Enrollment toEntity(){
         Enrollment entity = new Enrollment();
         entity.setId(this.id);

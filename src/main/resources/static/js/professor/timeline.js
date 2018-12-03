@@ -2,9 +2,10 @@ let dataHasBeenChanged = false;
 let crtGroupCode;
 
 $(document).ready(function () {
+    crtGroupCode = $("#combo_groupCode").val();
+    updateAll();
     stickRightColumns();
     console.log(enrollments);
-    crtGroupCode = $("#combo_groupCode").val();
     assignHandlers();
 });
 
@@ -19,15 +20,17 @@ $(document).ready(function () {
         }
         for (let j = 0; j < lessonList.length; j++) {
             let lesson = lessonList[j];
-            if(lesson.readonly == false){ //strip readonly lessons
-                lessonMap[lesson.id] = lesson;
+            if(lesson.readonly == true){//strip readonly lessons
+                continue;
             }
+            lessonMap[lesson.id] = lesson;
         }
         for (let j = 0; j < examList.length; j++) {
             let exam = examList[j];
-            if(exam.readonly == false){ //strip readonly exams
-                examMap[exam.id] = exam;
+            if(exam.readonly == true){ //strip readonly exams
+                continue;
             }
+            examMap[exam.id] = exam;
         }
         enrollment.lessons = lessonMap;
         enrollment.partialExams = examMap;
@@ -56,20 +59,22 @@ function convertEnrollmentMapToEnrollmentList() {
 }
 
 function stickRightColumns() {
-    let column_average = $("th:nth-last-child(1), td:nth-last-child(1)");
-    let column_attendance = $("th:nth-last-child(2), td:nth-last-child(2)");
-    let column_bonus = $("th:nth-last-child(3), td:nth-last-child(3)");
+    let column_average = $("th.average-cell, td.average-cell");
+    let column_attendance = $("th.attendances-cell, td.attendances-cell");
+    let column_bonus = $("th.bonus-cell, td.bonus-cell");
+    //it is possible that average column should not be shown
+    let columnAverageWidth = ($(column_average).length > 0 ? $(column_average).outerWidth() : 0);
     $(column_average).css({
         "position": "sticky",
         "right": 0
     });
     $(column_attendance).css({
         "position": "sticky",
-        "right": `${$(column_average).outerWidth()}px`
+        "right": `${columnAverageWidth}px`
     });
     $(column_bonus).css({
         "position": "sticky",
-        "right": `${$(column_average).outerWidth() + $(column_attendance).outerWidth()}px`
+        "right": `${columnAverageWidth + $(column_attendance).outerWidth()}px`
     });
 }
 
@@ -209,9 +214,17 @@ function assignExamCellHandlers(enrlRow, examCell) {
     });
 }
 
+function updateAll(){
+    let enrlRows = $(".timeline tr.enrollment-row");
+    $(enrlRows).each((index, enrlRow) =>{
+       updateTotalBonus(enrlRow);
+       updateTotalAttendance(enrlRow);
+       updateAverageGrade(enrlRow);
+    });
+}
+
 function updateTotalBonus(enrlRow) {
     let enrlId = getNumericIdFromDomId(enrlRow.id);
-    let totalBonusCell = $(enrlRow).children("td.bonus-cell").first();
     let lessons = enrollments[enrlId].lessons;
     let totalBonusValue = 0;
     for (let id in lessons) {
@@ -220,12 +233,16 @@ function updateTotalBonus(enrlRow) {
         }
     }
     enrollments[enrlId].totalBonus = totalBonusValue;
-    $(totalBonusCell).text(totalBonusValue);
+    updateTotalBonusView(enrlRow, totalBonusValue);
+}
+
+function updateTotalBonusView(enrlRow, value){
+    let totalBonusCell = $(enrlRow).children("td.bonus-cell").first();
+    $(totalBonusCell).text(value);
 }
 
 function updateTotalAttendance(enrlRow) {
     let enrlId = getNumericIdFromDomId(enrlRow.id);
-    let totalAttendanceCell = $(enrlRow).children("td.attendances-cell").first();
     let lessons = enrollments[enrlId].lessons;
     let nrOfLabAttendances = 0, nrOfSemAttendances = 0;
     for (let id in lessons) {
@@ -243,22 +260,35 @@ function updateTotalAttendance(enrlRow) {
     let nrOfLaboratories = getNrOfLaboratories(), nrOfSeminars = getNrOfSeminars();
     let totalLabAttendance = (nrOfLaboratories > 0 ? (nrOfLabAttendances / nrOfLaboratories) * 100 : 100);
     let totalSemAttendance = (nrOfSeminars > 0 ? (nrOfSemAttendances / nrOfSeminars) * 100 : 100);
+    enrollments[enrlId].seminarAttendance = totalSemAttendance;
+    enrollments[enrlId].laboratoryAttendance = totalLabAttendance;
+    updateTotalAttendanceView(enrlRow, totalLabAttendance, totalSemAttendance);
+}
+
+function updateTotalAttendanceView(enrlRow, totalLabAttendance, totalSemAttendance) {
+    let totalAttendanceCell = $(enrlRow).children("td.attendances-cell").first();
     let precisionLab = (totalLabAttendance < 100 ? 2 : 0), precisionSem = (totalSemAttendance < 100 ? 2 : 0);
-    let totalAttendance = `${totalSemAttendance.toFixed(precisionSem)}% / ${totalLabAttendance.toFixed(precisionLab)}%`;
-    $(totalAttendanceCell).text(totalAttendance);
+    debugger;
+    let hasSeminarRights = teachingHasSeminarRightsOverGroup(teaching, crtGroupCode);
+    let hasLabRights = teachingHasLaboratoryRightsOverGroup(teaching, crtGroupCode);
+    let totalAttendanceViewText;
+    if(hasSeminarRights && !hasLabRights){
+        totalAttendanceViewText = `${totalSemAttendance.toFixed(precisionSem)}%`;
+    }else if(!hasSeminarRights && hasLabRights){
+        totalAttendanceViewText = `${totalLabAttendance.toFixed(precisionLab)}%`;
+    }else{
+        totalAttendanceViewText = `${totalSemAttendance.toFixed(precisionSem)}% / ${totalLabAttendance.toFixed(precisionLab)}%`;
+    }
+    $(totalAttendanceCell).text(totalAttendanceViewText);
     if (!hasMinimumAttendance(totalSemAttendance, totalLabAttendance)) {
         $(totalAttendanceCell).addClass('err');
     } else {
         $(totalAttendanceCell).removeClass('err');
     }
-    enrollments[enrlId].seminarAttendance = totalSemAttendance;
-    enrollments[enrlId].laboratoryAttendance = totalLabAttendance;
 }
 
 function updateAverageGrade(enrlRow) {
-    debugger;
     let enrlId = getNumericIdFromDomId(enrlRow.id);
-    let averageCell = $(enrlRow).children("td.average-cell").first();
     let n = 0, sum = 0;
     let lessons = enrollments[enrlId].lessons;
     for (let id in lessons) {
@@ -269,6 +299,11 @@ function updateAverageGrade(enrlRow) {
     }
     let average = (n > 0 ? sum / n : 0.0);
     enrollments[enrlId].averageGrade = average;
+    updateAverageGradeView(enrlRow, average);
+}
+
+function updateAverageGradeView(enrlRow, average) {
+    let averageCell = $(enrlRow).children("td.average-cell").first();
     $(averageCell).text(average.toFixed(2));
     if (!hasMinimumGrade(average)) {
         $(averageCell).addClass('err');
@@ -290,7 +325,15 @@ function getNrOfSeminars() {
 }
 
 function hasMinimumAttendance(seminarAttendance, laboratoryAttendance) {
-    return seminarAttendance >= 75 && laboratoryAttendance >= 90;
+    const  MIN_SEM_ATT = 75, MIN_LAB_ATT = 90;
+    let hasSeminarRights = teachingHasSeminarRightsOverGroup(teaching, crtGroupCode);
+    let hasLabRights = teachingHasLaboratoryRightsOverGroup(teaching, crtGroupCode);
+    if(hasSeminarRights && !hasLabRights){
+        return seminarAttendance >= MIN_SEM_ATT;
+    }else if(!hasSeminarRights && hasLabRights){
+        return laboratoryAttendance >= MIN_LAB_ATT;
+    }
+    return seminarAttendance >= MIN_SEM_ATT && laboratoryAttendance >= MIN_LAB_ATT;
 }
 
 function hasMinimumGrade(grade) {
@@ -315,4 +358,26 @@ function getValidNumber(actualValue, minValue, maxValue) {
         return minValue;
     }
     return actualValue;
+}
+
+function teachingHasSeminarRightsOverGroup(teaching, groupCode) {
+    for(let i = 0; i < teaching.seminarGroups.length; i++){
+        if(teaching.seminarGroups[i].code == groupCode){
+            return true;
+        }
+    }
+    return false;
+}
+
+function teachingHasLaboratoryRightsOverGroup(teaching, groupCode) {
+    for(let i = 0; i < teaching.laboratoryGroups.length; i++){
+        if(teaching.laboratoryGroups[i].code == groupCode){
+            return true;
+        }
+    }
+    return false;
+}
+
+function teachingHasCoordinatorRights(teaching) {
+    teaching.course.coordinator.username == teaching.professor.username;
 }

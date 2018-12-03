@@ -2,10 +2,8 @@ package data_layer.domain;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.SortNatural;
 
 import javax.persistence.*;
-import java.util.List;
 import java.util.Set;
 
 @Entity(name = "Teachings")
@@ -35,5 +33,7 @@ public class Teaching {
     @ManyToOne
     @JoinColumn(name = "course_id", nullable = false)
     private Course course;
+
+
 
 }

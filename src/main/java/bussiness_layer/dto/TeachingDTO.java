@@ -1,5 +1,6 @@
 package bussiness_layer.dto;
 
+import data_layer.domain.Group;
 import data_layer.domain.Teaching;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -29,15 +30,5 @@ public class TeachingDTO {
         this.course = new CourseDTO(entity.getCourse());
     }
 
-    public boolean hasSeminarRightsOverGroup(Short groupCode){
-        return this.getSeminarGroups().contains(new GroupDTO(groupCode));
-    }
 
-    public boolean hasLaboratoryRightsOverGroup(Short groupCode){
-        return this.getLaboratoryGroups().contains(new GroupDTO(groupCode));
-    }
-
-    public boolean hasCoordinatorRights(){
-        return this.course.getCoordinator().equals(professor);
-    }
 }

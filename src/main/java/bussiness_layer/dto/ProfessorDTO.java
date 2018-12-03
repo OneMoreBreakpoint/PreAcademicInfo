@@ -8,8 +8,7 @@ import lombok.Setter;
 
 import javax.validation.constraints.Size;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 public class ProfessorDTO extends UserDTO{
     @Size(max = 50)
@@ -22,19 +21,6 @@ public class ProfessorDTO extends UserDTO{
         this.pathToProfilePhoto = entity.getPathToProfilePhoto();
     }
 
-    @Override
-    public int hashCode() {
-        return super.getUsername().hashCode();
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if(!(o instanceof ProfessorDTO)){
-            return false;
-        }
-        ProfessorDTO that = (ProfessorDTO)o;
-        return this.getUsername().equals(that.getUsername());
-    }
 
     public Professor toEntity(){
         Professor entity = new Professor();

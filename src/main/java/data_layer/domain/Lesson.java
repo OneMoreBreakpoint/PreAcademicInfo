@@ -32,7 +32,10 @@ public class Lesson {
     @Enumerated(EnumType.ORDINAL)
     private LessonType type;
 
-    private Byte nrOfBonusPoints;
+    private Byte bonus;
+
+    @ManyToOne
+    private Enrollment enrollment;
 
     public enum LessonType {
         SEMINAR,

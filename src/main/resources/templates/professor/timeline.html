@@ -11,6 +11,7 @@
     <link rel="stylesheet" th:href="@{/css/professor/timeline.css}"/>
     <script th:inline="javascript">
         let enrollments = /*[[${enrollments}]]*/ '';
+        let teaching = /*[[${teaching}]]*/ '';
         let msgs = {};
         msgs.leavePage = /*[[#{confirm.leavePage}]]*/ '';
     </script>
@@ -48,7 +49,7 @@
 </div>
 <div class="timeline" id="timeline">
     <table>
-        <tr th:replace="/fragments/timeline :: t-head-row (${enrollments[0]})"></tr>
+        <tr th:replace="/fragments/timeline :: t-head-row (${enrollments[0]}, ${teaching}, ${crtGroupCode})"></tr>
         <tbody>
         <th:block th:each="enrl : ${enrollments}">
             <tr th:replace="/fragments/timeline :: t-data-row (${enrl}, ${teaching}, ${crtGroupCode})"></tr>

@@ -1,5 +1,6 @@
 package data_layer.domain;
 
+import bussiness_layer.dto.ProfessorDTO;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -22,4 +23,18 @@ public class Professor extends User {
     @OneToMany(mappedBy = "professor")
     private List<Teaching> teachingList;
 
+
+    @Override
+    public int hashCode() {
+        return super.getUsername().hashCode();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if(!(o instanceof ProfessorDTO)){
+            return false;
+        }
+        ProfessorDTO that = (ProfessorDTO)o;
+        return this.getUsername().equals(that.getUsername());
+    }
 }
