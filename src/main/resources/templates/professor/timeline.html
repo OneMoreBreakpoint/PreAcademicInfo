@@ -49,10 +49,10 @@
 </div>
 <div class="timeline" id="timeline">
     <table>
-        <tr th:replace="/fragments/timeline :: t-head-row (${enrollments[0]}, ${teaching}, ${crtGroupCode})"></tr>
+        <tr th:replace="/fragments/timeline :: t-head-row (${enrollments[0]}, ${teaching}, ${crtGroupCode}, ${auth})"></tr>
         <tbody>
         <th:block th:each="enrl : ${enrollments}">
-            <tr th:replace="/fragments/timeline :: t-data-row (${enrl}, ${teaching}, ${crtGroupCode})"></tr>
+            <tr th:replace="/fragments/timeline :: t-data-row (${enrl}, ${teaching}, ${crtGroupCode}, ${auth})"></tr>
         </th:block>
         </tbody>
     </table>

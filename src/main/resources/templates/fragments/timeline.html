@@ -41,12 +41,11 @@
 </td>
 
 
-<td th:fragment="average-cell (enrollment, teaching, crtGroup   )" class="average-cell"
-    th:if="${teaching.hasLaboratoryRightsOverGroup(crtGroup) || teaching.hasCoordinatorRights()}">
+<td th:fragment="average-cell (enrollment, teaching, crtGroup   )" class="average-cell">
 </td>
 
 
-<thead th:fragment="t-head-row (enrollmentTemplate, teaching, crtGroup)">
+<thead th:fragment="t-head-row (enrollmentTemplate, teaching, crtGroup, auth)">
 <tr>
     <th th:text="#{timeline.head.profilePhotoThumb}" class="photo-cell"></th>
     <th th:text="#{timeline.head.fullName}" class="name-cell"></th>
@@ -75,25 +74,27 @@
     </th:block>
     <th class="bonus-cell" th:text="#{timeline.head.bonus}"></th>
     <th class="attendances-cell" th:text="#{timeline.head.totalAttendances}"></th>
-    <th class="average-cell" th:if="${teaching.hasLaboratoryRightsOverGroup(crtGroup) || teaching.hasCoordinatorRights()}"
-        th:text="#{timeline.head.averageGrade}"></th>
+    <th class="average-cell" th:text="#{timeline.head.averageGrade}"
+        th:if="${auth.teachingHasLabRightsOverGroup(teaching, crtGroup) || auth.teachingHasCoordinatorRights(teaching)}"></th>
 </tr>
 </thead>
 
 
-<tr th:fragment="t-data-row (enrollment, teaching, crtGroup)" th:object="${enrollment}"
+<tr th:fragment="t-data-row (enrollment, teaching, crtGroup, auth)" th:object="${enrollment}"
      th:id="|enrollmentRow-${enrollment.id}|" class="enrollment-row">
     <td th:replace="this :: photo-cell (*{student.pathToProfilePhoto})"></td>
     <td th:replace="this :: name-cell (*{student})"></td>
-    <th:block th:each="lesson : *{lessons}" th:with="writable=${lesson.isWritable(teaching, crtGroup)}">
+    <th:block th:each="lesson : *{lessons}" th:with="writable=${auth.teachingCanWriteLesson(teaching, crtGroup, lesson)}">
         <td th:replace="this :: lesson-cell(${lesson}, ${writable})"></td>
     </th:block>
-    <th:block th:each="exam : *{partialExams}" th:with="writable=${exam.isWritable(teaching, crtGroup)}">
+    <th:block th:each="exam : *{partialExams}" th:with="writable=${auth.teachingCanWriteExam(teaching, crtGroup, exam)}">
         <td th:replace="this :: exam-cell(${exam}, ${writable})"></td>
     </th:block>
     <td th:replace="this :: bonus-cell (${enrollment})"></td>
     <td th:replace="this :: attendances-cell (${enrollment})"></td>
-    <td th:replace="this :: average-cell (${enrollment}, ${teaching}, ${crtGroup})"></td>
+    <th:block th:if="${auth.teachingHasLabRightsOverGroup(teaching, crtGroup) || auth.teachingHasCoordinatorRights(teaching)}">
+        <td th:replace="this :: average-cell (${enrollment}, ${teaching}, ${crtGroup})"></td>
+    </th:block>
 </tr>
 
 </body>
