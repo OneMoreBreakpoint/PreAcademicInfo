@@ -28,7 +28,7 @@ public class LessonDTO {
     @NotNull
     private Lesson.LessonType type;
 
-    private Byte nrOfBonusPoints;
+    private Byte bonus;
 
     private boolean readonly;
 
@@ -37,7 +37,7 @@ public class LessonDTO {
         this.nr = entity.getNr();
         this.grade = entity.getGrade();
         this.type = entity.getType();
-        this.nrOfBonusPoints = entity.getNrOfBonusPoints();
+        this.bonus = entity.getBonus();
         this.attended = entity.isAttended();
     }
 
@@ -47,23 +47,14 @@ public class LessonDTO {
         entity.setNr(this.nr);
         entity.setGrade(this.grade);
         entity.setType(this.type);
-        entity.setNrOfBonusPoints(this.nrOfBonusPoints);
+        entity.setBonus(this.bonus);
         entity.setAttended(this.attended);
         return entity;
     }
 
-    public boolean isReadable(TeachingDTO teaching, Short groupCode){
-        return teaching.hasCoordinatorRights() ||
-                (this.getType() == Lesson.LessonType.LABORATORY && teaching.hasLaboratoryRightsOverGroup(groupCode))
-                || (this.getType() == Lesson.LessonType.SEMINAR && teaching.hasSeminarRightsOverGroup(groupCode));
-    }
 
-    public boolean isWritable(TeachingDTO teaching, Short groupCode){
-        return (this.getType() == Lesson.LessonType.LABORATORY && teaching.hasLaboratoryRightsOverGroup(groupCode))
-                || (this.getType() == Lesson.LessonType.SEMINAR && teaching.hasSeminarRightsOverGroup(groupCode));
-    }
 
-    public boolean isReadOnly(TeachingDTO teaching, Short groupCode){
-        return this.isReadable(teaching, groupCode) && !this.isWritable(teaching, groupCode);
-    }
+
+
+
 }

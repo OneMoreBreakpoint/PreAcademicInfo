@@ -19,6 +19,8 @@ public class StudentDTO extends UserDTO {
 
     private boolean notifiedByEmail;
 
+    private GroupDTO group;
+
 
     public StudentDTO(Student entity){
         super(entity);
@@ -26,17 +28,19 @@ public class StudentDTO extends UserDTO {
         this.fathersInitials = entity.getFathersInitials();
         this.pathToProfilePhoto = entity.getPathToProfilePhoto();
         this.notifiedByEmail = entity.isNotifiedByEmail();
+        this.group = new GroupDTO(entity.getGroup());
     }
 
     public Student toEntity(){
-        Student student = new Student();
-        student.setUsername(this.getUsername());
-        student.setFirstName(this.getFirstName());
-        student.setLastName(this.getLastName());
-        student.setEmail(this.getEmail());
-        student.setFathersInitials(this.fathersInitials);
-        student.setPathToProfilePhoto(this.pathToProfilePhoto);
-        student.setNotifiedByEmail(this.notifiedByEmail);
-        return student;
+        Student entity = new Student();
+        entity.setUsername(this.getUsername());
+        entity.setFirstName(this.getFirstName());
+        entity.setLastName(this.getLastName());
+        entity.setEmail(this.getEmail());
+        entity.setFathersInitials(this.fathersInitials);
+        entity.setPathToProfilePhoto(this.pathToProfilePhoto);
+        entity.setNotifiedByEmail(this.notifiedByEmail);
+        entity.setGroup(this.group.toEntity());
+        return entity;
     }
 }

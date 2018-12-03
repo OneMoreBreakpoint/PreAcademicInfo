@@ -34,6 +34,9 @@ public class PartialExam {
     @NotNull
     private PartialExamType type;
 
+    @ManyToOne
+    private Enrollment enrollment;
+
     public enum PartialExamType {
         SEMINAR,
         LABORATORY,

@@ -21,22 +21,4 @@ public class Group {
 
     @OneToMany(mappedBy = "group")
     private List<Student> students;
-
-    public Group(Short code){
-        this.code = code;
-    }
-
-    @Override
-    public int hashCode() {
-        return code.hashCode();
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if(!(obj instanceof Group)){
-            return false;
-        }
-        Group that = (Group)obj;
-        return this.code.equals(that.code);
-    }
 }

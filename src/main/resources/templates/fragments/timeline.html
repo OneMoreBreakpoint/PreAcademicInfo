@@ -18,42 +18,35 @@
 </td>
 
 
-<td th:fragment="lesson-cell (lesson, teaching, crtGroup)" class="lesson-cell" th:id="|lessonCell-${lesson.id}|"
-    th:with="hasEditRights=${lesson.isWritable(teaching, crtGroup)}">
-    <input type="checkbox" th:checked="${lesson.attended}" th:disabled="${!hasEditRights}" class="attendance-field">
+<td th:fragment="lesson-cell (lesson, writable)" class="lesson-cell" th:id="|lessonCell-${lesson.id}|">
+    <input type="checkbox" th:checked="${lesson.attended}" th:disabled="${!writable}" class="attendance-field">
     <input type="number" th:value="${lesson.grade}" th:if="${lesson.type.toString()=='LABORATORY'}" min="1" max="10"
-           th:placeholder="#{timeline.head.grade}" th:disabled="${!hasEditRights}" class="grade-field">
-    <input type="number" th:value="${lesson.nrOfBonusPoints}" th:placeholder="#{timeline.head.bonus}" min="-10" max="10"
-           th:disabled="${!hasEditRights}" class="bonus-field">
+           th:placeholder="#{timeline.head.grade}" th:disabled="${!writable}" class="grade-field">
+    <input type="number" th:value="${lesson.bonus}" th:placeholder="#{timeline.head.bonus}" min="-10" max="10"
+           th:disabled="${!writable}" class="bonus-field">
 </td>
 
 
-<td th:fragment="exam-cell (exam, teaching, crtGroup)" class="exam-cell" th:id="|examCell-${exam.id}|"
-    th:with="hasEditRights=${exam.isWritable(teaching, crtGroup)}">
+<td th:fragment="exam-cell (exam, writable)" class="exam-cell" th:id="|examCell-${exam.id}|">
     <input type="number" th:value="${exam.grade}" th:placeholder="#{timeline.head.grade}" min="1" max="10"
-           th:disabled="${!hasEditRights}" class="grade-field">
+           th:disabled="${!writable}" class="grade-field">
 </td>
 
 
-<td th:fragment="bonus-cell (enrollment)" class="bonus-cell" th:text="${enrollment.getTotalBonus()}">
+<td th:fragment="bonus-cell (enrollment)" class="bonus-cell">
 </td>
 
 
-<td th:fragment="attendances-cell (enrollment)" class="attendances-cell"
-    th:with="semAtt=${enrollment.getSeminarAttendance()}, labAtt=${enrollment.getLaboratoryAttendance()}"
-    th:text="|${#numbers.formatDecimal(semAtt,1,2)}% / ${#numbers.formatDecimal(labAtt,1,2)}%|"
-    th:classappend="${enrollment.hasMinimumAttendance()} ? '' : 'err'">
+<td th:fragment="attendances-cell (enrollment)" class="attendances-cell">
 </td>
 
 
-<td th:fragment="average-cell (enrollment)" class="average-cell"
-    th:with="avg=${enrollment.getAverageGrade()}"
-    th:text="${#numbers.formatDecimal(avg,1,2)}"
-    th:classappend="${enrollment.hasMinimumGrade()} ? '' : 'err'">
+<td th:fragment="average-cell (enrollment, teaching, crtGroup   )" class="average-cell"
+    th:if="${teaching.hasLaboratoryRightsOverGroup(crtGroup) || teaching.hasCoordinatorRights()}">
 </td>
 
 
-<thead th:fragment="t-head-row (enrollmentTemplate)">
+<thead th:fragment="t-head-row (enrollmentTemplate, teaching, crtGroup)">
 <tr>
     <th th:text="#{timeline.head.profilePhotoThumb}" class="photo-cell"></th>
     <th th:text="#{timeline.head.fullName}" class="name-cell"></th>
@@ -82,7 +75,8 @@
     </th:block>
     <th class="bonus-cell" th:text="#{timeline.head.bonus}"></th>
     <th class="attendances-cell" th:text="#{timeline.head.totalAttendances}"></th>
-    <th class="average-cell" th:text="#{timeline.head.averageGrade}"></th>
+    <th class="average-cell" th:if="${teaching.hasLaboratoryRightsOverGroup(crtGroup) || teaching.hasCoordinatorRights()}"
+        th:text="#{timeline.head.averageGrade}"></th>
 </tr>
 </thead>
 
@@ -91,15 +85,15 @@
      th:id="|enrollmentRow-${enrollment.id}|" class="enrollment-row">
     <td th:replace="this :: photo-cell (*{student.pathToProfilePhoto})"></td>
     <td th:replace="this :: name-cell (*{student})"></td>
-    <th:block th:each="lesson : *{lessons}">
-        <td th:replace="this :: lesson-cell(${lesson}, ${teaching}, ${crtGroup})"></td>
+    <th:block th:each="lesson : *{lessons}" th:with="writable=${lesson.isWritable(teaching, crtGroup)}">
+        <td th:replace="this :: lesson-cell(${lesson}, ${writable})"></td>
     </th:block>
-    <th:block th:each="partial : *{partialExams}">
-        <td th:replace="this :: exam-cell(${partial}, ${teaching}, ${crtGroup})"></td>
+    <th:block th:each="exam : *{partialExams}" th:with="writable=${exam.isWritable(teaching, crtGroup)}">
+        <td th:replace="this :: exam-cell(${exam}, ${writable})"></td>
     </th:block>
     <td th:replace="this :: bonus-cell (${enrollment})"></td>
     <td th:replace="this :: attendances-cell (${enrollment})"></td>
-    <td th:replace="this :: average-cell (${enrollment})"></td>
+    <td th:replace="this :: average-cell (${enrollment}, ${teaching}, ${crtGroup})"></td>
 </tr>
 
 </body>

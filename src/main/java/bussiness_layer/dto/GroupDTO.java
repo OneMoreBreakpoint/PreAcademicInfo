@@ -2,13 +2,10 @@ package bussiness_layer.dto;
 
 import data_layer.domain.Group;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 public class GroupDTO implements Comparable<GroupDTO>{
     private Short id;
@@ -23,10 +20,18 @@ public class GroupDTO implements Comparable<GroupDTO>{
         this.code = code;
     }
 
+    public Group toEntity(){
+        Group entity = new Group();
+        entity.setId(this.id);
+        entity.setCode(this.code);
+        return entity;
+    }
+
     @Override
     public int compareTo(GroupDTO o) {
         return this.code - o.code;
     }
+
 
     @Override
     public int hashCode() {
@@ -41,4 +46,5 @@ public class GroupDTO implements Comparable<GroupDTO>{
         GroupDTO that = (GroupDTO)obj;
         return this.code.equals(that.code);
     }
+
 }
