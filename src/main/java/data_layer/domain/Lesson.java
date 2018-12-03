@@ -34,8 +34,6 @@ public class Lesson {
 
     private Byte bonus;
 
-    @ManyToOne
-    private Enrollment enrollment;
 
     public enum LessonType {
         SEMINAR,

@@ -2,9 +2,7 @@ package bussiness_layer.dto;
 
 import data_layer.domain.Professor;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.validation.constraints.Size;
 

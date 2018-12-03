@@ -1,6 +1,5 @@
 package bussiness_layer.dto;
 
-import data_layer.domain.Group;
 import data_layer.domain.Teaching;
 import lombok.Data;
 import lombok.NoArgsConstructor;

@@ -689,9 +689,7 @@ public class DBInserter {
         Teaching t_flct = new Teaching();
         t_flct.setLaboratoryGroups(new HashSet<>());
         t_flct.getLaboratoryGroups().add(gr933);
-        t_flct.getLaboratoryGroups().add(gr0);
         t_flct.setSeminarGroups(new HashSet<>());
-        t_flct.getSeminarGroups().add(gr0);
         t_flct.setCourse(flct);
         t_flct.setProfessor(guran);
 

@@ -1,7 +1,6 @@
 package bussiness_layer.dto;
 
 import data_layer.domain.PartialExam;
-import data_layer.domain.Teaching;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import javax.validation.constraints.Max;
