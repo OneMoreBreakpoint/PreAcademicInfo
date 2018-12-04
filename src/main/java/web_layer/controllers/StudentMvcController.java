@@ -10,7 +10,7 @@ import org.springframework.web.servlet.ModelAndView;
 public class StudentMvcController {
 
     @GetMapping("/timeline")
-    public ModelAndView getTimelinePage(){
+    public ModelAndView getTimelinePage() {
         return new ModelAndView("/student/timeline");
     }
 }

@@ -1,13 +1,14 @@
 package data_layer.domain;
 
-import lombok.Getter;
-import lombok.Setter;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.Size;
-import java.util.List;
+
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity(name = "Professors")
 @Getter

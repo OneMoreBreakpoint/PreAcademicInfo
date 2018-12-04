@@ -1,4 +1,4 @@
 package bussiness_layer.dto;
 
-public class ProfessorDTO extends UserDTO{
+public class ProfessorDTO extends UserDTO {
 }

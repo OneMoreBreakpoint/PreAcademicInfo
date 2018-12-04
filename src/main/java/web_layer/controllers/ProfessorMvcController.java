@@ -10,12 +10,12 @@ import org.springframework.web.servlet.ModelAndView;
 public class ProfessorMvcController {
 
     @GetMapping("/dashboard")
-    public ModelAndView getDashboardPage(){
+    public ModelAndView getDashboardPage() {
         return new ModelAndView("/professor/dashboard");
     }
 
     @GetMapping("/timeline")
-    public ModelAndView getTimelinePage(){
+    public ModelAndView getTimelinePage() {
         return new ModelAndView("/professor/timeline");
     }
 }

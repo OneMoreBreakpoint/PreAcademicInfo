@@ -1,9 +1,8 @@
 package bussiness_layer.services;
 
-import data_layer.domain.Professor;
-import data_layer.domain.Student;
-import data_layer.domain.User;
-import data_layer.repositories.IUserRepository;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -17,8 +16,10 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import data_layer.domain.Professor;
+import data_layer.domain.Student;
+import data_layer.domain.User;
+import data_layer.repositories.IUserRepository;
 
 @Service
 public class AuthenticationService implements AuthenticationManager, UserDetailsService {
@@ -31,7 +32,7 @@ public class AuthenticationService implements AuthenticationManager, UserDetails
         String username = authentication.getPrincipal().toString();
         String password = authentication.getCredentials().toString();
         User user = userRepo.findOneByUsername(username);
-        if(user == null || !BCrypt.checkpw(password, user.getEncryptedPassword())){
+        if (user == null || !BCrypt.checkpw(password, user.getEncryptedPassword())) {
             throw new BadCredentialsException("Invalid username or password");
         }
         List<SimpleGrantedAuthority> grantedAuthorities = new ArrayList<>();
@@ -45,7 +46,7 @@ public class AuthenticationService implements AuthenticationManager, UserDetails
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepo.findOneByUsername(username);
-        if(user == null){
+        if (user == null) {
             throw new UsernameNotFoundException("Invalid username");
         }
         org.springframework.security.core.userdetails.User.UserBuilder builder;
@@ -55,10 +56,10 @@ public class AuthenticationService implements AuthenticationManager, UserDetails
         return builder.build();
     }
 
-    private List<String> getUserRoles(User user){
-        if(user instanceof Professor){
-            user = (Professor)user;
-        }else if(user instanceof Student){
+    private List<String> getUserRoles(User user) {
+        if (user instanceof Professor) {
+            user = (Professor) user;
+        } else if (user instanceof Student) {
             user = (Student) user;
         }
         List<String> userRoles = new ArrayList<>();
