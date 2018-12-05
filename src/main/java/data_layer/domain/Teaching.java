@@ -13,12 +13,18 @@ import javax.persistence.ManyToOne;
 
 import org.hibernate.annotations.SortNatural;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity(name = "Teachings")
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Teaching {
 
     @Id

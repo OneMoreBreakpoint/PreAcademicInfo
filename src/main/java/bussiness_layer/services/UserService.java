@@ -1,5 +1,7 @@
 package bussiness_layer.services;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,7 @@ public class UserService implements IUserService {
     private IUserRepository userRepo;
 
     @Override
+    @Transactional
     public UserDTO getUserByUsername(String username) {
         User user = userRepo.findOneByUsername(username);
         if (user == null) {
