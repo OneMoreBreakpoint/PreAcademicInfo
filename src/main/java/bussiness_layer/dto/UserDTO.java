@@ -4,14 +4,20 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import static utils.Constants.UBB_EMAIL_FORMAT;
 
-@Data
+@Getter
+@Setter
+@Builder
 @NoArgsConstructor
-public abstract class UserDTO {
+@AllArgsConstructor
+public class UserDTO {
 
     @Size(min = 4, max = 16)
     @NotNull

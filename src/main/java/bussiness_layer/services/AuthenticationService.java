@@ -2,6 +2,7 @@ package bussiness_layer.services;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,10 +32,16 @@ public class AuthenticationService implements AuthenticationManager, UserDetails
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         String username = authentication.getPrincipal().toString();
         String password = authentication.getCredentials().toString();
-        User user = userRepo.findOneByUsername(username);
-        if (user == null || !BCrypt.checkpw(password, user.getEncryptedPassword())) {
+        Optional<User> optionalUser = userRepo.findOneByUsername(username);
+        if (!optionalUser.isPresent()) {
+            throw new BadCredentialsException("Invalid username");
+        }
+
+        User user = optionalUser.get();
+        if (!BCrypt.checkpw(password, user.getEncryptedPassword())) {
             throw new BadCredentialsException("Invalid username or password");
         }
+
         List<SimpleGrantedAuthority> grantedAuthorities = new ArrayList<>();
         List<String> userRoles = this.getUserRoles(user);
         userRoles.forEach(userRole -> {
@@ -45,10 +52,11 @@ public class AuthenticationService implements AuthenticationManager, UserDetails
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepo.findOneByUsername(username);
-        if (user == null) {
+        Optional<User> optionalUser = userRepo.findOneByUsername(username);
+        if (!optionalUser.isPresent()) {
             throw new UsernameNotFoundException("Invalid username");
         }
+        User user = optionalUser.get();
         org.springframework.security.core.userdetails.User.UserBuilder builder;
         builder = org.springframework.security.core.userdetails.User.withUsername(user.getUsername());
         builder.password(user.getEncryptedPassword());

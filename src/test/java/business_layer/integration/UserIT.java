@@ -33,7 +33,7 @@ public class UserIT extends BaseIntegrationTest {
         UserDTO user = userService.getUserByUsername("USERNAME2");
 
         //Then
-        assertEquals(user.getUsername(), "USERNAME4");
+        assertEquals(user.getUsername(), "USERNAME2");
     }
 
 }
