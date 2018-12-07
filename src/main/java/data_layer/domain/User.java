@@ -1,16 +1,12 @@
 package data_layer.domain;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import static utils.Constants.UBB_EMAIL_FORMAT;
-
-@Getter
-@Setter
+@Data
 @Entity(name = "Users")
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = "username"))
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)

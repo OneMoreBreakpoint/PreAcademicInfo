@@ -9,7 +9,7 @@ import java.util.Set;
 
 @Repository
 public interface IGroupRepository extends JpaRepository<Group, Short> {
-    Group findByCode(Short code);
+    Group findByCode(String code);
 
     @Query("SELECT DISTINCT enrl.student.group FROM Enrollments enrl WHERE enrl.course.code = (?1)")
     Set<Group> findByCourse(String courseCode);

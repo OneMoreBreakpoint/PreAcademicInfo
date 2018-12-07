@@ -81,18 +81,21 @@
 
 
 <tr th:fragment="t-data-row (enrollment, teaching, crtGroup, auth)" th:object="${enrollment}"
-     th:id="|enrollmentRow-${enrollment.id}|" class="enrollment-row">
+    th:id="|enrollmentRow-${enrollment.id}|" class="enrollment-row">
     <td th:replace="this :: photo-cell (*{student.pathToProfilePhoto})"></td>
     <td th:replace="this :: name-cell (*{student})"></td>
-    <th:block th:each="lesson : *{lessons}" th:with="writable=${auth.teachingCanWriteLesson(teaching, crtGroup, lesson)}">
+    <th:block th:each="lesson : *{lessons}"
+              th:with="writable=${auth.teachingCanWriteLesson(teaching, crtGroup, lesson)}">
         <td th:replace="this :: lesson-cell(${lesson}, ${writable})"></td>
     </th:block>
-    <th:block th:each="exam : *{partialExams}" th:with="writable=${auth.teachingCanWriteExam(teaching, crtGroup, exam)}">
+    <th:block th:each="exam : *{partialExams}"
+              th:with="writable=${auth.teachingCanWriteExam(teaching, crtGroup, exam)}">
         <td th:replace="this :: exam-cell(${exam}, ${writable})"></td>
     </th:block>
     <td th:replace="this :: bonus-cell (${enrollment})"></td>
     <td th:replace="this :: attendances-cell (${enrollment})"></td>
-    <th:block th:if="${auth.teachingHasLabRightsOverGroup(teaching, crtGroup) || auth.teachingHasCoordinatorRights(teaching)}">
+    <th:block
+            th:if="${auth.teachingHasLabRightsOverGroup(teaching, crtGroup) || auth.teachingHasCoordinatorRights(teaching)}">
         <td th:replace="this :: average-cell (${enrollment}, ${teaching}, ${crtGroup})"></td>
     </th:block>
 </tr>

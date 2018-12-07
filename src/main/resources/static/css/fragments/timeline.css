@@ -1,4 +1,4 @@
-.timeline{
+.timeline {
     overflow-x: auto;
     white-space: nowrap;
     min-height: 100px;
@@ -6,42 +6,51 @@
     position: relative;
     font-size: 14px;
 }
-.timeline thead{
+
+.timeline thead {
     font-size: 14px;
     white-space: normal;
 }
-.timeline tbody{
+
+.timeline tbody {
     font-size: 12px;
 }
-.timeline th, .timeline td{
+
+.timeline th, .timeline td {
     padding: 10px;
     text-align: center;
 }
-.timeline th{
+
+.timeline th {
     background-color: var(--color1);
     color: var(--color0-light);
 }
-.timeline tr:nth-child(odd) td{
+
+.timeline tr:nth-child(odd) td {
     background-color: var(--color4-light);
 }
-.timeline tr:nth-child(even) td{
+
+.timeline tr:nth-child(even) td {
     background-color: var(--color4);
 }
 
 /*sticky left side*/
-.timeline th.name-cell, .timeline td.name-cell{
+.timeline th.name-cell, .timeline td.name-cell {
     position: sticky;
     left: 0px;
     box-shadow: 1px 0px 7px var(--color0-dark);
 }
-.timeline td.name-cell{
+
+.timeline td.name-cell {
     z-index: 1;
 }
-.timeline th.name-cell{
+
+.timeline th.name-cell {
     z-index: 3;
 }
+
 .timeline th:nth-child(-n+1),
-.timeline td:nth-child(-n+1){
+.timeline td:nth-child(-n+1) {
     box-shadow: 0px 1px 7px var(--color0-dark);
 }
 
@@ -50,13 +59,14 @@
 .timeline td.bonus-cell {
     box-shadow: -1px 0px 7px var(--color0-dark);
 }
+
 .timeline th:nth-last-child(-n+2),
-.timeline td:nth-last-child(-n+2){
+.timeline td:nth-last-child(-n+2) {
     box-shadow: 0px -1px 7px var(--color0-dark);
 }
 
 /*sticky head*/
-.timeline th{
+.timeline th {
     position: sticky;
     top: 0;
     z-index: 2;
@@ -65,30 +75,34 @@
 
 /*photo-cell styling*/
 .timeline svg.photo-cell,
-.timeline img.photo-cell{
+.timeline img.photo-cell {
     border-radius: 50px;
     height: auto;
     width: 80%;
 }
-.timeline tr:nth-child(odd) svg.photo-cell{
+
+.timeline tr:nth-child(odd) svg.photo-cell {
     color: var(--color4);
 }
-.timeline tr:nth-child(even) svg.photo-cell{
+
+.timeline tr:nth-child(even) svg.photo-cell {
     color: var(--color4-light);
 }
 
 /**-cell styling*/
-.timeline td{
+.timeline td {
     font-weight: normal;
 }
+
 .timeline td.attendances-cell.err,
-.timeline td.average-cell.err{
+.timeline td.average-cell.err {
     background-color: var(--color2-light);
     color: var(--color0-dark);
 }
+
 .lesson-cell input[type=text],
 .lesson-cell input[type=number],
-.exam-cell input[type=number]{
+.exam-cell input[type=number] {
     text-align: center;
     font-weight: normal;
     width: 70px;
@@ -99,27 +113,15 @@
     background-color: var(--color0-light);
 }
 
-.timeline input[type=checkbox]{
-    padding: 7px;
-    border-width: 2px;
-    border-style: groove;
-    border-color: var(--color4-dark);
-    top: 5px;
+.timeline input[type=checkbox] {
+    -webkit-appearance: checkbox;
 }
-.timeline input[type=checkbox]:checked{
-    border-color: var(--color3);
-    background-color: var(--color3);
+
+.timeline input[type=checkbox]:checked::after {
+    content: '';
 }
-.timeline input[type=checkbox]:checked::after{
-    top: -3px;
-    font-size: 13px;
-}
-.timeline input[type=checkbox][disabled]::after{
-    font-size: 12px;
-    top: -2px;
-    left: 2px;
-}
-.timeline input[disabled]{
+
+.timeline input[disabled] {
     background-color: inherit;
     border-style: none
 }

@@ -1,4 +1,4 @@
-.modal-box{
+.modal-box {
     position: fixed;
     z-index: 1000;
     top: 0;
@@ -11,7 +11,7 @@
     background-color: rgba(0, 0, 0, 0.5);
 }
 
-.modal-window{
+.modal-window {
     position: relative;
     background-color: var(--color0-light);
     min-width: 150px;
@@ -23,18 +23,18 @@
     padding: 20px;
 }
 
-.modal-window > *{
+.modal-window > * {
     padding: 10px;
     display: flex;
     justify-content: center;
 }
 
-.modal-window > .modal-close{
+.modal-window > .modal-close {
     position: absolute;
     right: 10px;
     top: 10px;
 }
 
-.response-modal input[type=button].modal-close{
+.response-modal input[type=button].modal-close {
     min-width: 120px;
 }

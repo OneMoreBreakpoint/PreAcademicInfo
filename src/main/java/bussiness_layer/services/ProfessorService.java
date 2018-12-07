@@ -1,8 +1,14 @@
 package bussiness_layer.services;
 
 import bussiness_layer.dto.*;
+import bussiness_layer.mappers.EnrollmentDtoMapper;
+import bussiness_layer.mappers.GroupDtoMapper;
+import bussiness_layer.mappers.TeachingDtoMapper;
 import bussiness_layer.utils.Authorizer;
-import data_layer.domain.*;
+import data_layer.domain.Enrollment;
+import data_layer.domain.Lesson;
+import data_layer.domain.PartialExam;
+import data_layer.domain.Teaching;
 import data_layer.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,7 +45,7 @@ public class ProfessorService implements IProfessorService {
 
 
     @Override
-    public List<EnrollmentDTO> getEnrollmentsForProfessorByCourseAndGroup(String profUsername, String courseCode, Short groupCode) {
+    public List<EnrollmentDto> getEnrollmentsForProfessorByCourseAndGroup(String profUsername, String courseCode, String groupCode) {
         if (groupRepository.findByCode(groupCode) == null || courseRepository.findByCode(courseCode) == null) {
             throw new ResourceNotFoundException();
         }
@@ -47,7 +53,7 @@ public class ProfessorService implements IProfessorService {
         if (teaching == null) {
             throw new AccessForbiddenException();
         }
-        TeachingDTO teachingDTO = new TeachingDTO(teaching);
+        TeachingDto teachingDTO = TeachingDtoMapper.toDto(teaching);
         if (!Authorizer.teachingHasSemRightsOverGroup(teachingDTO, groupCode)
                 && !Authorizer.teachingHasLabRightsOverGroup(teachingDTO, groupCode)
                 && !Authorizer.teachingHasCoordinatorRights(teachingDTO)) {
@@ -57,18 +63,18 @@ public class ProfessorService implements IProfessorService {
         if (enrollments.size() == 0) {
             throw new ResourceNotFoundException();
         }
-        List<EnrollmentDTO> enrollmentDTOS = enrollments.stream().map(EnrollmentDTO::new).collect(Collectors.toList());
+        List<EnrollmentDto> enrollmentDTOS = enrollments.stream().map(EnrollmentDtoMapper::toDto).collect(Collectors.toList());
         stripUnauthorizedReadLessonsAndExams(enrollmentDTOS, teachingDTO, groupCode);
         return enrollmentDTOS;
     }
 
     @Override
-    public TeachingDTO getTeachingByProfessorAndCourse(String profUsername, String courseCode) {
+    public TeachingDto getTeachingByProfessorAndCourse(String profUsername, String courseCode) {
         Teaching teaching = teachingRepository.findByProfessorAndCourse(profUsername, courseCode);
         if (teaching == null) {
             throw new ResourceNotFoundException();
         }
-        TeachingDTO teachingDTO = new TeachingDTO(teaching);
+        TeachingDto teachingDTO = TeachingDtoMapper.toDto(teaching);
         if (Authorizer.teachingHasCoordinatorRights(teachingDTO)) { //coordinator can view all groups
             addAllGroupsToTeachingForCourse(teachingDTO, courseCode);
         }
@@ -76,18 +82,18 @@ public class ProfessorService implements IProfessorService {
     }
 
     @Override
-    public void updateEnrollments(String profUsername, List<EnrollmentDTO> enrollmentsFromClient) {
+    public void updateEnrollments(String profUsername, List<EnrollmentDto> enrollmentsFromClient) {
         if (enrollmentsFromClient.size() == 0) {
             return;
         }
         List<Enrollment> enrollmentEntities = enrollmentsFromClient.stream()
-                .map(EnrollmentDTO::toEntity).collect(Collectors.toList());
+                .map(EnrollmentDtoMapper::toEntity).collect(Collectors.toList());
         List<Lesson> lessonsFromClient = enrollmentEntities.stream().map(Enrollment::getLessons)
                 .flatMap(Collection::stream).collect(Collectors.toList());
         List<PartialExam> examsFromClient = enrollmentEntities.stream().map(Enrollment::getPartialExams)
                 .flatMap(Collection::stream).collect(Collectors.toList());
         String courseCode = enrollmentsFromClient.get(0).getCourse().getCode();
-        Short groupCode = enrollmentsFromClient.get(0).getStudent().getGroup().getCode();
+        String groupCode = enrollmentsFromClient.get(0).getStudent().getGroup().getCode();
         authorizeUpdateLessonsAndExams(lessonsFromClient, examsFromClient, profUsername, courseCode, groupCode);
         lessonRepository.saveAll(lessonsFromClient);
         partialExamRepository.saveAll(examsFromClient);
@@ -95,36 +101,36 @@ public class ProfessorService implements IProfessorService {
         partialExamRepository.flush();
     }
 
-    public void stripUnauthorizedReadLessonsAndExams(List<EnrollmentDTO> enrollments, TeachingDTO teaching, Short groupCode) {
+    public void stripUnauthorizedReadLessonsAndExams(List<EnrollmentDto> enrollments, TeachingDto teaching, String groupCode) {
         enrollments.forEach(enrollment -> {
             //keep only readable lessons and exams
-            List<LessonDTO> authLessons = enrollment.getLessons().stream()
+            List<LessonDto> authLessons = enrollment.getLessons().stream()
                     .filter(lesson -> Authorizer.teachingCanReadLesson(teaching, groupCode, lesson))
                     .collect(Collectors.toList());
-            List<PartialExamDTO> authExams = enrollment.getPartialExams().stream()
+            List<PartialExamDto> authExams = enrollment.getPartialExams().stream()
                     .filter(exam -> Authorizer.teachingCanReadExam(teaching, groupCode, exam))
                     .collect(Collectors.toList());
             authLessons.forEach(lessonDTO -> lessonDTO.setReadonly(Authorizer.teachingCanOnlyReadLesson(teaching, groupCode, lessonDTO)));
-            authExams.forEach(examDTO -> examDTO.setReadonly(Authorizer.teachingCanOnlyReadExam(teaching,groupCode, examDTO)));
+            authExams.forEach(examDTO -> examDTO.setReadonly(Authorizer.teachingCanOnlyReadExam(teaching, groupCode, examDTO)));
             enrollment.setLessons(authLessons);
             enrollment.setPartialExams(authExams);
         });
     }
-    
+
     private void authorizeUpdateLessonsAndExams(List<Lesson> lessonsFromClient, List<PartialExam> examsFromClient
-            , String profUsername, String courseCode, Short groupCode){
+            , String profUsername, String courseCode, String groupCode) {
         //get readable lessons and exams
-        List<EnrollmentDTO> enrollmentsFromDB = getEnrollmentsForProfessorByCourseAndGroup(profUsername, courseCode, groupCode);
-        TeachingDTO teachingDTO = getTeachingByProfessorAndCourse(profUsername, courseCode);
+        List<EnrollmentDto> enrollmentsFromDB = getEnrollmentsForProfessorByCourseAndGroup(profUsername, courseCode, groupCode);
+        TeachingDto teachingDTO = getTeachingByProfessorAndCourse(profUsername, courseCode);
         //strip readonly lessons and exams and get their ids
         Set<Integer> writableLessonsIds = enrollmentsFromDB.stream()
-                .map(EnrollmentDTO::getLessons).flatMap(Collection::stream)
+                .map(EnrollmentDto::getLessons).flatMap(Collection::stream)
                 .filter(lesson -> Authorizer.teachingCanWriteLesson(teachingDTO, groupCode, lesson))
-                .map(LessonDTO::getId).collect(Collectors.toSet());
+                .map(LessonDto::getId).collect(Collectors.toSet());
         Set<Integer> writableExamsIds = enrollmentsFromDB.stream()
-                .map(EnrollmentDTO::getPartialExams).flatMap(Collection::stream)
+                .map(EnrollmentDto::getPartialExams).flatMap(Collection::stream)
                 .filter(exam -> Authorizer.teachingCanWriteExam(teachingDTO, groupCode, exam))
-                .map(PartialExamDTO::getId).collect(Collectors.toSet());
+                .map(PartialExamDto::getId).collect(Collectors.toSet());
         //get ids from client
         List<Integer> lessonsFromClientIds = lessonsFromClient.stream().map(Lesson::getId).collect(Collectors.toList());
         List<Integer> examsFromClientIds = examsFromClient.stream().map(PartialExam::getId).collect(Collectors.toList());
@@ -132,15 +138,15 @@ public class ProfessorService implements IProfessorService {
         lessonsFromClientIds.forEach(id -> {
             if (!writableLessonsIds.contains(id)) throw new AccessForbiddenException();
         });
-        examsFromClientIds.forEach(id->{
+        examsFromClientIds.forEach(id -> {
             if (!writableExamsIds.contains(id)) throw new AccessForbiddenException();
         });
     }
-    
 
-    private void addAllGroupsToTeachingForCourse(TeachingDTO teachingDTO, String courseCode) {
-        Set<GroupDTO> allGroupsTakingThisCourse = groupRepository.findByCourse(courseCode)
-                .stream().map(GroupDTO::new).collect(Collectors.toSet());
+
+    private void addAllGroupsToTeachingForCourse(TeachingDto teachingDTO, String courseCode) {
+        Set<GroupDto> allGroupsTakingThisCourse = groupRepository.findByCourse(courseCode)
+                .stream().map(GroupDtoMapper::toDto).collect(Collectors.toSet());
         teachingDTO.getAllGroups().addAll(allGroupsTakingThisCourse);
     }
 

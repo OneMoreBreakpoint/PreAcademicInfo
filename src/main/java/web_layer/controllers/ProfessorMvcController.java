@@ -1,7 +1,7 @@
 package web_layer.controllers;
 
-import bussiness_layer.dto.EnrollmentDTO;
-import bussiness_layer.dto.TeachingDTO;
+import bussiness_layer.dto.EnrollmentDto;
+import bussiness_layer.dto.TeachingDto;
 import bussiness_layer.services.IProfessorService;
 import bussiness_layer.utils.Authorizer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,10 +27,10 @@ public class ProfessorMvcController {
     }
 
     @GetMapping("/timeline")
-    public ModelAndView getTimelinePage(@RequestParam String course, @RequestParam Short group, Principal crtUser) {
+    public ModelAndView getTimelinePage(@RequestParam String course, @RequestParam String group, Principal crtUser) {
         ModelAndView mv = new ModelAndView("/professor/timeline");
-        List<EnrollmentDTO> enrollments = service.getEnrollmentsForProfessorByCourseAndGroup(crtUser.getName(), course, group);
-        TeachingDTO teaching = service.getTeachingByProfessorAndCourse(crtUser.getName(), course);
+        List<EnrollmentDto> enrollments = service.getEnrollmentsForProfessorByCourseAndGroup(crtUser.getName(), course, group);
+        TeachingDto teaching = service.getTeachingByProfessorAndCourse(crtUser.getName(), course);
         mv.addObject("enrollments", enrollments);
         mv.addObject("teaching", teaching);
         mv.addObject("auth", Authorizer.class);

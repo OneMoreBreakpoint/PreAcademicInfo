@@ -1,8 +1,7 @@
 package data_layer.domain;
 
-import bussiness_layer.dto.ProfessorDTO;
-import lombok.Getter;
-import lombok.Setter;
+import bussiness_layer.dto.ProfessorDto;
+import lombok.Data;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
@@ -10,8 +9,7 @@ import javax.validation.constraints.Size;
 import java.util.List;
 
 @Entity(name = "Professors")
-@Getter
-@Setter
+@Data
 public class Professor extends User {
 
     @Size(max = 50)
@@ -30,10 +28,10 @@ public class Professor extends User {
 
     @Override
     public boolean equals(Object o) {
-        if(!(o instanceof ProfessorDTO)){
+        if (!(o instanceof ProfessorDto)) {
             return false;
         }
-        ProfessorDTO that = (ProfessorDTO)o;
+        ProfessorDto that = (ProfessorDto) o;
         return this.getUsername().equals(that.getUsername());
     }
 }

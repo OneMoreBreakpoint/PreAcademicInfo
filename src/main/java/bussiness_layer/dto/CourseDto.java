@@ -1,21 +1,16 @@
-package data_layer.domain;
+package bussiness_layer.dto;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-@Entity(name = "Courses")
-@Getter
-@Setter
-public class Course {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+@Data
+@NoArgsConstructor
+public class CourseDto {
     private Integer id;
 
     @NotNull
@@ -35,8 +30,7 @@ public class Course {
     @Min(7)
     private Byte nrOfLaboratories;
 
-    @ManyToOne
-    @JoinColumn(name = "coordinator_id")
-    private Professor coordinator;
+    @NotNull
+    private ProfessorDto coordinator;
 
 }

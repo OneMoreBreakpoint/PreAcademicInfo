@@ -1,7 +1,5 @@
 package bussiness_layer.services;
 
-import data_layer.domain.Professor;
-import data_layer.domain.Student;
 import data_layer.domain.User;
 import data_layer.repositories.IUserRepository;
 import org.mindrot.jbcrypt.BCrypt;
@@ -16,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import utils.exceptions.ExceptionMessages;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,8 +30,8 @@ public class AuthenticationService implements AuthenticationManager, UserDetails
         String username = authentication.getPrincipal().toString();
         String password = authentication.getCredentials().toString();
         User user = userRepo.findByUsername(username);
-        if(user == null || !BCrypt.checkpw(password, user.getEncryptedPassword())){
-            throw new BadCredentialsException("Invalid username or password");
+        if (user == null || !BCrypt.checkpw(password, user.getEncryptedPassword())) {
+            throw new BadCredentialsException(ExceptionMessages.INVALID_USERNAME_OR_PASSWORD);
         }
         List<SimpleGrantedAuthority> grantedAuthorities = new ArrayList<>();
         List<String> userRoles = this.getUserRoles(user);
@@ -45,8 +44,8 @@ public class AuthenticationService implements AuthenticationManager, UserDetails
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepo.findByUsername(username);
-        if(user == null){
-            throw new UsernameNotFoundException("Invalid username");
+        if (user == null) {
+            throw new UsernameNotFoundException(ExceptionMessages.INVALID_USERNAME);
         }
         org.springframework.security.core.userdetails.User.UserBuilder builder;
         builder = org.springframework.security.core.userdetails.User.withUsername(user.getUsername());
@@ -55,12 +54,7 @@ public class AuthenticationService implements AuthenticationManager, UserDetails
         return builder.build();
     }
 
-    private List<String> getUserRoles(User user){
-        if(user instanceof Professor){
-            user = (Professor)user;
-        }else if(user instanceof Student){
-            user = (Student) user;
-        }
+    private List<String> getUserRoles(User user) {
         List<String> userRoles = new ArrayList<>();
         String userRole = user.getClass().getSimpleName().toUpperCase();
         userRoles.add(userRole);

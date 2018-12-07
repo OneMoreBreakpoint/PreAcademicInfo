@@ -7,14 +7,17 @@
 </head>
 <body>
 
-<div th:fragment="response-modal (domId, success, msg)" class="response-modal modal-box" tabindex="-1" role="dialog" th:id="${domId}">
+<div th:fragment="response-modal (domId, success, msg)" class="response-modal modal-box" tabindex="-1" role="dialog"
+     th:id="${domId}">
     <div class="modal-window">
         <i class="modal-close fas fa-times"></i>
         <div class="modal-header">
         </div>
-        <div class="modal-body" th:text="${msg}" th:classappend="${success==null} ? '' : (${success} ? 'ok' : 'err')"></div>
+        <div class="modal-body" th:text="${msg}"
+             th:classappend="${success==null} ? '' : (${success} ? 'ok' : 'err')"></div>
         <div class="modal-footer">
-            <input type="button" class="modal-close" value="OK" th:classappend="${success==null} ? '' : (${success} ? 'ok' : 'err')">
+            <input type="button" class="modal-close" value="OK"
+                   th:classappend="${success==null} ? '' : (${success} ? 'ok' : 'err')">
         </div>
     </div>
 </div>

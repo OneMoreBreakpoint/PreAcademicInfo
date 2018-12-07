@@ -1,14 +1,12 @@
 package data_layer.domain;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 import javax.persistence.*;
 import java.util.Set;
 
 @Entity(name = "Teachings")
-@Getter
-@Setter
+@Data
 public class Teaching {
 
     @Id
@@ -33,7 +31,6 @@ public class Teaching {
     @ManyToOne
     @JoinColumn(name = "course_id", nullable = false)
     private Course course;
-
 
 
 }

@@ -1,6 +1,5 @@
 package bussiness_layer.dto;
 
-import data_layer.domain.User;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -12,7 +11,7 @@ import static utils.Constants.UBB_EMAIL_FORMAT;
 
 @Data
 @NoArgsConstructor
-public abstract class UserDTO {
+public abstract class UserDto {
 
     @Size(min = 4, max = 16)
     @NotNull
@@ -29,13 +28,5 @@ public abstract class UserDTO {
     @Email(regexp = UBB_EMAIL_FORMAT)
     @NotNull
     private String email;
-
-    public UserDTO(User entity){
-        this.username = entity.getUsername();
-        this.firstName = entity.getFirstName();
-        this.lastName = entity.getLastName();
-        this.email = entity.getEmail();
-    }
-
 
 }

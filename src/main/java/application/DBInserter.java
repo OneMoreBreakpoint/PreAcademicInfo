@@ -4,7 +4,6 @@ import data_layer.domain.*;
 import org.mindrot.jbcrypt.BCrypt;
 
 import javax.persistence.*;
-import javax.validation.ConstraintViolationException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -324,7 +323,7 @@ public class DBInserter {
         DBInserter.mihnea = mihnea;
 
         gr231 = new Group();
-        gr231.setCode((short)231);
+        gr231.setCode("231");
         gr231.setStudents(new ArrayList<>());
         gr231.getStudents().add(mada);
         gr231.getStudents().add(dan);
@@ -437,7 +436,7 @@ public class DBInserter {
         buta.setEnrollments(enrollmentList(buta, lftc, pdm, ss));
 
         gr232 = new Group();
-        gr232.setCode((short)232);
+        gr232.setCode("232");
         gr232.setStudents(new ArrayList<>());
         gr232.getStudents().add(abrudan);
         gr232.getStudents().add(beltechi);
@@ -526,7 +525,7 @@ public class DBInserter {
         avram.setEnrollments(enrollmentList(avram, retele));
 
         gr221 = new Group();
-        gr221.setCode((short)221);
+        gr221.setCode("221");
         gr221.setStudents(new ArrayList<>());
         gr221.getStudents().add(alistar);
         gr221.getStudents().add(amarandei);
@@ -617,7 +616,7 @@ public class DBInserter {
         farcas.setEnrollments(enrollmentList(farcas, flct, mdp, pdav, ss));
 
         gr933 = new Group();
-        gr933.setCode((short)933);
+        gr933.setCode("933");
         gr933.setStudents(new ArrayList<>());
         gr933.getStudents().add(deszi);
         gr933.getStudents().add(dolot);
@@ -657,7 +656,7 @@ public class DBInserter {
         vlad.setEnrollments(enrollmentList(vlad, retele));
 
         gr0 = new Group();
-        gr0.setCode((short)0);
+        gr0.setCode("0");
         gr0.setStudents(new ArrayList<>());
         gr0.getStudents().add(andrei);
         gr0.getStudents().add(vlad);

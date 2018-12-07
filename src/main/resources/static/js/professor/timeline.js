@@ -34,16 +34,16 @@ function convertEnrollmentListToEnrollmentMap() {
 }
 
 function stripReadonlyLessonsAndExams(enrollments) {
-    for(let ikey in enrollments){
+    for (let ikey in enrollments) {
         let lessons = enrollments[ikey].lessons;
         let exams = enrollments[ikey].partialExams;
-        for(let jkey in lessons){
-            if(lessons[jkey].readonly == true){
+        for (let jkey in lessons) {
+            if (lessons[jkey].readonly == true) {
                 delete lessons[jkey];
             }
         }
-        for(let jkey in exams){
-            if(exams[jkey].readonly == true){
+        for (let jkey in exams) {
+            if (exams[jkey].readonly == true) {
                 delete exams[jkey];
             }
         }
@@ -53,15 +53,15 @@ function stripReadonlyLessonsAndExams(enrollments) {
 
 function convertEnrollmentMapToEnrollmentList(enrollmentMap) {
     let enrollmentList = [];
-    for(let key in enrollmentMap){
+    for (let key in enrollmentMap) {
         enrollmentList.push(deepClone(enrollmentMap[key]));
     }
-    for(i=0; i < enrollmentList.length; i++){
+    for (i = 0; i < enrollmentList.length; i++) {
         let lessons = [], partialExams = [];
-        for(let key in enrollmentList[i].lessons){
+        for (let key in enrollmentList[i].lessons) {
             lessons.push(enrollmentList[i].lessons[key]);
         }
-        for(let key in enrollmentList[i].partialExams){
+        for (let key in enrollmentList[i].partialExams) {
             partialExams.push(enrollmentList[i].partialExams[key]);
         }
         enrollmentList[i].lessons = lessons;
@@ -91,13 +91,15 @@ function stickRightColumns() {
 }
 
 function setDataHasBeenChangedFlag(value) {
-    if(dataHasBeenChanged !== value){
+    if (dataHasBeenChanged !== value) {
         dataHasBeenChanged = value;
         $("#btn_submitChanges").prop('disabled', !value);
     }
-    if(dataHasBeenChanged){
-        window.onbeforeunload = ()=>{return true}; //browsers won't run code inside handler from security reasons
-    }else{
+    if (dataHasBeenChanged) {
+        window.onbeforeunload = () => {
+            return true
+        }; //browsers won't run code inside handler from security reasons
+    } else {
         window.onbeforeunload = undefined;
     }
 }
@@ -148,15 +150,17 @@ function assignFilterHandlers() {
         }
     });
     let combo_groupCode = $("#combo_groupCode");
-    $(combo_groupCode).change((event)=>{
-        let newUrl = updateQueryParams(window.location.toString(),{group: event.target.value});
+    $(combo_groupCode).change((event) => {
+        let newUrl = updateQueryParams(window.location.toString(), {group: event.target.value});
         window.location.replace(newUrl);
-        setTimeout(()=>{$(combo_groupCode).val(crtGroupCode)}, 1); //if user did not leave page
+        setTimeout(() => {
+            $(combo_groupCode).val(crtGroupCode)
+        }, 1); //if user did not leave page
     });
 }
 
 function assignActionHandlers() {
-    $("#btn_submitChanges").click(()=>{
+    $("#btn_submitChanges").click(() => {
         debugger;
         let strippedEnrollmentMap = stripReadonlyLessonsAndExams(deepClone(enrollments));
         let reqBody = JSON.stringify(convertEnrollmentMapToEnrollmentList(strippedEnrollmentMap));
@@ -165,13 +169,13 @@ function assignActionHandlers() {
             type: "PUT",
             data: reqBody,
             contentType: "application/json; charset=utf-8",
-            success: (response, textStatus, xhr)=>{
-                if(xhr.status = 200){
+            success: (response, textStatus, xhr) => {
+                if (xhr.status = 200) {
                     displayModal("#modal_success", true);
                     setDataHasBeenChangedFlag(false);
                 }
             },
-            error: ()=>{
+            error: () => {
                 displayModal("#modal_failure", true);
             }
         });
@@ -227,12 +231,12 @@ function assignExamCellHandlers(enrlRow, examCell) {
     });
 }
 
-function updateAll(){
+function updateAll() {
     let enrlRows = $(".timeline tr.enrollment-row");
-    $(enrlRows).each((index, enrlRow) =>{
-       updateTotalBonus(enrlRow);
-       updateTotalAttendance(enrlRow);
-       updateAverageGrade(enrlRow);
+    $(enrlRows).each((index, enrlRow) => {
+        updateTotalBonus(enrlRow);
+        updateTotalAttendance(enrlRow);
+        updateAverageGrade(enrlRow);
     });
 }
 
@@ -249,7 +253,7 @@ function updateTotalBonus(enrlRow) {
     updateTotalBonusView(enrlRow, totalBonusValue);
 }
 
-function updateTotalBonusView(enrlRow, value){
+function updateTotalBonusView(enrlRow, value) {
     let totalBonusCell = $(enrlRow).children("td.bonus-cell").first();
     $(totalBonusCell).text(value);
 }
@@ -286,11 +290,11 @@ function updateTotalAttendanceView(enrlRow, totalLabAttendance, totalSemAttendan
     debugger;
     let hasCoordinatorRights = teachingHasCoordinatorRights(teaching);
     let totalAttendanceViewText;
-    if(hasCoordinatorRights){
+    if (hasCoordinatorRights) {
         totalAttendanceViewText = `${totalSemAttendance.toFixed(precisionSem)}% / ${totalLabAttendance.toFixed(precisionLab)}%`;
-    }else if(hasSeminarRights && !hasLabRights){
+    } else if (hasSeminarRights && !hasLabRights) {
         totalAttendanceViewText = `${totalSemAttendance.toFixed(precisionSem)}%`;
-    }else if(!hasSeminarRights && hasLabRights){
+    } else if (!hasSeminarRights && hasLabRights) {
         totalAttendanceViewText = `${totalLabAttendance.toFixed(precisionLab)}%`;
     }
     $(totalAttendanceCell).text(totalAttendanceViewText);
@@ -339,15 +343,15 @@ function getNrOfSeminars() {
 }
 
 function hasMinimumAttendance(seminarAttendance, laboratoryAttendance) {
-    const  MIN_SEM_ATT = 75, MIN_LAB_ATT = 90;
+    const MIN_SEM_ATT = 75, MIN_LAB_ATT = 90;
     let hasSeminarRights = teachingHasSeminarRightsOverGroup(teaching, crtGroupCode);
     let hasLabRights = teachingHasLaboratoryRightsOverGroup(teaching, crtGroupCode);
     let hasCoordinatorRights = teachingHasCoordinatorRights(teaching);
-    if(hasCoordinatorRights){
+    if (hasCoordinatorRights) {
         return seminarAttendance >= MIN_SEM_ATT && laboratoryAttendance >= MIN_LAB_ATT;
-    }else if(hasSeminarRights && !hasLabRights){
+    } else if (hasSeminarRights && !hasLabRights) {
         return seminarAttendance >= MIN_SEM_ATT;
-    }else if(!hasSeminarRights && hasLabRights){
+    } else if (!hasSeminarRights && hasLabRights) {
         return laboratoryAttendance >= MIN_LAB_ATT;
     }
 }
@@ -377,8 +381,8 @@ function getValidNumber(actualValue, minValue, maxValue) {
 }
 
 function teachingHasSeminarRightsOverGroup(teaching, groupCode) {
-    for(let i = 0; i < teaching.seminarGroups.length; i++){
-        if(teaching.seminarGroups[i].code == groupCode){
+    for (let i = 0; i < teaching.seminarGroups.length; i++) {
+        if (teaching.seminarGroups[i].code == groupCode) {
             return true;
         }
     }
@@ -386,8 +390,8 @@ function teachingHasSeminarRightsOverGroup(teaching, groupCode) {
 }
 
 function teachingHasLaboratoryRightsOverGroup(teaching, groupCode) {
-    for(let i = 0; i < teaching.laboratoryGroups.length; i++){
-        if(teaching.laboratoryGroups[i].code == groupCode){
+    for (let i = 0; i < teaching.laboratoryGroups.length; i++) {
+        if (teaching.laboratoryGroups[i].code == groupCode) {
             return true;
         }
     }
