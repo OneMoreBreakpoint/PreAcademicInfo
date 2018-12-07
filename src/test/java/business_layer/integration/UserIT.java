@@ -22,7 +22,7 @@ public class UserIT extends BaseIntegrationTest {
     }
 
     @Test
-    public void givenOneUserSaved_WhenGetAllUsers_ThenUserIsReturned() {
+    public void givenOneUserSaved_WhenGetUserByUsername_ThenUserIsReturned() {
         //Given
         Student u = StudentFactory.generateStudentBuilder()
                 .username("USERNAME2")

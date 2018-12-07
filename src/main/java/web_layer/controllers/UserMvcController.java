@@ -15,7 +15,11 @@ import bussiness_layer.services.IUserService;
 public class UserMvcController {
 
     @Autowired
-    private IUserService userService;
+    private final IUserService userService;
+
+    public UserMvcController(IUserService userService) {
+        this.userService = userService;
+    }
 
     @GetMapping("/login")
     public ModelAndView getLoginPage() {
