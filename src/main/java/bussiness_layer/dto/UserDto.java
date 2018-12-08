@@ -1,23 +1,19 @@
 package bussiness_layer.dto;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import static utils.Constants.UBB_EMAIL_FORMAT;
 
 @Getter
 @Setter
-@Builder
 @NoArgsConstructor
-@AllArgsConstructor
-public class UserDTO {
+public class UserDto {
 
     @Size(min = 4, max = 16)
     @NotNull
@@ -37,4 +33,12 @@ public class UserDTO {
     @Email(regexp = UBB_EMAIL_FORMAT)
     private String email;
 
+
+    public UserDto(String username, String password, String firstName, String lastName, String email) {
+        this.username = username;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+    }
 }

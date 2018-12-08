@@ -1,9 +1,7 @@
 package bussiness_layer.services;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
+import data_layer.domain.User;
+import data_layer.repositories.IUserRepository;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -16,11 +14,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import utils.exceptions.ExceptionMessages;
 
-import data_layer.domain.Professor;
-import data_layer.domain.Student;
-import data_layer.domain.User;
-import data_layer.repositories.IUserRepository;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class AuthenticationService implements AuthenticationManager, UserDetailsService {
@@ -32,16 +29,10 @@ public class AuthenticationService implements AuthenticationManager, UserDetails
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         String username = authentication.getPrincipal().toString();
         String password = authentication.getCredentials().toString();
-        Optional<User> optionalUser = userRepo.findOneByUsername(username);
-        if (!optionalUser.isPresent()) {
-            throw new BadCredentialsException("Invalid username");
+        User user = userRepo.findByUsername(username);
+        if (user == null || !BCrypt.checkpw(password, user.getEncryptedPassword())) {
+            throw new BadCredentialsException(ExceptionMessages.INVALID_USERNAME_OR_PASSWORD);
         }
-
-        User user = optionalUser.get();
-        if (!BCrypt.checkpw(password, user.getEncryptedPassword())) {
-            throw new BadCredentialsException("Invalid username or password");
-        }
-
         List<SimpleGrantedAuthority> grantedAuthorities = new ArrayList<>();
         List<String> userRoles = this.getUserRoles(user);
         userRoles.forEach(userRole -> {
@@ -52,11 +43,10 @@ public class AuthenticationService implements AuthenticationManager, UserDetails
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<User> optionalUser = userRepo.findOneByUsername(username);
-        if (!optionalUser.isPresent()) {
-            throw new UsernameNotFoundException("Invalid username");
+        User user = userRepo.findByUsername(username);
+        if (user == null) {
+            throw new UsernameNotFoundException(ExceptionMessages.INVALID_USERNAME);
         }
-        User user = optionalUser.get();
         org.springframework.security.core.userdetails.User.UserBuilder builder;
         builder = org.springframework.security.core.userdetails.User.withUsername(user.getUsername());
         builder.password(user.getEncryptedPassword());
@@ -65,11 +55,6 @@ public class AuthenticationService implements AuthenticationManager, UserDetails
     }
 
     private List<String> getUserRoles(User user) {
-        if (user instanceof Professor) {
-            user = (Professor) user;
-        } else if (user instanceof Student) {
-            user = (Student) user;
-        }
         List<String> userRoles = new ArrayList<>();
         String userRole = user.getClass().getSimpleName().toUpperCase();
         userRoles.add(userRole);

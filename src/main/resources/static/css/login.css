@@ -32,32 +32,36 @@
     grid-column: 1 / 4;
     grid-row: 1;
     text-align: center;
-    color: var(--color0);
+    color: var(--color0-light);
 }
 
 #form_login label {
     grid-column: 1;
-    color: var(--color0);
+    color: var(--color0-light);
 }
 
 #form_login input {
     grid-column: 2 / 4;
-    border-color: var(--color3);
+    border-color: var(--color4);
     border-style: solid;
     border-width: 2px;
+}
+
+#form_login input[type=text], #form_login input[type=password] {
+    background-color: var(--color0-light);
 }
 
 #form_login input[type=submit] {
     grid-column: 3;
     border-width: 1px;
-    border-color: black;
-    background-color: var(--color3);
-    color: black;
+    border-color: var(--color0-dark);
+    background-color: var(--color4);
+    color: var(--color0-dark);
 }
 
 #form_login input[type=submit]:hover {
     cursor: pointer;
-    background-color: var(--color3-light);
+    background-color: var(--color4-light);
 }
 
 #form_login div.err {

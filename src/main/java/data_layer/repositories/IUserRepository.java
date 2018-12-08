@@ -1,13 +1,10 @@
 package data_layer.repositories;
 
-import java.util.Optional;
-
+import data_layer.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import data_layer.domain.User;
-
 @Repository
 public interface IUserRepository extends JpaRepository<User, Integer> {
-    Optional<User> findOneByUsername(String username);
+    User findByUsername(String username);
 }

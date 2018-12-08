@@ -1,18 +1,17 @@
 package data_layer.domain;
 
-import java.util.List;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.Size;
-
-import lombok.Getter;
-import lombok.Setter;
+import java.util.List;
 
 @Entity(name = "Professors")
-@Getter
-@Setter
+@Data
+@NoArgsConstructor
 public class Professor extends User {
 
     @Size(max = 50)
@@ -20,8 +19,15 @@ public class Professor extends User {
 
     private String pathToProfilePhoto;
 
-    @OneToMany
-    @JoinColumn(name = "professor_id")
+    @OneToMany(mappedBy = "professor")
     private List<Teaching> teachingList;
 
+    @Builder
+    public Professor(String username, String encryptedPassword, String firstName, String lastName, String email,
+                     String webPage, String pathToProfilePhoto, List<Teaching> teachingList) {
+        super(username, encryptedPassword, firstName, lastName, email);
+        this.webPage = webPage;
+        this.pathToProfilePhoto = pathToProfilePhoto;
+        this.teachingList = teachingList;
+    }
 }

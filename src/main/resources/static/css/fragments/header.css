@@ -1,7 +1,12 @@
 /*general*/
 .header {
     height: 108px;
-    position: relative;
+    position: sticky;
+    top: 0;
+    width: 100%;
+    background-color: var(--color0-light);
+    z-index: 999;
+    margin-bottom: 30px;
 }
 
 .header .header-line {
@@ -16,7 +21,7 @@
 
 /*anonymous*/
 .header.anonymous h1 {
-    color: var(--color3);
+    color: var(--color4);
     display: inline;
 }
 
@@ -50,7 +55,7 @@
     justify-content: center;
     align-items: center;
     text-decoration: none;
-    color: var(--color0);
+    color: var(--color0-light);
     font-size: 20px;
 }
 

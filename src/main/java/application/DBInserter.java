@@ -1,26 +1,19 @@
 package application;
 
-import java.util.ArrayList;
-import java.util.List;
+import data_layer.domain.*;
+import org.mindrot.jbcrypt.BCrypt;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
-
-import org.mindrot.jbcrypt.BCrypt;
-
-import data_layer.domain.Course;
-import data_layer.domain.Enrollment;
-import data_layer.domain.Lesson;
-import data_layer.domain.PartialExam;
-import data_layer.domain.Professor;
-import data_layer.domain.Student;
-import data_layer.domain.Teaching;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 
 public class DBInserter {
 
-    private static List<Student> gr231, gr232, gr221, gr933;
+    private static Group gr231, gr232, gr221, gr933, gr0;
     private static Professor guran, mihis, motogna, lazar, forest, grigo, camelia, suciu, ticle;
     private static Course lftc, flct, pdm, mdp, pdav, ss, retele;
     private static Student mihnea, norberth, antal, vlad, ana, beltechi, boros;
@@ -45,11 +38,12 @@ public class DBInserter {
         ticle = new Professor();
     }
 
-    private static List<Enrollment> enrollmentList(Course... courses) {
+    private static List<Enrollment> enrollmentList(Student student, Course... courses) {
         List<Enrollment> enrollments = new ArrayList<>();
         for (Course course : courses) {
             Enrollment e = new Enrollment();
             e.setCourse(course);
+            e.setStudent(student);
             enrollments.add(e);
         }
         return enrollments;
@@ -60,11 +54,11 @@ public class DBInserter {
         mada.setUsername("aiir2030");
         mada.setEncryptedPassword(BCrypt.hashpw("mada", BCrypt.gensalt()));
         mada.setLastName("Abrudan");
-        mada.setFirstName("Ioana-Mădălina");
+        mada.setFirstName("Ioana-Madalina");
         mada.setEmail("cnir2083@scs.ubbcluj.ro");
         mada.setRegistrationNr(22030);
         mada.setFathersInitials("I.");
-        mada.setEnrollments(enrollmentList(lftc, pdm));
+        mada.setEnrollments(enrollmentList(mada, lftc, pdm));
 
         Student dan = new Student();
         dan.setUsername("adir2033");
@@ -74,17 +68,17 @@ public class DBInserter {
         dan.setEmail("cnir2083@scs.ubbcluj.ro");
         dan.setRegistrationNr(12033);
         dan.setFathersInitials("N.");
-        dan.setEnrollments(enrollmentList(lftc, pdm));
+        dan.setEnrollments(enrollmentList(dan, lftc, pdm));
 
         Student alba = new Student();
         alba.setUsername("agir2034");
         alba.setEncryptedPassword(BCrypt.hashpw("alba", BCrypt.gensalt()));
         alba.setLastName("Alba");
-        alba.setFirstName("Grigore Cătălin");
+        alba.setFirstName("Grigore Catalin");
         alba.setEmail("cnir2083@scs.ubbcluj.ro");
         alba.setRegistrationNr(12034);
         alba.setFathersInitials("G.I.");
-        alba.setEnrollments(enrollmentList(lftc, pdm));
+        alba.setEnrollments(enrollmentList(alba, lftc, pdm));
 
         Student oana = new Student();
         oana.setUsername("aoir2035");
@@ -94,17 +88,17 @@ public class DBInserter {
         oana.setEmail("aoir2035@scs.ubbcluj.ro");
         oana.setRegistrationNr(22035);
         oana.setFathersInitials("A.");
-        oana.setEnrollments(enrollmentList(lftc, pdm));
+        oana.setEnrollments(enrollmentList(oana, lftc, pdm));
 
         Student stef = new Student();
         stef.setUsername("asir2036");
         stef.setEncryptedPassword(BCrypt.hashpw("stef", BCrypt.gensalt()));
-        stef.setLastName("Andraș");
-        stef.setFirstName("Ștefan Daniel");
+        stef.setLastName("Andras");
+        stef.setFirstName("Stefan Daniel");
         stef.setEmail("cnir2083@scs.ubbcluj.ro");
         stef.setRegistrationNr(12036);
         stef.setFathersInitials("D.S.");
-        stef.setEnrollments(enrollmentList(lftc, pdm));
+        stef.setEnrollments(enrollmentList(stef, lftc, pdm));
 
         Student antal = new Student();
         antal.setUsername("aair2038");
@@ -114,7 +108,7 @@ public class DBInserter {
         antal.setEmail("cnir2083@scs.ubbcluj.ro");
         antal.setRegistrationNr(12038);
         antal.setFathersInitials("I.");
-        antal.setEnrollments(enrollmentList(lftc, pdm, ss));
+        antal.setEnrollments(enrollmentList(antal, lftc, pdm, ss));
         DBInserter.antal = antal;
 
         Student mortu = new Student();
@@ -125,88 +119,88 @@ public class DBInserter {
         mortu.setEmail("cnir2083@scs.ubbcluj.ro");
         mortu.setRegistrationNr(12039);
         mortu.setFathersInitials("D.H.");
-        mortu.setEnrollments(enrollmentList(lftc, pdm));
+        mortu.setEnrollments(enrollmentList(mortu, lftc, pdm));
 
         Student baies = new Student();
         baies.setUsername("bair2040");
         baies.setEncryptedPassword(BCrypt.hashpw("baies", BCrypt.gensalt()));
-        baies.setLastName("Băieș");
-        baies.setFirstName("Alex Laurențiu");
+        baies.setLastName("Baies");
+        baies.setFirstName("Alex Laurentiu");
         baies.setEmail("cnir2083.scs.ubbcluj.ro");
         baies.setRegistrationNr(12040);
         baies.setFathersInitials("T.M.");
-        baies.setEnrollments(enrollmentList(lftc, pdm));
+        baies.setEnrollments(enrollmentList(baies, lftc, pdm));
 
         Student balan = new Student();
         balan.setUsername("bpir2041");
         balan.setEncryptedPassword(BCrypt.hashpw("balan", BCrypt.gensalt()));
-        balan.setLastName("Bălan");
-        balan.setFirstName("Paul Cătălin");
+        balan.setLastName("Balan");
+        balan.setFirstName("Paul Catalin");
         balan.setEmail("cnir2083@scs.ubccluj.ro");
         balan.setRegistrationNr(12041);
         balan.setFathersInitials("A.");
-        balan.setEnrollments(enrollmentList(lftc, pdm));
+        balan.setEnrollments(enrollmentList(balan, lftc, pdm));
 
         Student iulia = new Student();
         iulia.setUsername("biir2042");
         iulia.setEncryptedPassword(BCrypt.hashpw("iulia", BCrypt.gensalt()));
-        iulia.setLastName("Bărăian");
+        iulia.setLastName("Baraian");
         iulia.setFirstName("Iulia Maria");
         iulia.setEmail("cnir2083@scs.ubbcluj.ro");
         iulia.setRegistrationNr(12042);
         iulia.setFathersInitials("A.");
-        iulia.setEnrollments(enrollmentList(lftc, pdm));
+        iulia.setEnrollments(enrollmentList(iulia, lftc, pdm));
 
         Student denis = new Student();
         denis.setUsername("bdir2043");
         denis.setEncryptedPassword(BCrypt.hashpw("denis", BCrypt.gensalt()));
-        denis.setLastName("Bărnuțiu");
+        denis.setLastName("Barnutiu");
         denis.setFirstName("Denis Vasile");
         denis.setEmail("cnir2083@scs.ubbcluj.ro");
         denis.setRegistrationNr(12043);
         denis.setFathersInitials("M.R.");
-        denis.setEnrollments(enrollmentList(lftc, pdm));
+        denis.setEnrollments(enrollmentList(denis, lftc, pdm));
 
         Student dragos = new Student();
         dragos.setUsername("bdir2045");
         dragos.setEncryptedPassword(BCrypt.hashpw("dragos", BCrypt.gensalt()));
         dragos.setLastName("Berlea");
-        dragos.setFirstName("Dragoș Teodor");
+        dragos.setFirstName("Dragos Teodor");
         dragos.setEmail("cnir2083@scs.ubbcluj.ro");
         dragos.setRegistrationNr(12045);
         dragos.setFathersInitials("N.");
-        dragos.setEnrollments(enrollmentList(lftc, pdm));
+        dragos.setEnrollments(enrollmentList(dragos, lftc, pdm));
 
         Student vlad = new Student();
         vlad.setUsername("bvir2046");
         vlad.setEncryptedPassword(BCrypt.hashpw("vlad", BCrypt.gensalt()));
-        vlad.setLastName("Bîrsan");
+        vlad.setLastName("Birsan");
         vlad.setFirstName("Vlad Ioan");
         vlad.setEmail("bvir2046@scs.ubbcluj.ro");
         vlad.setRegistrationNr(12046);
         vlad.setFathersInitials("A.");
-        vlad.setEnrollments(enrollmentList(lftc, pdm, ss));
+        vlad.setEnrollments(enrollmentList(vlad, lftc, pdm, ss));
         DBInserter.vlad = vlad;
 
         Student mire = new Student();
         mire.setUsername("bmir2047");
         mire.setEncryptedPassword(BCrypt.hashpw("mire", BCrypt.gensalt()));
-        mire.setLastName("Bocșa");
+        mire.setLastName("Bocsa");
         mire.setFirstName("Mirela Alexandra");
         mire.setEmail("bmir2047@scs.ubbcluj.ro");
         mire.setRegistrationNr(22047);
         mire.setFathersInitials("G.");
-        mire.setEnrollments(enrollmentList(lftc, pdm));
+        mire.setEnrollments(enrollmentList(mire, lftc, pdm));
 
         Student bodiu = new Student();
         bodiu.setUsername("bcir2425");
         bodiu.setEncryptedPassword(BCrypt.hashpw("bodiu", BCrypt.gensalt()));
         bodiu.setLastName("Bodiu");
-        bodiu.setFirstName("Cătălin");
+        bodiu.setFirstName("Catalin");
         bodiu.setEmail("cnir2083@scs.ubbcluj.ro");
         bodiu.setRegistrationNr(12425);
         bodiu.setFathersInitials("D");
-        bodiu.setEnrollments(enrollmentList(lftc, pdm));
+        bodiu.setEnrollments(enrollmentList(bodiu, lftc, pdm));
 
         Student boicu = new Student();
         boicu.setUsername("bair2049");
@@ -216,47 +210,47 @@ public class DBInserter {
         boicu.setEmail("cnir2083@scs.ubbcluj.ro");
         boicu.setRegistrationNr(12049);
         boicu.setFathersInitials("M.");
-        boicu.setEnrollments(enrollmentList(lftc, pdm));
+        boicu.setEnrollments(enrollmentList(boicu, lftc, pdm));
 
         Student gabi = new Student();
         gabi.setUsername("biir2052");
         gabi.setEncryptedPassword(BCrypt.hashpw("gabi", BCrypt.gensalt()));
-        gabi.setLastName("Borșan");
+        gabi.setLastName("Borsan");
         gabi.setFirstName("Ioan Gabriel");
         gabi.setEmail("cnir2083@scs.ubbcluj.ro");
         gabi.setRegistrationNr(12052);
         gabi.setFathersInitials("I.L.");
-        gabi.setEnrollments(enrollmentList(lftc, pdm));
+        gabi.setEnrollments(enrollmentList(gabi, lftc, pdm));
 
         Student bosinta = new Student();
         bosinta.setUsername("bbir2053");
         bosinta.setEncryptedPassword(BCrypt.hashpw("bosinta", BCrypt.gensalt()));
-        bosinta.setLastName("Boșîntă");
+        bosinta.setLastName("Bosinta");
         bosinta.setFirstName("Bogdan Viorel");
         bosinta.setEmail("cnir2083@scs.ubbcluj.ro");
         bosinta.setRegistrationNr(12053);
         bosinta.setFathersInitials("V.V.");
-        bosinta.setEnrollments(enrollmentList(lftc, pdm));
+        bosinta.setEnrollments(enrollmentList(bosinta, lftc, pdm));
 
         Student ana = new Student();
         ana.setUsername("bair2054");
         ana.setEncryptedPassword(BCrypt.hashpw("ana", BCrypt.gensalt()));
-        ana.setLastName("Boșutar");
+        ana.setLastName("Bosutar");
         ana.setFirstName("Ana Maria");
         ana.setEmail("cnir2083@scs.ubbcluj.ro");
         ana.setRegistrationNr(22054);
         ana.setFathersInitials("T.N.");
-        ana.setEnrollments(enrollmentList(lftc, pdm, ss));
+        ana.setEnrollments(enrollmentList(ana, lftc, pdm, ss));
         DBInserter.ana = ana;
 
         Student delia = new Student();
         delia.setUsername("bcir2055");
         delia.setEncryptedPassword(BCrypt.hashpw("delia", BCrypt.gensalt()));
-        delia.setLastName("Brașovean");
+        delia.setLastName("Brasovean");
         delia.setFirstName("Carmen Delia");
         delia.setEmail("bcir2055@scs.ubbcluj.ro");
         delia.setRegistrationNr(22055);
-        delia.setEnrollments(enrollmentList(lftc, pdm));
+        delia.setEnrollments(enrollmentList(delia, lftc, pdm));
         delia.setFathersInitials("V.");
 
         Student florin = new Student();
@@ -267,7 +261,7 @@ public class DBInserter {
         florin.setEmail("cnir2083@scs.ubbcluj.ro");
         florin.setRegistrationNr(12077);
         florin.setFathersInitials("V.D.");
-        florin.setEnrollments(enrollmentList(lftc, pdm));
+        florin.setEnrollments(enrollmentList(florin, lftc, pdm));
 
         Student norberth = new Student();
         norberth.setUsername("cnir2083");
@@ -276,19 +270,19 @@ public class DBInserter {
         norberth.setFirstName("Norberth");
         norberth.setEmail("cnir2083@scs.ubbcluj.ro");
         norberth.setRegistrationNr(12083);
-        norberth.setFathersInitials("Ș.");
-        norberth.setEnrollments(enrollmentList(lftc, pdm, pdav, ss));
+        norberth.setFathersInitials("S.");
+        norberth.setEnrollments(enrollmentList(norberth, lftc, pdm, pdav, ss));
         DBInserter.norberth = norberth;
 
         Student paul = new Student();
         paul.setUsername("cpir2084");
         paul.setEncryptedPassword(BCrypt.hashpw("paul", BCrypt.gensalt()));
-        paul.setLastName("Cuș");
+        paul.setLastName("Cus");
         paul.setFirstName("Paul Gabriel");
         paul.setEmail("cpir2084@scs.ubbcluj.ro");
         paul.setRegistrationNr(12084);
         paul.setFathersInitials("P.");
-        paul.setEnrollments(enrollmentList(lftc, pdm));
+        paul.setEnrollments(enrollmentList(paul, lftc, pdm));
 
         Student mark = new Student();
         mark.setUsername("cmir2085");
@@ -298,7 +292,7 @@ public class DBInserter {
         mark.setEmail("cmir2085@scs.ubbcluj.ro");
         mark.setRegistrationNr(12085);
         mark.setFathersInitials("I.A.");
-        mark.setEnrollments(enrollmentList(lftc, pdm));
+        mark.setEnrollments(enrollmentList(mark, lftc, pdm));
 
         Student darius = new Student();
         darius.setUsername("gdir2106");
@@ -308,7 +302,7 @@ public class DBInserter {
         darius.setEmail("cnir2083@scs.ubbcluj.ro");
         darius.setRegistrationNr(12106);
         darius.setFathersInitials("C.");
-        darius.setEnrollments(enrollmentList(lftc, pdm));
+        darius.setEnrollments(enrollmentList(darius, lftc, pdm));
 
         Student andra = new Student();
         andra.setUsername("rair2184");
@@ -318,50 +312,52 @@ public class DBInserter {
         andra.setEmail("cnir2083@scs.ubbcluj.ro");
         andra.setRegistrationNr(22184);
         andra.setFathersInitials("M.M.");
-        andra.setEnrollments(enrollmentList(lftc, pdm));
+        andra.setEnrollments(enrollmentList(andra, lftc, pdm));
 
         Student mihnea = new Student();
         mihnea.setUsername("tmir2199");
         mihnea.setEncryptedPassword(BCrypt.hashpw("taranu", BCrypt.gensalt()));
-        mihnea.setLastName("Țăranu");
+        mihnea.setLastName("Taranu");
         mihnea.setFirstName("Mihnea Andrei");
         mihnea.setEmail("cnir2083@scs.ubbcluj.ro");
         mihnea.setRegistrationNr(12199);
         mihnea.setFathersInitials("P.L.");
-        mihnea.setEnrollments(enrollmentList(pdm));
+        mihnea.setEnrollments(enrollmentList(mihnea, pdm, retele));
         DBInserter.mihnea = mihnea;
 
-        gr231 = new ArrayList<>();
-        gr231.add(mada);
-        gr231.add(dan);
-        gr231.add(alba);
-        gr231.add(oana);
-        gr231.add(stef);
-        gr231.add(antal);
-        gr231.add(mortu);
-        gr231.add(baies);
-        gr231.add(balan);
-        gr231.add(iulia);
-        gr231.add(denis);
-        gr231.add(dragos);
-        gr231.add(vlad);
-        gr231.add(mire);
-        gr231.add(bodiu);
-        gr231.add(boicu);
-        gr231.add(gabi);
-        gr231.add(bosinta);
-        gr231.add(ana);
-        gr231.add(delia);
-        gr231.add(florin);
-        gr231.add(norberth);
-        gr231.add(paul);
-        gr231.add(mark);
-        gr231.add(darius);
-        gr231.add(andra);
-        gr231.add(mihnea);
+        gr231 = new Group();
+        gr231.setCode("231");
+        gr231.setStudents(new ArrayList<>());
+        gr231.getStudents().add(mada);
+        gr231.getStudents().add(dan);
+        gr231.getStudents().add(alba);
+        gr231.getStudents().add(oana);
+        gr231.getStudents().add(stef);
+        gr231.getStudents().add(antal);
+        gr231.getStudents().add(mortu);
+        gr231.getStudents().add(baies);
+        gr231.getStudents().add(balan);
+        gr231.getStudents().add(iulia);
+        gr231.getStudents().add(denis);
+        gr231.getStudents().add(dragos);
+        gr231.getStudents().add(vlad);
+        gr231.getStudents().add(mire);
+        gr231.getStudents().add(bodiu);
+        gr231.getStudents().add(boicu);
+        gr231.getStudents().add(gabi);
+        gr231.getStudents().add(bosinta);
+        gr231.getStudents().add(ana);
+        gr231.getStudents().add(delia);
+        gr231.getStudents().add(florin);
+        gr231.getStudents().add(norberth);
+        gr231.getStudents().add(paul);
+        gr231.getStudents().add(mark);
+        gr231.getStudents().add(darius);
+        gr231.getStudents().add(andra);
+        gr231.getStudents().add(mihnea);
 
-        gr231.forEach(student -> {
-            student.setGroupNr((short) 231);
+        gr231.getStudents().forEach(student -> {
+            student.setGroup(gr231);
             student.setNotifiedByEmail(false);
         });
     }
@@ -375,7 +371,7 @@ public class DBInserter {
         abrudan.setEmail("cnir2083@scs.ubbcluj.ro");
         abrudan.setRegistrationNr(12200);
         abrudan.setFathersInitials("D.D.");
-        abrudan.setEnrollments(enrollmentList(lftc, pdm, ss));
+        abrudan.setEnrollments(enrollmentList(abrudan, lftc, pdm, ss));
 
 
         Student beltechi = new Student();
@@ -386,7 +382,7 @@ public class DBInserter {
         beltechi.setEmail("cnir2083@scs.ubbcluj.ro");
         beltechi.setRegistrationNr(12201);
         beltechi.setFathersInitials("N.C.");
-        beltechi.setEnrollments(enrollmentList(lftc, pdm, pdav, ss));
+        beltechi.setEnrollments(enrollmentList(beltechi, lftc, pdm, pdav, ss));
         DBInserter.beltechi = beltechi;
 
 
@@ -398,7 +394,7 @@ public class DBInserter {
         boros.setEmail("cnir2083@scs.ubbcluj.ro");
         boros.setRegistrationNr(12202);
         boros.setFathersInitials("V.F.");
-        boros.setEnrollments(enrollmentList(lftc, pdm, pdav, ss));
+        boros.setEnrollments(enrollmentList(boros, lftc, pdm, pdav, ss));
         DBInserter.boros = boros;
 
         Student bucur = new Student();
@@ -409,7 +405,7 @@ public class DBInserter {
         bucur.setEmail("cnir2083@scs.ubbcluj.ro");
         bucur.setRegistrationNr(12203);
         bucur.setFathersInitials("I.");
-        bucur.setEnrollments(enrollmentList(lftc, pdm, ss));
+        bucur.setEnrollments(enrollmentList(bucur, lftc, pdm, ss));
 
         Student bulmez = new Student();
         bulmez.setUsername("bair2204");
@@ -419,7 +415,7 @@ public class DBInserter {
         bulmez.setEmail("cnir2083@scs.ubbcluj.ro");
         bulmez.setRegistrationNr(12204);
         bulmez.setFathersInitials("I.");
-        bulmez.setEnrollments(enrollmentList(lftc, pdm, ss));
+        bulmez.setEnrollments(enrollmentList(bulmez, lftc, pdm, ss));
 
         Student burlacu = new Student();
         burlacu.setUsername("biir2205");
@@ -429,7 +425,7 @@ public class DBInserter {
         burlacu.setEmail("cnir2083@scs.ubbcluj.ro");
         burlacu.setRegistrationNr(22205);
         burlacu.setFathersInitials("V.");
-        burlacu.setEnrollments(enrollmentList(lftc, pdm, ss));
+        burlacu.setEnrollments(enrollmentList(burlacu, lftc, pdm, ss));
 
 
         Student buta = new Student();
@@ -440,19 +436,21 @@ public class DBInserter {
         buta.setEmail("cnir2083@scs.ubbcluj.ro");
         buta.setRegistrationNr(22206);
         buta.setFathersInitials("O.Z.");
-        buta.setEnrollments(enrollmentList(lftc, pdm, ss));
+        buta.setEnrollments(enrollmentList(buta, lftc, pdm, ss));
 
-        gr232 = new ArrayList<>();
-        gr232.add(abrudan);
-        gr232.add(beltechi);
-        gr232.add(boros);
-        gr232.add(bucur);
-        gr232.add(bulmez);
-        gr232.add(burlacu);
-        gr232.add(buta);
+        gr232 = new Group();
+        gr232.setCode("232");
+        gr232.setStudents(new ArrayList<>());
+        gr232.getStudents().add(abrudan);
+        gr232.getStudents().add(beltechi);
+        gr232.getStudents().add(boros);
+        gr232.getStudents().add(bucur);
+        gr232.getStudents().add(bulmez);
+        gr232.getStudents().add(burlacu);
+        gr232.getStudents().add(buta);
 
-        gr232.forEach(student -> {
-            student.setGroupNr((short) 232);
+        gr232.getStudents().forEach(student -> {
+            student.setGroup(gr232);
             student.setNotifiedByEmail(false);
         });
     }
@@ -467,7 +465,7 @@ public class DBInserter {
         alistar.setEmail("cnir2083@scs.ubbcluj.ro");
         alistar.setRegistrationNr(11000);
         alistar.setFathersInitials("I.");
-        alistar.setEnrollments(enrollmentList(retele));
+        alistar.setEnrollments(enrollmentList(alistar, retele));
 
         Student amarandei = new Student();
         amarandei.setUsername("arir1001");
@@ -477,7 +475,7 @@ public class DBInserter {
         amarandei.setEmail("cnir2083@scs.ubbcluj.ro");
         amarandei.setRegistrationNr(11001);
         amarandei.setFathersInitials("M.C.");
-        amarandei.setEnrollments(enrollmentList(retele));
+        amarandei.setEnrollments(enrollmentList(amarandei, retele));
 
         Student antinie = new Student();
         antinie.setUsername("arir1002");
@@ -487,7 +485,7 @@ public class DBInserter {
         antinie.setEmail("cnir2083@scs.ubbcluj.ro");
         antinie.setFathersInitials("G.R.");
         antinie.setRegistrationNr(11002);
-        antinie.setEnrollments(enrollmentList(retele));
+        antinie.setEnrollments(enrollmentList(antinie, retele));
 
         Student anton = new Student();
         anton.setUsername("amir1003");
@@ -497,7 +495,7 @@ public class DBInserter {
         anton.setEmail("cnir2083@scs.ubbcluj.ro");
         anton.setRegistrationNr(11003);
         anton.setFathersInitials("A.L.");
-        anton.setEnrollments(enrollmentList(retele));
+        anton.setEnrollments(enrollmentList(anton, retele));
 
         Student ardelean = new Student();
         ardelean.setUsername("aair1004");
@@ -507,7 +505,7 @@ public class DBInserter {
         ardelean.setEmail("cnir2083@scs.ubbcluj.ro");
         ardelean.setRegistrationNr(11004);
         ardelean.setFathersInitials("F.A.");
-        ardelean.setEnrollments(enrollmentList(retele));
+        ardelean.setEnrollments(enrollmentList(ardelean, retele));
 
         Student ardelean2 = new Student();
         ardelean2.setUsername("atir1005");
@@ -517,7 +515,7 @@ public class DBInserter {
         ardelean2.setEmail("cnir2083@scs.ubbcluj.ro");
         ardelean2.setRegistrationNr(11005);
         ardelean2.setFathersInitials("T.");
-        ardelean2.setEnrollments(enrollmentList(retele));
+        ardelean2.setEnrollments(enrollmentList(ardelean2, retele));
 
         Student avram = new Student();
         avram.setUsername("avir1006");
@@ -527,19 +525,22 @@ public class DBInserter {
         avram.setEmail("cnir2083@scs.ubbcluj.ro");
         avram.setRegistrationNr(11006);
         avram.setFathersInitials("V.I.");
-        avram.setEnrollments(enrollmentList(retele));
+        avram.setEnrollments(enrollmentList(avram, retele));
 
-        gr221 = new ArrayList<>();
-        gr221.add(alistar);
-        gr221.add(amarandei);
-        gr221.add(antinie);
-        gr221.add(anton);
-        gr221.add(ardelean);
-        gr221.add(ardelean2);
-        gr221.add(avram);
+        gr221 = new Group();
+        gr221.setCode("221");
+        gr221.setStudents(new ArrayList<>());
+        gr221.getStudents().add(alistar);
+        gr221.getStudents().add(amarandei);
+        gr221.getStudents().add(antinie);
+        gr221.getStudents().add(anton);
+        gr221.getStudents().add(ardelean);
+        gr221.getStudents().add(ardelean2);
+        gr221.getStudents().add(avram);
 
-        gr221.forEach(student -> {
-            student.setGroupNr((short) 221);
+
+        gr221.getStudents().forEach(student -> {
+            student.setGroup(gr221);
             student.setNotifiedByEmail(false);
         });
 
@@ -554,7 +555,7 @@ public class DBInserter {
         deszi.setEmail("cnir2083@scs.ubbcluj.ro");
         deszi.setRegistrationNr(21007);
         deszi.setFathersInitials("L.");
-        deszi.setEnrollments(enrollmentList(flct, mdp, pdav, ss));
+        deszi.setEnrollments(enrollmentList(deszi, flct, mdp, pdav, ss));
 
 
         Student dolot = new Student();
@@ -565,7 +566,7 @@ public class DBInserter {
         dolot.setEmail("cnir2083@scs.ubbcluj.ro");
         dolot.setRegistrationNr(21008);
         dolot.setFathersInitials("C.D.");
-        dolot.setEnrollments(enrollmentList(flct, mdp, pdav, ss));
+        dolot.setEnrollments(enrollmentList(dolot, flct, mdp, pdav, ss));
 
         Student dragodan = new Student();
         dragodan.setUsername("daie1009");
@@ -575,7 +576,7 @@ public class DBInserter {
         dragodan.setEmail("cnir2083@scs.ubbcluj.ro");
         dragodan.setRegistrationNr(21009);
         dragodan.setFathersInitials("A.");
-        dragodan.setEnrollments(enrollmentList(flct, mdp, pdav, ss));
+        dragodan.setEnrollments(enrollmentList(dragodan, flct, mdp, pdav, ss));
 
         Student dragomir = new Student();
         dragomir.setUsername("diie1010");
@@ -585,7 +586,7 @@ public class DBInserter {
         dragomir.setEmail("cnir2083@scs.ubbcluj.ro");
         dragomir.setRegistrationNr(21010);
         dragomir.setFathersInitials("G.");
-        dragomir.setEnrollments(enrollmentList(flct, mdp, pdav, ss));
+        dragomir.setEnrollments(enrollmentList(dragomir, flct, mdp, pdav, ss));
 
         Student duma = new Student();
         duma.setUsername("dlie1011");
@@ -595,7 +596,7 @@ public class DBInserter {
         duma.setEmail("cnir2083@scs.ubbcluj.ro");
         duma.setRegistrationNr(11011);
         duma.setFathersInitials("E.L.");
-        duma.setEnrollments(enrollmentList(flct, mdp, pdav, ss));
+        duma.setEnrollments(enrollmentList(duma, flct, mdp, pdav, ss));
 
         Student dumitrascu = new Student();
         dumitrascu.setUsername("dmie1012");
@@ -605,7 +606,7 @@ public class DBInserter {
         dumitrascu.setEmail("cnir2083@scs.ubbcluj.ro");
         dumitrascu.setRegistrationNr(11012);
         dumitrascu.setFathersInitials("C.");
-        dumitrascu.setEnrollments(enrollmentList(flct, mdp, pdav, ss));
+        dumitrascu.setEnrollments(enrollmentList(dumitrascu, flct, mdp, pdav, ss));
 
         Student farcas = new Student();
         farcas.setUsername("faoe1013");
@@ -615,22 +616,58 @@ public class DBInserter {
         farcas.setEmail("cnir2083@scs.ubbcluj.ro");
         farcas.setRegistrationNr(11013);
         farcas.setFathersInitials("D.");
-        farcas.setEnrollments(enrollmentList(flct, mdp, pdav, ss));
+        farcas.setEnrollments(enrollmentList(farcas, flct, mdp, pdav, ss));
 
-        gr933 = new ArrayList<>();
-        gr933.add(deszi);
-        gr933.add(dolot);
-        gr933.add(dragodan);
-        gr933.add(dragomir);
-        gr933.add(duma);
-        gr933.add(dumitrascu);
-        gr933.add(farcas);
+        gr933 = new Group();
+        gr933.setCode("933");
+        gr933.setStudents(new ArrayList<>());
+        gr933.getStudents().add(deszi);
+        gr933.getStudents().add(dolot);
+        gr933.getStudents().add(dragodan);
+        gr933.getStudents().add(dragomir);
+        gr933.getStudents().add(duma);
+        gr933.getStudents().add(dumitrascu);
+        gr933.getStudents().add(farcas);
 
-        gr933.forEach(student -> {
-            student.setGroupNr((short) 933);
+
+        gr933.getStudents().forEach(student -> {
+            student.setGroup(gr933);
             student.setNotifiedByEmail(false);
         });
 
+    }
+
+    private static void initStudsGr0() {
+        Student andrei = new Student();
+        andrei.setUsername("pair0000");
+        andrei.setEncryptedPassword(BCrypt.hashpw("andrei", BCrypt.gensalt()));
+        andrei.setLastName("Pop");
+        andrei.setFirstName("Andrei");
+        andrei.setEmail("cnir2083@scs.ubbcluj.ro");
+        andrei.setRegistrationNr(10000);
+        andrei.setFathersInitials("P.");
+        andrei.setEnrollments(enrollmentList(andrei, lftc));
+
+        Student vlad = new Student();
+        vlad.setUsername("ivir0001");
+        vlad.setEncryptedPassword(BCrypt.hashpw("vlad", BCrypt.gensalt()));
+        vlad.setLastName("Istrate");
+        vlad.setFirstName("Vlad");
+        vlad.setEmail("cnir2083@scs.ubbcluj.ro");
+        vlad.setRegistrationNr(10001);
+        vlad.setFathersInitials("I.");
+        vlad.setEnrollments(enrollmentList(vlad, retele));
+
+        gr0 = new Group();
+        gr0.setCode("0");
+        gr0.setStudents(new ArrayList<>());
+        gr0.getStudents().add(andrei);
+        gr0.getStudents().add(vlad);
+
+        gr0.getStudents().forEach(student -> {
+            student.setGroup(gr0);
+            student.setNotifiedByEmail(false);
+        });
     }
 
     private static void initProfGuran() {
@@ -642,16 +679,21 @@ public class DBInserter {
         guran.setWebPage("http://www.cs.ubbcluj.ro/~dana");
 
         Teaching t_lftc = new Teaching();
-        List<Student> laboratoryStudents = new ArrayList<>(gr231);
-        laboratoryStudents.remove(mihnea);
-        t_lftc.setLaboratoryStudents(laboratoryStudents);
-        List<Student> seminarStudents = new ArrayList<>(gr232);
-        t_lftc.setSeminarStudents(seminarStudents);
+        t_lftc.setLaboratoryGroups(new HashSet<>());
+        t_lftc.getLaboratoryGroups().add(gr231);
+        t_lftc.getLaboratoryGroups().add(gr0);
+        t_lftc.setSeminarGroups(new HashSet<>());
+        t_lftc.getSeminarGroups().add(gr232);
+        t_lftc.getSeminarGroups().add(gr0);
         t_lftc.setCourse(lftc);
+        t_lftc.setProfessor(guran);
 
         Teaching t_flct = new Teaching();
-        t_flct.setLaboratoryStudents(gr933);
+        t_flct.setLaboratoryGroups(new HashSet<>());
+        t_flct.getLaboratoryGroups().add(gr933);
+        t_flct.setSeminarGroups(new HashSet<>());
         t_flct.setCourse(flct);
+        t_flct.setProfessor(guran);
 
         List<Teaching> teachings = new ArrayList<>();
         teachings.add(t_lftc);
@@ -668,12 +710,12 @@ public class DBInserter {
         mihis.setWebPage("http://www.cs.ubbcluj.ro/~mihis/");
 
         Teaching t_lftc = new Teaching();
-        List<Student> laboratoryStudents = new ArrayList<>(gr232);
-        t_lftc.setLaboratoryStudents(laboratoryStudents);
-        List<Student> seminarStudents = new ArrayList<>(gr231);
-        seminarStudents.remove(mihnea);
-        t_lftc.setSeminarStudents(seminarStudents);
+        t_lftc.setLaboratoryGroups(new HashSet<>());
+        t_lftc.getLaboratoryGroups().add(gr232);
+        t_lftc.setSeminarGroups(new HashSet<>());
+        t_lftc.getSeminarGroups().add(gr231);
         t_lftc.setCourse(lftc);
+        t_lftc.setProfessor(mihis);
 
         List<Teaching> teachings = new ArrayList<>();
         teachings.add(t_lftc);
@@ -689,8 +731,10 @@ public class DBInserter {
         motogna.setWebPage("https://motogna.wordpress.com/");
 
         Teaching t_flct = new Teaching();
-        t_flct.setSeminarStudents(gr933);
+        t_flct.setSeminarGroups(new HashSet<>());
+        t_flct.getSeminarGroups().add(gr933);
         t_flct.setCourse(flct);
+        t_flct.setProfessor(motogna);
 
         List<Teaching> teachings = new ArrayList<>();
         teachings.add(t_flct);
@@ -706,15 +750,17 @@ public class DBInserter {
         lazar.setWebPage("http://www.cs.ubbcluj.ro/~ilazar/");
 
         Teaching t_pdm = new Teaching();
-        List<Student> labstud_pdm = new ArrayList<>();
-        labstud_pdm.addAll(gr231);
-        labstud_pdm.addAll(gr232);
-        t_pdm.setLaboratoryStudents(labstud_pdm);
+        t_pdm.setLaboratoryGroups(new HashSet<>());
+        t_pdm.getLaboratoryGroups().add(gr231);
+        t_pdm.getLaboratoryGroups().add(gr232);
         t_pdm.setCourse(pdm);
+        t_pdm.setProfessor(lazar);
 
         Teaching t_mdp = new Teaching();
-        t_mdp.setLaboratoryStudents(gr933);
+        t_mdp.setLaboratoryGroups(new HashSet<>());
+        t_mdp.getLaboratoryGroups().add(gr933);
         t_mdp.setCourse(mdp);
+        t_mdp.setProfessor(lazar);
 
         List<Teaching> teachings = new ArrayList<>();
         teachings.add(t_pdm);
@@ -732,10 +778,15 @@ public class DBInserter {
 
         Teaching t_pdav = new Teaching();
         t_pdav.setCourse(pdav);
+        t_pdav.setProfessor(forest);
 
         Teaching t_retele = new Teaching();
-        t_retele.setLaboratoryStudents(gr221);
+        t_retele.setLaboratoryGroups(new HashSet<>());
+        t_retele.getLaboratoryGroups().add(gr221);
+        t_retele.getLaboratoryGroups().add(gr231);
+        t_retele.getLaboratoryGroups().add(gr0);
         t_retele.setCourse(retele);
+        t_retele.setProfessor(forest);
 
         List<Teaching> teachings = new ArrayList<>();
         teachings.add(t_pdav);
@@ -752,13 +803,13 @@ public class DBInserter {
         camelia.setWebPage("https://www.cs.ubbcluj.ro/~camelia/");
 
         Teaching t_pdav = new Teaching();
-        List<Student> labstud_pdav = new ArrayList<>();
-        labstud_pdav.add(norberth);
-        labstud_pdav.add(beltechi);
-        labstud_pdav.add(boros);
-        t_pdav.setLaboratoryStudents(labstud_pdav);
-        t_pdav.setSeminarStudents(gr933);
+        t_pdav.setLaboratoryGroups(new HashSet<>());
+        t_pdav.getLaboratoryGroups().add(gr231);
+        t_pdav.getLaboratoryGroups().add(gr232);
+        t_pdav.setSeminarGroups(new HashSet<>());
+        t_pdav.getSeminarGroups().add(gr933);
         t_pdav.setCourse(pdav);
+        t_pdav.setProfessor(camelia);
 
         List<Teaching> teachings = new ArrayList<>();
         teachings.add(t_pdav);
@@ -774,12 +825,13 @@ public class DBInserter {
         grigo.setWebPage("https://www.cs.ubbcluj.ro/~grigo/");
 
         Teaching t_pdav = new Teaching();
-        t_pdav.setLaboratoryStudents(gr933);
-        List<Student> semstud_pdav = new ArrayList<>();
-        semstud_pdav.add(norberth);
-        semstud_pdav.add(beltechi);
-        semstud_pdav.add(boros);
+        t_pdav.setLaboratoryGroups(new HashSet<>());
+        t_pdav.getLaboratoryGroups().add(gr933);
+        t_pdav.setSeminarGroups(new HashSet<>());
+        t_pdav.getSeminarGroups().add(gr231);
+        t_pdav.getSeminarGroups().add(gr232);
         t_pdav.setCourse(pdav);
+        t_pdav.setProfessor(grigo);
 
         List<Teaching> teachings = new ArrayList<>();
         teachings.add(t_pdav);
@@ -795,8 +847,10 @@ public class DBInserter {
         suciu.setWebPage("https://www.cs.ubbcluj.ro/~mihai-suciu/");
 
         Teaching t_ss = new Teaching();
-        t_ss.setLaboratoryStudents(gr232);
+        t_ss.setLaboratoryGroups(new HashSet<>());
+        t_ss.getLaboratoryGroups().add(gr232);
         t_ss.setCourse(ss);
+        t_ss.setProfessor(suciu);
 
         List<Teaching> teachings = new ArrayList<>();
         teachings.add(t_ss);
@@ -812,14 +866,11 @@ public class DBInserter {
         ticle.setWebPage("http://www.cs.ubbcluj.ro/~daniel/");
 
         Teaching t_ss = new Teaching();
-        List<Student> labstud_ss = new ArrayList<>();
-        labstud_ss.add(norberth);
-        labstud_ss.add(antal);
-        labstud_ss.add(ana);
-        labstud_ss.add(vlad);
-        labstud_ss.addAll(gr933);
-        t_ss.setLaboratoryStudents(labstud_ss);
+        t_ss.setLaboratoryGroups(new HashSet<>());
+        t_ss.getLaboratoryGroups().add(gr231);
+        t_ss.getLaboratoryGroups().add(gr933);
         t_ss.setCourse(ss);
+        t_ss.setProfessor(ticle);
 
         List<Teaching> teachings = new ArrayList<>();
         teachings.add(t_ss);
@@ -872,52 +923,64 @@ public class DBInserter {
 
 
     public static void initLessons() {
-        List<List<Student>> groups = new ArrayList<>();
+        List<Group> groups = new ArrayList<>();
         groups.add(gr231);
         groups.add(gr232);
         groups.add(gr221);
         groups.add(gr933);
+        groups.add(gr0);
         groups.forEach(group -> {
-            group.forEach(student -> {
+            group.getStudents().forEach(student -> {
                 student.getEnrollments().forEach(enrollment -> {
                     List<Lesson> lessons = new ArrayList<>();
                     int nrOfSeminars = enrollment.getCourse().getNrOfSeminars();
                     int nrOfLaboratories = enrollment.getCourse().getNrOfLaboratories();
                     int nrOfLessons = +nrOfLaboratories + nrOfSeminars;
                     if (nrOfSeminars == 0) {
-                        for (int i = 0; i < nrOfLessons; i++) {
+                        for (int i = 1; i <= nrOfLessons; i++) {
                             Lesson l = new Lesson();
                             l.setType(Lesson.LessonType.LABORATORY);
+                            l.setNr((byte) i);
                             lessons.add(l);
                         }
                     } else if (nrOfSeminars == nrOfLaboratories) {
                         boolean pingPong = true;
-                        for (int i = 0; i < nrOfLessons; i++) {
+                        for (int i = 1, j = 1; i <= nrOfLessons; i++) {
                             Lesson l = new Lesson();
                             if (pingPong) {
                                 l.setType(Lesson.LessonType.SEMINAR);
+                                l.setNr((byte) j);
                             } else {
                                 l.setType(Lesson.LessonType.LABORATORY);
+                                l.setNr((byte) j++);
                             }
                             pingPong = !pingPong;
                             lessons.add(l);
                         }
                     } else if (nrOfSeminars == 7 && nrOfLaboratories == 14) {
-                        for (int i = 0; i < nrOfSeminars; i++) {
+                        for (int i = 1, j = 1; i <= nrOfSeminars; i++, j += 2) {
                             Lesson l1 = new Lesson(), l2 = new Lesson(), l3 = new Lesson();
                             l1.setType(Lesson.LessonType.SEMINAR);
+                            l1.setNr((byte) i);
                             l2.setType(Lesson.LessonType.LABORATORY);
+                            l2.setNr((byte) j);
                             l3.setType(Lesson.LessonType.LABORATORY);
+                            int jj = j + 1;
+                            l3.setNr((byte) jj);
                             lessons.add(l1);
                             lessons.add(l2);
                             lessons.add(l3);
                         }
                     } else if (nrOfSeminars == 14 && nrOfLaboratories == 7) {
-                        for (int i = 0; i < nrOfLaboratories; i++) {
+                        for (int i = 1, j = 1; i <= nrOfLaboratories; i++, j += 2) {
                             Lesson l1 = new Lesson(), l2 = new Lesson(), l3 = new Lesson();
                             l1.setType(Lesson.LessonType.SEMINAR);
+                            l1.setNr((byte) j);
                             l2.setType(Lesson.LessonType.LABORATORY);
+                            l2.setNr((byte) i);
                             l3.setType(Lesson.LessonType.SEMINAR);
+                            int jj = j + 1;
+                            l3.setNr((byte) jj);
                             lessons.add(l1);
                             lessons.add(l2);
                             lessons.add(l3);
@@ -930,32 +993,36 @@ public class DBInserter {
     }
 
     public static void initPartialExams() {
-        List<List<Student>> groups = new ArrayList<>();
+        List<Group> groups = new ArrayList<>();
         groups.add(gr231);
         groups.add(gr232);
         groups.add(gr221);
         groups.add(gr933);
+        groups.add(gr0);
         groups.forEach(group -> {
-            group.forEach(student -> {
+            group.getStudents().forEach(student -> {
                 student.getEnrollments().forEach(enrollment -> {
                     String courseCode = enrollment.getCourse().getCode();
                     if (courseCode.equals("MLR8114")) { // SS
                         List<PartialExam> exams = new ArrayList<>();
-                        for (int i = 0; i < 4; i++) {
+                        for (int i = 1; i <= 4; i++) {
                             PartialExam exam = new PartialExam();
                             exam.setType(PartialExam.PartialExamType.LABORATORY);
+                            exam.setNr((byte) i);
                             exams.add(exam);
                         }
                         enrollment.setPartialExams(exams);
                     } else if (courseCode.equals("MLR5023") || courseCode.equals("MLE5023")) { // LFTC, FLCT
                         List<PartialExam> exams = new ArrayList<>();
-                        for (int i = 0; i < 2; i++) {
+                        for (int i = 1; i <= 2; i++) {
                             PartialExam exam = new PartialExam();
                             exam.setType(PartialExam.PartialExamType.COURSE);
+                            exam.setNr((byte) i);
                             exams.add(exam);
                         }
                         PartialExam exam = new PartialExam();
                         exam.setType(PartialExam.PartialExamType.SEMINAR);
+                        exam.setNr((byte) 1);
                         exams.add(exam);
                         enrollment.setPartialExams(exams);
                     }
@@ -969,13 +1036,14 @@ public class DBInserter {
         EntityTransaction tran = entityManager.getTransaction();
         try {
             tran.begin();
-            List<List<Student>> groups = new ArrayList<>();
+            List<Group> groups = new ArrayList<>();
             groups.add(gr231);
             groups.add(gr232);
             groups.add(gr221);
             groups.add(gr933);
+            groups.add(gr0);
             groups.forEach(group -> {
-                group.forEach(student -> {
+                group.getStudents().forEach(student -> {
                     student.getEnrollments().forEach(enrollment -> {
                         entityManager.persist(enrollment.getCourse());
                         if (enrollment.getPartialExams() != null) {
@@ -990,6 +1058,7 @@ public class DBInserter {
                     });
                     entityManager.persist(student);
                 });
+                entityManager.persist(group);
             });
             List<Professor> professors = new ArrayList<>();
             professors.add(guran);
@@ -1023,6 +1092,7 @@ public class DBInserter {
         initStudsGr232();
         initStudsGr933();
         initStudsGr221();
+        initStudsGr0();
         System.out.println("init courses");
         initCourses();
         System.out.println("init professors");

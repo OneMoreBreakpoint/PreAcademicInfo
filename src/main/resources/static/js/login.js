@@ -1,9 +1,6 @@
-$(document).ready(() = > {
-    $("#btn_submitLoginForm"
-).
-click(validateLoginForm);
-})
-;
+$(document).ready(() => {
+    $("#btn_submitLoginForm").click(validateLoginForm);
+});
 
 function validateLoginForm(event) {
     let form = $("#form_login").serializeArray();

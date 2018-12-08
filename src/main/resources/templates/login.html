@@ -4,17 +4,18 @@
 <head>
     <meta charset="UTF-8">
     <title>PreAcademic Info</title>
+    <link rel="stylesheet" th:href="@{/css/common.css}"/>
+    <link rel="stylesheet" th:href="@{/css/fragments/header.css}"/>
+    <link rel="stylesheet" th:href="@{/css/login.css}"/>
     <script th:inline="javascript">
         let msgs = {};
         msgs.usernameRequired = /*[[#{login.err_req_username}]]*/ '';
         msgs.passwordRequired = /*[[#{login.err_req_password}]]*/ '';
     </script>
     <script th:src="@{/dependencies/jquery-3.3.1.min.js}"></script>
-    <script th:src="@{/js/lang-picker.js}"></script>
+    <script th:src="@{/js/common.js}"></script>
+    <script th:src="@{/js/fragments/lang-picker.js}"></script>
     <script th:src="@{/js/login.js}"></script>
-    <link rel="stylesheet" th:href="@{/css/globals.css}"/>
-    <link rel="stylesheet" th:href="@{/css/header.css}"/>
-    <link rel="stylesheet" th:href="@{/css/login.css}"/>
 </head>
 <body>
 <header id="header_login" th:replace="fragments/header :: header(false)"></header>
