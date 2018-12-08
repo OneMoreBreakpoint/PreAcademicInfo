@@ -12,7 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.security.Principal;
 
 @Controller
-public class UserMvcController{
+public class UserMvcController {
 
     @Autowired
     private final IUserService userService;
@@ -22,7 +22,7 @@ public class UserMvcController{
     }
 
     @GetMapping("/login")
-    public ModelAndView getLoginPage(){
+    public ModelAndView getLoginPage() {
         return new ModelAndView("login.html");
     }
 

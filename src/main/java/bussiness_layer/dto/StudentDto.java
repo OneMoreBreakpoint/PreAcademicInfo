@@ -1,11 +1,14 @@
 package bussiness_layer.dto;
 
-import lombok.Data;
+import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.validation.constraints.Size;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 public class StudentDto extends UserDto {
 
@@ -20,4 +23,14 @@ public class StudentDto extends UserDto {
 
     private GroupDto group;
 
+    @Builder
+    public StudentDto(String username, String password, String firstName, String lastName, String email,
+                      Integer registrationNr, String fathersInitials, String pathToProfilePhoto, boolean notifiedByEmail, GroupDto group) {
+        super(username, password, firstName, lastName, email);
+        this.registrationNr = registrationNr;
+        this.fathersInitials = fathersInitials;
+        this.pathToProfilePhoto = pathToProfilePhoto;
+        this.notifiedByEmail = notifiedByEmail;
+        this.group = group;
+    }
 }

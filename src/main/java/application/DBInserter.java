@@ -3,20 +3,23 @@ package application;
 import data_layer.domain.*;
 import org.mindrot.jbcrypt.BCrypt;
 
-import javax.persistence.*;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
+import javax.persistence.Persistence;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
 public class DBInserter {
 
-    private static Group gr231,gr232,gr221,gr933, gr0;
+    private static Group gr231, gr232, gr221, gr933, gr0;
     private static Professor guran, mihis, motogna, lazar, forest, grigo, camelia, suciu, ticle;
     private static Course lftc, flct, pdm, mdp, pdav, ss, retele;
     private static Student mihnea, norberth, antal, vlad, ana, beltechi, boros;
     private static EntityManager entityManager;
 
-    static{
+    static {
         lftc = new Course();
         flct = new Course();
         pdm = new Course();
@@ -35,9 +38,9 @@ public class DBInserter {
         ticle = new Professor();
     }
 
-    private static List<Enrollment> enrollmentList(Student student, Course... courses){
+    private static List<Enrollment> enrollmentList(Student student, Course... courses) {
         List<Enrollment> enrollments = new ArrayList<>();
-        for(Course course : courses){
+        for (Course course : courses) {
             Enrollment e = new Enrollment();
             e.setCourse(course);
             e.setStudent(student);
@@ -46,7 +49,7 @@ public class DBInserter {
         return enrollments;
     }
 
-    private static void initStudsGr231(){
+    private static void initStudsGr231() {
         Student mada = new Student();
         mada.setUsername("aiir2030");
         mada.setEncryptedPassword(BCrypt.hashpw("mada", BCrypt.gensalt()));
@@ -359,7 +362,7 @@ public class DBInserter {
         });
     }
 
-    private static void initStudsGr232(){
+    private static void initStudsGr232() {
         Student abrudan = new Student();
         abrudan.setUsername("agir2200");
         abrudan.setEncryptedPassword(BCrypt.hashpw("abrudan", BCrypt.gensalt()));
@@ -453,7 +456,7 @@ public class DBInserter {
     }
 
 
-    private static void initStudsGr221(){
+    private static void initStudsGr221() {
         Student alistar = new Student();
         alistar.setUsername("aair1000");
         alistar.setEncryptedPassword(BCrypt.hashpw("alistar", BCrypt.gensalt()));
@@ -543,7 +546,7 @@ public class DBInserter {
 
     }
 
-    private static void initStudsGr933(){
+    private static void initStudsGr933() {
         Student deszi = new Student();
         deszi.setUsername("diie1007");
         deszi.setEncryptedPassword(BCrypt.hashpw("deszi", BCrypt.gensalt()));
@@ -634,7 +637,7 @@ public class DBInserter {
 
     }
 
-    private static void initStudsGr0(){
+    private static void initStudsGr0() {
         Student andrei = new Student();
         andrei.setUsername("pair0000");
         andrei.setEncryptedPassword(BCrypt.hashpw("andrei", BCrypt.gensalt()));
@@ -667,7 +670,7 @@ public class DBInserter {
         });
     }
 
-    private static void initProfGuran(){
+    private static void initProfGuran() {
         guran.setUsername("guran");
         guran.setEncryptedPassword(BCrypt.hashpw("guran", BCrypt.gensalt()));
         guran.setLastName("Guran");
@@ -698,7 +701,7 @@ public class DBInserter {
         guran.setTeachingList(teachings);
     }
 
-    private static void initProfMihis(){
+    private static void initProfMihis() {
         mihis.setUsername("mihis");
         mihis.setEncryptedPassword(BCrypt.hashpw("mihis", BCrypt.gensalt()));
         mihis.setLastName("Mihis");
@@ -719,7 +722,7 @@ public class DBInserter {
         mihis.setTeachingList(teachings);
     }
 
-    private static void initProfMotogna(){
+    private static void initProfMotogna() {
         motogna.setUsername("motogna");
         motogna.setEncryptedPassword(BCrypt.hashpw("motogna", BCrypt.gensalt()));
         motogna.setLastName("Motogna");
@@ -738,7 +741,7 @@ public class DBInserter {
         motogna.setTeachingList(teachings);
     }
 
-    private static void initProfLazar(){
+    private static void initProfLazar() {
         lazar.setUsername("lazar");
         lazar.setEncryptedPassword(BCrypt.hashpw("lazar", BCrypt.gensalt()));
         lazar.setLastName("Lazar");
@@ -765,7 +768,7 @@ public class DBInserter {
         lazar.setTeachingList(teachings);
     }
 
-    private static void initProfForest(){
+    private static void initProfForest() {
         forest.setUsername("forest");
         forest.setEncryptedPassword(BCrypt.hashpw("forest", BCrypt.gensalt()));
         forest.setLastName("Sterca");
@@ -791,7 +794,7 @@ public class DBInserter {
         forest.setTeachingList(teachings);
     }
 
-    private static void initProfCamelia(){
+    private static void initProfCamelia() {
         camelia.setUsername("camelia");
         camelia.setEncryptedPassword(BCrypt.hashpw("camelia", BCrypt.gensalt()));
         camelia.setLastName("Serban");
@@ -813,7 +816,7 @@ public class DBInserter {
         camelia.setTeachingList(teachings);
     }
 
-    private static void initProfGrigo(){
+    private static void initProfGrigo() {
         grigo.setUsername("grigo");
         grigo.setEncryptedPassword(BCrypt.hashpw("grigo", BCrypt.gensalt()));
         grigo.setLastName("Cojocar");
@@ -835,7 +838,7 @@ public class DBInserter {
         grigo.setTeachingList(teachings);
     }
 
-    private static void initProfSuciu(){
+    private static void initProfSuciu() {
         suciu.setUsername("suciu");
         suciu.setEncryptedPassword(BCrypt.hashpw("suciu", BCrypt.gensalt()));
         suciu.setLastName("Suciu");
@@ -854,7 +857,7 @@ public class DBInserter {
         suciu.setTeachingList(teachings);
     }
 
-    private static void initProfTicle(){
+    private static void initProfTicle() {
         ticle.setUsername("ticle");
         ticle.setEncryptedPassword(BCrypt.hashpw("ticle", BCrypt.gensalt()));
         ticle.setLastName("Ticle");
@@ -874,53 +877,52 @@ public class DBInserter {
         ticle.setTeachingList(teachings);
     }
 
-    private static void initCourses(){
+    private static void initCourses() {
         lftc.setCode("MLR5023");
         lftc.setName("Limbaje Formale si Tehnici de Compilare");
-        lftc.setNrOfSeminars((byte)14);
-        lftc.setNrOfLaboratories((byte)14);
+        lftc.setNrOfSeminars((byte) 14);
+        lftc.setNrOfLaboratories((byte) 14);
         lftc.setCoordinator(guran);
 
         flct.setCode("MLE5023");
         flct.setName("Formal Languages and Compilation Techniques");
-        flct.setNrOfSeminars((byte)14);
-        flct.setNrOfLaboratories((byte)14);
+        flct.setNrOfSeminars((byte) 14);
+        flct.setNrOfLaboratories((byte) 14);
         flct.setCoordinator(motogna);
 
         pdm.setCode("MLR5078");
         pdm.setName("Programare pentru dispozitive mobile");
-        pdm.setNrOfSeminars((byte)0);
-        pdm.setNrOfLaboratories((byte)7);
+        pdm.setNrOfSeminars((byte) 0);
+        pdm.setNrOfLaboratories((byte) 7);
         pdm.setCoordinator(lazar);
 
         mdp.setCode("MLE5078");
         mdp.setName("Mobile devices programming");
-        mdp.setNrOfSeminars((byte)0);
-        mdp.setNrOfLaboratories((byte)7);
+        mdp.setNrOfSeminars((byte) 0);
+        mdp.setNrOfLaboratories((byte) 7);
         mdp.setCoordinator(lazar);
 
         pdav.setCode("MLE8117");
         pdav.setName("Audio-Video Data Processing");
-        pdav.setNrOfSeminars((byte)14);
-        pdav.setNrOfLaboratories((byte)7);
+        pdav.setNrOfSeminars((byte) 14);
+        pdav.setNrOfLaboratories((byte) 7);
         pdav.setCoordinator(forest);
 
         ss.setCode("MLR8114");
         ss.setName("Securitate Software");
-        ss.setNrOfSeminars((byte)0);
-        ss.setNrOfLaboratories((byte)14);
+        ss.setNrOfSeminars((byte) 0);
+        ss.setNrOfLaboratories((byte) 14);
         ss.setCoordinator(suciu);
 
         retele.setCode("MLR5002");
         retele.setName("Retele de calculatoare");
-        retele.setNrOfSeminars((byte)0);
-        retele.setNrOfLaboratories((byte)7);
+        retele.setNrOfSeminars((byte) 0);
+        retele.setNrOfLaboratories((byte) 7);
         retele.setCoordinator(forest);
     }
 
 
-
-    public static void initLessons(){
+    public static void initLessons() {
         List<Group> groups = new ArrayList<>();
         groups.add(gr231);
         groups.add(gr232);
@@ -933,52 +935,52 @@ public class DBInserter {
                     List<Lesson> lessons = new ArrayList<>();
                     int nrOfSeminars = enrollment.getCourse().getNrOfSeminars();
                     int nrOfLaboratories = enrollment.getCourse().getNrOfLaboratories();
-                    int nrOfLessons =  + nrOfLaboratories + nrOfSeminars;
-                    if(nrOfSeminars == 0){
-                        for(int i=1; i<=nrOfLessons; i++){
+                    int nrOfLessons = +nrOfLaboratories + nrOfSeminars;
+                    if (nrOfSeminars == 0) {
+                        for (int i = 1; i <= nrOfLessons; i++) {
                             Lesson l = new Lesson();
                             l.setType(Lesson.LessonType.LABORATORY);
-                            l.setNr((byte)i);
+                            l.setNr((byte) i);
                             lessons.add(l);
                         }
-                    }else if(nrOfSeminars == nrOfLaboratories){
+                    } else if (nrOfSeminars == nrOfLaboratories) {
                         boolean pingPong = true;
-                        for(int i=1, j=1; i<=nrOfLessons; i++){
+                        for (int i = 1, j = 1; i <= nrOfLessons; i++) {
                             Lesson l = new Lesson();
-                            if(pingPong){
+                            if (pingPong) {
                                 l.setType(Lesson.LessonType.SEMINAR);
-                                l.setNr((byte)j);
-                            }else{
+                                l.setNr((byte) j);
+                            } else {
                                 l.setType(Lesson.LessonType.LABORATORY);
-                                l.setNr((byte)j++);
+                                l.setNr((byte) j++);
                             }
                             pingPong = !pingPong;
                             lessons.add(l);
                         }
-                    }else if(nrOfSeminars == 7 && nrOfLaboratories == 14){
-                        for(int i=1, j=1; i<=nrOfSeminars; i++, j+=2){
+                    } else if (nrOfSeminars == 7 && nrOfLaboratories == 14) {
+                        for (int i = 1, j = 1; i <= nrOfSeminars; i++, j += 2) {
                             Lesson l1 = new Lesson(), l2 = new Lesson(), l3 = new Lesson();
                             l1.setType(Lesson.LessonType.SEMINAR);
-                            l1.setNr((byte)i);
+                            l1.setNr((byte) i);
                             l2.setType(Lesson.LessonType.LABORATORY);
-                            l2.setNr((byte)j);
+                            l2.setNr((byte) j);
                             l3.setType(Lesson.LessonType.LABORATORY);
-                            int jj = j+1;
-                            l3.setNr((byte)jj);
+                            int jj = j + 1;
+                            l3.setNr((byte) jj);
                             lessons.add(l1);
                             lessons.add(l2);
                             lessons.add(l3);
                         }
-                    }else if(nrOfSeminars == 14 && nrOfLaboratories == 7){
-                        for(int i=1, j=1; i<=nrOfLaboratories; i++, j+=2){
+                    } else if (nrOfSeminars == 14 && nrOfLaboratories == 7) {
+                        for (int i = 1, j = 1; i <= nrOfLaboratories; i++, j += 2) {
                             Lesson l1 = new Lesson(), l2 = new Lesson(), l3 = new Lesson();
                             l1.setType(Lesson.LessonType.SEMINAR);
-                            l1.setNr((byte)j);
+                            l1.setNr((byte) j);
                             l2.setType(Lesson.LessonType.LABORATORY);
-                            l2.setNr((byte)i);
+                            l2.setNr((byte) i);
                             l3.setType(Lesson.LessonType.SEMINAR);
-                            int jj = j+1;
-                            l3.setNr((byte)jj);
+                            int jj = j + 1;
+                            l3.setNr((byte) jj);
                             lessons.add(l1);
                             lessons.add(l2);
                             lessons.add(l3);
@@ -990,37 +992,37 @@ public class DBInserter {
         });
     }
 
-    public static void initPartialExams(){
+    public static void initPartialExams() {
         List<Group> groups = new ArrayList<>();
         groups.add(gr231);
         groups.add(gr232);
         groups.add(gr221);
         groups.add(gr933);
         groups.add(gr0);
-        groups.forEach(group->{
+        groups.forEach(group -> {
             group.getStudents().forEach(student -> {
                 student.getEnrollments().forEach(enrollment -> {
                     String courseCode = enrollment.getCourse().getCode();
-                    if(courseCode.equals("MLR8114")) { // SS
+                    if (courseCode.equals("MLR8114")) { // SS
                         List<PartialExam> exams = new ArrayList<>();
-                        for(int i=1; i<=4; i++){
+                        for (int i = 1; i <= 4; i++) {
                             PartialExam exam = new PartialExam();
                             exam.setType(PartialExam.PartialExamType.LABORATORY);
-                            exam.setNr((byte)i);
+                            exam.setNr((byte) i);
                             exams.add(exam);
                         }
                         enrollment.setPartialExams(exams);
-                    } else if(courseCode.equals("MLR5023") || courseCode.equals("MLE5023")) { // LFTC, FLCT
+                    } else if (courseCode.equals("MLR5023") || courseCode.equals("MLE5023")) { // LFTC, FLCT
                         List<PartialExam> exams = new ArrayList<>();
-                        for(int i=1; i<=2; i++){
+                        for (int i = 1; i <= 2; i++) {
                             PartialExam exam = new PartialExam();
                             exam.setType(PartialExam.PartialExamType.COURSE);
-                            exam.setNr((byte)i);
+                            exam.setNr((byte) i);
                             exams.add(exam);
                         }
                         PartialExam exam = new PartialExam();
                         exam.setType(PartialExam.PartialExamType.SEMINAR);
-                        exam.setNr((byte)1);
+                        exam.setNr((byte) 1);
                         exams.add(exam);
                         enrollment.setPartialExams(exams);
                     }
@@ -1029,7 +1031,7 @@ public class DBInserter {
         });
     }
 
-    private static void persist(){
+    private static void persist() {
         System.out.println("persist started");
         EntityTransaction tran = entityManager.getTransaction();
         try {
@@ -1044,7 +1046,7 @@ public class DBInserter {
                 group.getStudents().forEach(student -> {
                     student.getEnrollments().forEach(enrollment -> {
                         entityManager.persist(enrollment.getCourse());
-                        if(enrollment.getPartialExams() != null){
+                        if (enrollment.getPartialExams() != null) {
                             enrollment.getPartialExams().forEach(partialExam -> {
                                 entityManager.persist(partialExam);
                             });
@@ -1077,14 +1079,14 @@ public class DBInserter {
             entityManager.flush();
             tran.commit();
             System.out.println("persist finished");
-        }catch (RuntimeException ex){
+        } catch (RuntimeException ex) {
             tran.rollback();
             ex.printStackTrace();
             System.out.println("persist failed");
         }
     }
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
         System.out.println("init studs");
         initStudsGr231();
         initStudsGr232();

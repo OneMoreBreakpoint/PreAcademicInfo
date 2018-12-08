@@ -1,19 +1,13 @@
 package data_layer.domain;
 
-import java.util.List;
-
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
-import javax.validation.constraints.Size;
-
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import javax.persistence.*;
+import javax.validation.constraints.Size;
+import java.util.List;
 
 
 @Entity(name = "Students")
@@ -40,11 +34,11 @@ public class Student extends User {
 
     @Builder
     public Student(String username, String encryptedPassword, String firstName, String lastName, String email, Integer registrationNr,
-                   String fathersInitials, Short groupNr, String pathToProfilePhoto, List<Enrollment> enrollments, boolean notifiedByEmail) {
+                   String fathersInitials, Group group, String pathToProfilePhoto, List<Enrollment> enrollments, boolean notifiedByEmail) {
         super(username, encryptedPassword, firstName, lastName, email);
         this.registrationNr = registrationNr;
         this.fathersInitials = fathersInitials;
-        this.groupNr = groupNr;
+        this.group = group;
         this.pathToProfilePhoto = pathToProfilePhoto;
         this.enrollments = enrollments;
         this.notifiedByEmail = notifiedByEmail;

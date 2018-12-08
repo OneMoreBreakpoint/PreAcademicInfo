@@ -1,21 +1,18 @@
 package data_layer.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import lombok.*;
+
+import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
-import lombok.Getter;
-import lombok.Setter;
-
 @Entity(name = "PartialExams")
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class PartialExam {
 
     @Id
@@ -33,7 +30,6 @@ public class PartialExam {
     @Enumerated(EnumType.ORDINAL)
     @NotNull
     private PartialExamType type;
-
 
 
     public enum PartialExamType {

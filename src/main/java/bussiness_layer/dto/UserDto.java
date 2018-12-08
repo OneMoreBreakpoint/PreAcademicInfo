@@ -1,7 +1,8 @@
 package bussiness_layer.dto;
 
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
@@ -9,24 +10,35 @@ import javax.validation.constraints.Size;
 
 import static utils.Constants.UBB_EMAIL_FORMAT;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
-public abstract class UserDto {
+public class UserDto {
 
     @Size(min = 4, max = 16)
     @NotNull
     private String username;
 
-    @Size(max = 40)
+    @Size(min = 6)
     @NotNull
+    private String password;
+
+    @Size(max = 40)
+    //TODO(All) this should also be not null? same for last name and email
     private String firstName;
 
     @Size(max = 40)
-    @NotNull
     private String lastName;
 
     @Email(regexp = UBB_EMAIL_FORMAT)
-    @NotNull
     private String email;
 
+
+    public UserDto(String username, String password, String firstName, String lastName, String email) {
+        this.username = username;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+    }
 }

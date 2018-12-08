@@ -1,13 +1,12 @@
 package business_layer.integration;
 
-import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import business_layer.BaseIntegrationTest;
-import bussiness_layer.dto.UserDTO;
+import bussiness_layer.dto.UserDto;
 import bussiness_layer.services.IUserService;
 import data_layer.domain.Student;
 import factory.StudentFactory;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.junit.Assert.assertEquals;
 
@@ -30,7 +29,7 @@ public class UserIT extends BaseIntegrationTest {
         createUser(u);
 
         //When
-        UserDTO user = userService.getUserByUsername("USERNAME2");
+        UserDto user = userService.getUserByUsername("USERNAME2");
 
         //Then
         assertEquals(user.getUsername(), "USERNAME2");

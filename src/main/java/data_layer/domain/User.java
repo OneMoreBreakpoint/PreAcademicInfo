@@ -1,6 +1,7 @@
 package data_layer.domain;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -10,6 +11,7 @@ import javax.validation.constraints.Size;
 @Entity(name = "Users")
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = "username"))
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@NoArgsConstructor
 public abstract class User {
 
     @Id
@@ -35,6 +37,13 @@ public abstract class User {
     @NotNull
     private String email;
 
+    public User(String username, String encryptedPassword, String firstName, String lastName, String email) {
+        this.username = username;
+        this.encryptedPassword = encryptedPassword;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+    }
 }
 
 

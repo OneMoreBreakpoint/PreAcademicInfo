@@ -29,8 +29,8 @@ public class ProfessorMvcController {
     @GetMapping("/timeline")
     public ModelAndView getTimelinePage(@RequestParam String course, @RequestParam String group, Principal crtUser) {
         ModelAndView mv = new ModelAndView("/professor/timeline");
-        List<EnrollmentDto> enrollments = service.getEnrollmentsForProfessorByCourseAndGroup(crtUser.getName(), course, group);
-        TeachingDto teaching = service.getTeachingByProfessorAndCourse(crtUser.getName(), course);
+        List<EnrollmentDto> enrollments = service.getEnrollments(crtUser.getName(), course, group);
+        TeachingDto teaching = service.getTeaching(crtUser.getName(), course);
         mv.addObject("enrollments", enrollments);
         mv.addObject("teaching", teaching);
         mv.addObject("auth", Authorizer.class);

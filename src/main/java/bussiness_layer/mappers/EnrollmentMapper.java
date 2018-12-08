@@ -4,6 +4,7 @@ import bussiness_layer.dto.EnrollmentDto;
 import data_layer.domain.Enrollment;
 import lombok.experimental.UtilityClass;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 @UtilityClass
@@ -23,9 +24,23 @@ public class EnrollmentMapper {
         EnrollmentDto dto = new EnrollmentDto();
         dto.setId(entity.getId());
         dto.setStudent(StudentMapper.toDto(entity.getStudent()));
-        dto.setPartialExams(entity.getPartialExams().stream().map(PartialExamMapper::toDto).collect(Collectors.toList()));
-        dto.setLessons(entity.getLessons().stream().map(LessonMapper::toDto).collect(Collectors.toList()));
+        if (entity.getPartialExams() != null) {
+            dto.setPartialExams(entity.getPartialExams().stream().map(PartialExamMapper::toDto).collect(Collectors.toList()));
+        }
+        if (entity.getLessons() != null) {
+            dto.setLessons(entity.getLessons().stream().map(LessonMapper::toDto).collect(Collectors.toList()));
+        }
         dto.setCourse(CourseMapper.toDto(entity.getCourse()));
         return dto;
+    }
+
+    public static List<Enrollment> toEntityList(List<EnrollmentDto> dtos) {
+        return dtos.stream()
+                .map(EnrollmentMapper::toEntity)
+                .collect(Collectors.toList());
+    }
+
+    public static List<EnrollmentDto> toEntityDtoList(List<Enrollment> entities) {
+        return entities.stream().map(EnrollmentMapper::toDto).collect(Collectors.toList());
     }
 }

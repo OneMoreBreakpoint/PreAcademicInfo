@@ -37,10 +37,16 @@ public class Authorizer {
     }
 
     public static boolean teachingHasSemRightsOverGroup(TeachingDto teaching, String groupCode) {
+        if (teaching.getSeminarGroups() == null) {
+            return false;
+        }
         return teaching.getSeminarGroups().contains(new GroupDto(groupCode));
     }
 
     public static boolean teachingHasLabRightsOverGroup(TeachingDto teaching, String groupCode) {
+        if (teaching.getLaboratoryGroups() == null) {
+            return false;
+        }
         return teaching.getLaboratoryGroups().contains(new GroupDto(groupCode));
     }
 

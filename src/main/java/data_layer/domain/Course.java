@@ -1,7 +1,6 @@
 package data_layer.domain;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.Max;
@@ -12,6 +11,9 @@ import javax.validation.constraints.Size;
 @Entity(name = "Courses")
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Course {
 
     @Id
@@ -37,6 +39,7 @@ public class Course {
 
     @ManyToOne
     @JoinColumn(name = "coordinator_id")
+    //TODO: @not null
     private Professor coordinator;
 
 }

@@ -19,11 +19,15 @@ public class TeachingMapper {
         TeachingDto dto = new TeachingDto();
         dto.setId(entity.getId());
         dto.setProfessor(ProfessorMapper.toDto(entity.getProfessor()));
-        dto.setSeminarGroups(entity.getSeminarGroups().stream().map(GroupMapper::toDto).collect(Collectors.toSet()));
-        dto.setLaboratoryGroups(entity.getLaboratoryGroups().stream().map(GroupMapper::toDto).collect(Collectors.toSet()));
         dto.setAllGroups(new TreeSet<>());
-        dto.getAllGroups().addAll(dto.getSeminarGroups());
-        dto.getAllGroups().addAll(dto.getLaboratoryGroups());
+        if (entity.getSeminarGroups() != null) {
+            dto.setSeminarGroups(entity.getSeminarGroups().stream().map(GroupMapper::toDto).collect(Collectors.toSet()));
+            dto.getAllGroups().addAll(dto.getSeminarGroups());
+        }
+        if (entity.getLaboratoryGroups() != null) {
+            dto.setLaboratoryGroups(entity.getLaboratoryGroups().stream().map(GroupMapper::toDto).collect(Collectors.toSet()));
+            dto.getAllGroups().addAll(dto.getLaboratoryGroups());
+        }
         dto.setCourse(CourseMapper.toDto(entity.getCourse()));
         return dto;
     }

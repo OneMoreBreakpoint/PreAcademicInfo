@@ -12,10 +12,11 @@ import data_layer.domain.Teaching;
 import data_layer.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import utils.exceptions.AccessForbiddenException;
 import utils.exceptions.ResourceNotFoundException;
+import utils.exceptions.UnprocessableEntityException;
 
-import javax.transaction.Transactional;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -45,7 +46,7 @@ public class ProfessorService implements IProfessorService {
 
 
     @Override
-    public List<EnrollmentDto> getEnrollmentsForProfessorByCourseAndGroup(String profUsername, String courseCode, String groupCode) {
+    public List<EnrollmentDto> getEnrollments(String profUsername, String courseCode, String groupCode) {
         if (groupRepository.findByCode(groupCode) == null || courseRepository.findByCode(courseCode) == null) {
             throw new ResourceNotFoundException();
         }
@@ -63,13 +64,13 @@ public class ProfessorService implements IProfessorService {
         if (enrollments.size() == 0) {
             throw new ResourceNotFoundException();
         }
-        List<EnrollmentDto> enrollmentDTOS = enrollments.stream().map(EnrollmentMapper::toDto).collect(Collectors.toList());
+        List<EnrollmentDto> enrollmentDTOS = EnrollmentMapper.toEntityDtoList(enrollments);
         stripUnauthorizedReadLessonsAndExams(enrollmentDTOS, teachingDTO, groupCode);
         return enrollmentDTOS;
     }
 
     @Override
-    public TeachingDto getTeachingByProfessorAndCourse(String profUsername, String courseCode) {
+    public TeachingDto getTeaching(String profUsername, String courseCode) {
         Teaching teaching = teachingRepository.findByProfessorAndCourse(profUsername, courseCode);
         if (teaching == null) {
             throw new ResourceNotFoundException();
@@ -84,10 +85,9 @@ public class ProfessorService implements IProfessorService {
     @Override
     public void updateEnrollments(String profUsername, List<EnrollmentDto> enrollmentsFromClient) {
         if (enrollmentsFromClient.size() == 0) {
-            return;
+            throw new UnprocessableEntityException();
         }
-        List<Enrollment> enrollmentEntities = enrollmentsFromClient.stream()
-                .map(EnrollmentMapper::toEntity).collect(Collectors.toList());
+        List<Enrollment> enrollmentEntities = EnrollmentMapper.toEntityList(enrollmentsFromClient);
         List<Lesson> lessonsFromClient = enrollmentEntities.stream().map(Enrollment::getLessons)
                 .flatMap(Collection::stream).collect(Collectors.toList());
         List<PartialExam> examsFromClient = enrollmentEntities.stream().map(Enrollment::getPartialExams)
@@ -101,7 +101,7 @@ public class ProfessorService implements IProfessorService {
         partialExamRepository.flush();
     }
 
-    public void stripUnauthorizedReadLessonsAndExams(List<EnrollmentDto> enrollments, TeachingDto teaching, String groupCode) {
+    private void stripUnauthorizedReadLessonsAndExams(List<EnrollmentDto> enrollments, TeachingDto teaching, String groupCode) {
         enrollments.forEach(enrollment -> {
             //keep only readable lessons and exams
             List<LessonDto> authLessons = enrollment.getLessons().stream()
@@ -120,8 +120,8 @@ public class ProfessorService implements IProfessorService {
     private void authorizeUpdateLessonsAndExams(List<Lesson> lessonsFromClient, List<PartialExam> examsFromClient
             , String profUsername, String courseCode, String groupCode) {
         //get readable lessons and exams
-        List<EnrollmentDto> enrollmentsFromDB = getEnrollmentsForProfessorByCourseAndGroup(profUsername, courseCode, groupCode);
-        TeachingDto teachingDTO = getTeachingByProfessorAndCourse(profUsername, courseCode);
+        List<EnrollmentDto> enrollmentsFromDB = getEnrollments(profUsername, courseCode, groupCode);
+        TeachingDto teachingDTO = getTeaching(profUsername, courseCode);
         //strip readonly lessons and exams and get their ids
         Set<Integer> writableLessonsIds = enrollmentsFromDB.stream()
                 .map(EnrollmentDto::getLessons).flatMap(Collection::stream)

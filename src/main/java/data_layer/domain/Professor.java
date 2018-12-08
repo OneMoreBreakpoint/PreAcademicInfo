@@ -1,7 +1,8 @@
 package data_layer.domain;
 
-import bussiness_layer.dto.ProfessorDto;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
@@ -10,6 +11,7 @@ import java.util.List;
 
 @Entity(name = "Professors")
 @Data
+@NoArgsConstructor
 public class Professor extends User {
 
     @Size(max = 50)
@@ -20,18 +22,12 @@ public class Professor extends User {
     @OneToMany(mappedBy = "professor")
     private List<Teaching> teachingList;
 
-
-    @Override
-    public int hashCode() {
-        return super.getUsername().hashCode();
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (!(o instanceof ProfessorDto)) {
-            return false;
-        }
-        ProfessorDto that = (ProfessorDto) o;
-        return this.getUsername().equals(that.getUsername());
+    @Builder
+    public Professor(String username, String encryptedPassword, String firstName, String lastName, String email,
+                     String webPage, String pathToProfilePhoto, List<Teaching> teachingList) {
+        super(username, encryptedPassword, firstName, lastName, email);
+        this.webPage = webPage;
+        this.pathToProfilePhoto = pathToProfilePhoto;
+        this.teachingList = teachingList;
     }
 }

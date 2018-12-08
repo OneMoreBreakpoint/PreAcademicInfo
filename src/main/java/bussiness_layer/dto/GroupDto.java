@@ -1,16 +1,18 @@
 package bussiness_layer.dto;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 
-@Data
+@Getter
+@Setter
+@Builder
 @NoArgsConstructor
-public class GroupDto implements Comparable<GroupDto>{
+@AllArgsConstructor
+public class GroupDto implements Comparable<GroupDto> {
     private Short id;
     private String code;
 
-    public GroupDto(String code){
+    public GroupDto(String code) {
         this.code = code;
     }
 
@@ -27,10 +29,10 @@ public class GroupDto implements Comparable<GroupDto>{
 
     @Override
     public boolean equals(Object obj) {
-        if(!(obj instanceof GroupDto)){
+        if (!(obj instanceof GroupDto)) {
             return false;
         }
-        GroupDto that = (GroupDto)obj;
+        GroupDto that = (GroupDto) obj;
         return this.code.equals(that.code);
     }
 
