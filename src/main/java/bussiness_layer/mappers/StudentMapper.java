@@ -5,7 +5,7 @@ import data_layer.domain.Student;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
-public class StudentDtoMapper {
+public class StudentMapper {
 
     public static Student toEntity(StudentDto dto) {
         Student entity = new Student();
@@ -16,7 +16,7 @@ public class StudentDtoMapper {
         entity.setFathersInitials(dto.getFathersInitials());
         entity.setPathToProfilePhoto(dto.getPathToProfilePhoto());
         entity.setNotifiedByEmail(dto.isNotifiedByEmail());
-        entity.setGroup(GroupDtoMapper.toEntity(dto.getGroup()));
+        entity.setGroup(GroupMapper.toEntity(dto.getGroup()));
         return entity;
     }
 
@@ -30,7 +30,7 @@ public class StudentDtoMapper {
         dto.setFathersInitials(entity.getFathersInitials());
         dto.setPathToProfilePhoto(entity.getPathToProfilePhoto());
         dto.setNotifiedByEmail(entity.isNotifiedByEmail());
-        dto.setGroup(GroupDtoMapper.toDto(entity.getGroup()));
+        dto.setGroup(GroupMapper.toDto(entity.getGroup()));
         return dto;
     }
 }

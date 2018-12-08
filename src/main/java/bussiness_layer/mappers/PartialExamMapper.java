@@ -5,7 +5,7 @@ import data_layer.domain.PartialExam;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
-public class PartialExamDtoMapper {
+public class PartialExamMapper {
 
     public static PartialExam toEntity(PartialExamDto examDTO) {
         PartialExam entity = new PartialExam();

@@ -5,7 +5,7 @@ import data_layer.domain.Group;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
-public class GroupDtoMapper {
+public class GroupMapper {
     static Group toEntity(GroupDto dto) {
         Group entity = new Group();
         entity.setId(dto.getId());

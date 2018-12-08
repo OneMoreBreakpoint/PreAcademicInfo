@@ -5,7 +5,7 @@ import data_layer.domain.Lesson;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
-public class LessonDtoMapper {
+public class LessonMapper {
 
     public static Lesson toEntity(LessonDto lessonDTO) {
         Lesson entity = new Lesson();

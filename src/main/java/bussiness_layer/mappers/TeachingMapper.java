@@ -8,7 +8,7 @@ import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 @UtilityClass
-public class TeachingDtoMapper {
+public class TeachingMapper {
 
     public static Teaching toEntity(TeachingDto dto) {
         //TODO:
@@ -18,13 +18,13 @@ public class TeachingDtoMapper {
     public static TeachingDto toDto(Teaching entity) {
         TeachingDto dto = new TeachingDto();
         dto.setId(entity.getId());
-        dto.setProfessor(ProfessorDtoMapper.toDto(entity.getProfessor()));
-        dto.setSeminarGroups(entity.getSeminarGroups().stream().map(GroupDtoMapper::toDto).collect(Collectors.toSet()));
-        dto.setLaboratoryGroups(entity.getLaboratoryGroups().stream().map(GroupDtoMapper::toDto).collect(Collectors.toSet()));
+        dto.setProfessor(ProfessorMapper.toDto(entity.getProfessor()));
+        dto.setSeminarGroups(entity.getSeminarGroups().stream().map(GroupMapper::toDto).collect(Collectors.toSet()));
+        dto.setLaboratoryGroups(entity.getLaboratoryGroups().stream().map(GroupMapper::toDto).collect(Collectors.toSet()));
         dto.setAllGroups(new TreeSet<>());
         dto.getAllGroups().addAll(dto.getSeminarGroups());
         dto.getAllGroups().addAll(dto.getLaboratoryGroups());
-        dto.setCourse(CourseDtoMapper.toDto(entity.getCourse()));
+        dto.setCourse(CourseMapper.toDto(entity.getCourse()));
         return dto;
     }
 }

@@ -3,7 +3,6 @@ package bussiness_layer.dto;
 import data_layer.domain.PartialExam;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 

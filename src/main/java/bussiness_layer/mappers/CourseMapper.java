@@ -5,7 +5,7 @@ import data_layer.domain.Course;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
-public class CourseDtoMapper {
+public class CourseMapper {
 
     public static Course toEntity(CourseDto dto) {
         Course entity = new Course();
@@ -13,7 +13,7 @@ public class CourseDtoMapper {
         entity.setCode(dto.getCode());
         entity.setNrOfSeminars(dto.getNrOfSeminars());
         entity.setNrOfLaboratories(dto.getNrOfLaboratories());
-        entity.setCoordinator(ProfessorDtoMapper.toEntity(dto.getCoordinator()));
+        entity.setCoordinator(ProfessorMapper.toEntity(dto.getCoordinator()));
         return entity;
     }
 
@@ -23,7 +23,7 @@ public class CourseDtoMapper {
         dto.setCode(entity.getCode());
         dto.setNrOfSeminars(entity.getNrOfSeminars());
         dto.setNrOfLaboratories(entity.getNrOfLaboratories());
-        dto.setCoordinator(ProfessorDtoMapper.toDto(entity.getCoordinator()));
+        dto.setCoordinator(ProfessorMapper.toDto(entity.getCoordinator()));
         return dto;
     }
 }

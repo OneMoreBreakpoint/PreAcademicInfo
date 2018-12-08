@@ -1,9 +1,9 @@
 package bussiness_layer.services;
 
 import bussiness_layer.dto.*;
-import bussiness_layer.mappers.EnrollmentDtoMapper;
-import bussiness_layer.mappers.GroupDtoMapper;
-import bussiness_layer.mappers.TeachingDtoMapper;
+import bussiness_layer.mappers.EnrollmentMapper;
+import bussiness_layer.mappers.GroupMapper;
+import bussiness_layer.mappers.TeachingMapper;
 import bussiness_layer.utils.Authorizer;
 import data_layer.domain.Enrollment;
 import data_layer.domain.Lesson;
@@ -53,7 +53,7 @@ public class ProfessorService implements IProfessorService {
         if (teaching == null) {
             throw new AccessForbiddenException();
         }
-        TeachingDto teachingDTO = TeachingDtoMapper.toDto(teaching);
+        TeachingDto teachingDTO = TeachingMapper.toDto(teaching);
         if (!Authorizer.teachingHasSemRightsOverGroup(teachingDTO, groupCode)
                 && !Authorizer.teachingHasLabRightsOverGroup(teachingDTO, groupCode)
                 && !Authorizer.teachingHasCoordinatorRights(teachingDTO)) {
@@ -63,7 +63,7 @@ public class ProfessorService implements IProfessorService {
         if (enrollments.size() == 0) {
             throw new ResourceNotFoundException();
         }
-        List<EnrollmentDto> enrollmentDTOS = enrollments.stream().map(EnrollmentDtoMapper::toDto).collect(Collectors.toList());
+        List<EnrollmentDto> enrollmentDTOS = enrollments.stream().map(EnrollmentMapper::toDto).collect(Collectors.toList());
         stripUnauthorizedReadLessonsAndExams(enrollmentDTOS, teachingDTO, groupCode);
         return enrollmentDTOS;
     }
@@ -74,7 +74,7 @@ public class ProfessorService implements IProfessorService {
         if (teaching == null) {
             throw new ResourceNotFoundException();
         }
-        TeachingDto teachingDTO = TeachingDtoMapper.toDto(teaching);
+        TeachingDto teachingDTO = TeachingMapper.toDto(teaching);
         if (Authorizer.teachingHasCoordinatorRights(teachingDTO)) { //coordinator can view all groups
             addAllGroupsToTeachingForCourse(teachingDTO, courseCode);
         }
@@ -87,7 +87,7 @@ public class ProfessorService implements IProfessorService {
             return;
         }
         List<Enrollment> enrollmentEntities = enrollmentsFromClient.stream()
-                .map(EnrollmentDtoMapper::toEntity).collect(Collectors.toList());
+                .map(EnrollmentMapper::toEntity).collect(Collectors.toList());
         List<Lesson> lessonsFromClient = enrollmentEntities.stream().map(Enrollment::getLessons)
                 .flatMap(Collection::stream).collect(Collectors.toList());
         List<PartialExam> examsFromClient = enrollmentEntities.stream().map(Enrollment::getPartialExams)
@@ -146,7 +146,7 @@ public class ProfessorService implements IProfessorService {
 
     private void addAllGroupsToTeachingForCourse(TeachingDto teachingDTO, String courseCode) {
         Set<GroupDto> allGroupsTakingThisCourse = groupRepository.findByCourse(courseCode)
-                .stream().map(GroupDtoMapper::toDto).collect(Collectors.toSet());
+                .stream().map(GroupMapper::toDto).collect(Collectors.toSet());
         teachingDTO.getAllGroups().addAll(allGroupsTakingThisCourse);
     }
 
