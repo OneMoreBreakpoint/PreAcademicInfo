@@ -9,6 +9,8 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Size;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -19,7 +21,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Student extends User implements Comparable<Student> {
+public class Student extends User {
 
     private Integer registrationNr;
 
@@ -36,11 +38,16 @@ public class Student extends User implements Comparable<Student> {
 
     private boolean notifiedByEmail;
 
-    @Override
-    public int compareTo(Student o) {
-        String thisfullName = this.getLastName() + " " + this.getFirstName();
-        String thatFullName = o.getLastName() + " " + o.getFirstName();
-        return thisfullName.compareTo(thatFullName);
+    @Builder
+    public Student(String username, String encryptedPassword, String firstName, String lastName, String email, Integer registrationNr,
+                   String fathersInitials, Short groupNr, String pathToProfilePhoto, List<Enrollment> enrollments, boolean notifiedByEmail) {
+        super(username, encryptedPassword, firstName, lastName, email);
+        this.registrationNr = registrationNr;
+        this.fathersInitials = fathersInitials;
+        this.groupNr = groupNr;
+        this.pathToProfilePhoto = pathToProfilePhoto;
+        this.enrollments = enrollments;
+        this.notifiedByEmail = notifiedByEmail;
     }
 
 }

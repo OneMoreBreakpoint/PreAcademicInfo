@@ -11,6 +11,7 @@ import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -43,6 +44,19 @@ public abstract class User {
 
     @NotNull
     private String email;
+
+    public User() {
+    }
+
+
+    public User(String username, String encryptedPassword,
+                String firstName, String lastName, String email) {
+        this.username = username;
+        this.encryptedPassword = encryptedPassword;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+    }
 
 }
 
