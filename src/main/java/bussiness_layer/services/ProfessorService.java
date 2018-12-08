@@ -1,9 +1,17 @@
 package bussiness_layer.services;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import bussiness_layer.dto.EnrollmentDto;
 import bussiness_layer.dto.GroupDto;
 import bussiness_layer.dto.LessonDto;
 import bussiness_layer.dto.ProfessorRightDto;
+import bussiness_layer.dto.TaughtCourseDto;
 import bussiness_layer.mappers.EnrollmentMapper;
 import bussiness_layer.mappers.GroupMapper;
 import bussiness_layer.mappers.ProfessorRightMapper;
@@ -11,17 +19,15 @@ import bussiness_layer.utils.LessonDtoValidator;
 import data_layer.domain.Enrollment;
 import data_layer.domain.Lesson;
 import data_layer.domain.ProfessorRight;
-import data_layer.repositories.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import data_layer.repositories.ICourseRepository;
+import data_layer.repositories.IEnrollmentRepository;
+import data_layer.repositories.IGroupRepository;
+import data_layer.repositories.ILessonRepository;
+import data_layer.repositories.IProfessorRightRepository;
 import utils.LessonType;
 import utils.RightType;
 import utils.exceptions.AccessForbiddenException;
 import utils.exceptions.ResourceNotFoundException;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -98,25 +104,40 @@ public class ProfessorService implements IProfessorService {
         lessonRepository.flush();
     }
 
-    private void stripEnrollmentsOfUnauthorizedLessons(List<EnrollmentDto> enrollmentDtos, List<ProfessorRight> rights) {
-        enrollmentDtos.forEach(enrollmentDto -> {
-            List<LessonDto> filteredLessons = enrollmentDto.getLessons().stream()
-                    .filter(lessonDto -> {
-                        boolean crtProfCanReadLesson = rights.stream()
-                                .anyMatch(right -> right.getLessonType() == lessonDto.getType() && right.getRightType() == RightType.READ);
-                        boolean crtProfCanWriteLesson = rights.stream()
-                                .anyMatch(right -> right.getLessonType() == lessonDto.getType() && right.getRightType() == RightType.WRITE);
-                        if (crtProfCanReadLesson) {
-                            lessonDto.setRightType(RightType.READ);
-                        }
-                        if (crtProfCanWriteLesson) {
-                            lessonDto.setRightType(RightType.WRITE); //set to higher right
-                        }
-                        return crtProfCanReadLesson;
-                    })
-                    .collect(Collectors.toList());
-            enrollmentDto.setLessons(filteredLessons);
-        });
+    @Override
+    public List<TaughtCourseDto> getRelatedCourses(String profUsername) {
+        Professor professor = professorRepository.findByUsername(profUsername);
+        if (professor == null) {
+            throw new ResourceNotFoundException();
+        }
+        List<Teaching> teachings = teachingRepository.findByProfessor(professor);
+        return TeachingMapper.toDtoList(Objects.requireNonNull(teachings));
     }
 
-}
+    private void stripUnauthorizedReadLessonsAndExams(List<EnrollmentDto> enrollments, TeachingDto teaching, String groupCode) {
+        enrollments.forEach(enrollment -> {
+            //keep only readable lessons and exams
+            List<LessonDto> authLessons = enrollment.getLessons().stream()
+                    .filter(lesson -> Authorizer.teachingCanReadLesson(teaching, groupCode, lesson))
+            private void stripEnrollmentsOfUnauthorizedLessons (List < EnrollmentDto > enrollmentDtos, List < ProfessorRight > rights){
+                enrollmentDtos.forEach(enrollmentDto -> {
+                    List<LessonDto> filteredLessons = enrollmentDto.getLessons().stream()
+                            .filter(lessonDto -> {
+                                boolean crtProfCanReadLesson = rights.stream()
+                                        .anyMatch(right -> right.getLessonType() == lessonDto.getType() && right.getRightType() == RightType.READ);
+                                boolean crtProfCanWriteLesson = rights.stream()
+                                        .anyMatch(right -> right.getLessonType() == lessonDto.getType() && right.getRightType() == RightType.WRITE);
+                                if (crtProfCanReadLesson) {
+                                    lessonDto.setRightType(RightType.READ);
+                                }
+                                if (crtProfCanWriteLesson) {
+                                    lessonDto.setRightType(RightType.WRITE); //set to higher right
+                                }
+                                return crtProfCanReadLesson;
+                            })
+                            .collect(Collectors.toList());
+                    enrollmentDto.setLessons(filteredLessons);
+                });
+            }
+
+        }

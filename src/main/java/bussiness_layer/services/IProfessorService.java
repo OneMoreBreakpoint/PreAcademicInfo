@@ -1,11 +1,12 @@
 package bussiness_layer.services;
 
+import java.util.List;
+
 import bussiness_layer.dto.EnrollmentDto;
 import bussiness_layer.dto.GroupDto;
 import bussiness_layer.dto.LessonDto;
 import bussiness_layer.dto.ProfessorRightDto;
-
-import java.util.List;
+import bussiness_layer.dto.TaughtCourseDto;
 
 public interface IProfessorService {
     /**
@@ -20,5 +21,7 @@ public interface IProfessorService {
     List<GroupDto> getGroups(String profUsername, String courseCode);
 
     void updateLessons(String profUsername, List<LessonDto> lessonDtos);
+
+    List<TaughtCourseDto> getRelatedCourses(String profUsername);
 
 }
