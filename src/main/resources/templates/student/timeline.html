@@ -6,14 +6,32 @@
     <title>PreAcademic Info</title>
     <link rel="stylesheet" th:href="@{/css/common.css}"/>
     <link rel="stylesheet" th:href="@{/css/fragments/header.css}"/>
+    <link rel="stylesheet" th:href="@{/css/fragments/modals.css}"/>
+    <link rel="stylesheet" th:href="@{/css/fragments/timeline.css}"/>
+    <link rel="stylesheet" th:href="@{/css/professor/timeline.css}"/>
+    <script th:inline="javascript">
+        let enrollments = /*[[${enrollments}]]*/ '';
+    </script>
     <script th:src="@{/dependencies/jquery-3.3.1.min.js}"></script>
     <script th:src="@{/js/common.js}"></script>
     <script th:src="@{/js/fragments/lang-picker.js}"></script>
+    <script th:src="@{/js/fragments/modals.js}"></script>
+    <script th:src="@{/js/student/timeline.js}"></script>
     <script defer src="https://use.fontawesome.com/releases/v5.5.0/js/all.js"
             integrity="sha384-GqVMZRt5Gn7tB9D9q7ONtcp4gtHIUEW/yG7h98J7IpE3kpi+srfFyyB/04OV6pG0"
             crossorigin="anonymous"></script>
 </head>
 <body>
 <div th:replace="fragments/header :: header(true)"></div>
+<div class="timeline" id="timeline">
+    <table>
+        <tr th:replace="/fragments/timelineStudent :: t-head-row (${enrollments[0]})"></tr>
+        <tbody>
+        <th:block th:each="enrl : ${enrollments}">
+            <tr th:replace="/fragments/timelineStudent :: t-data-row (${enrl},${auth})"></tr>
+        </th:block>
+        </tbody>
+    </table>
+</div>
 </body>
 </html>
