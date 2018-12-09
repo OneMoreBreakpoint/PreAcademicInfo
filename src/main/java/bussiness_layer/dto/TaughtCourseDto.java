@@ -16,8 +16,6 @@ public class TaughtCourseDto {
     @NotNull
     CourseDto courseDto;
 
-    Set<GroupDto> teachingsGroupLaboratory;
-
-    Set<GroupDto> teachingsGroupSeminar;
+    Set<GroupDto> groups;
 
 }

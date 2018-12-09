@@ -110,7 +110,14 @@ public class ProfessorService implements IProfessorService {
         if (professor == null) {
             throw new ResourceNotFoundException();
         }
-        List<Teaching> teachings = teachingRepository.findByProfessor(professor);
+        List<Teaching> teachings = teachingRepository.findByProfessorOrderByCourseAsc(professor);
+        teachings.forEach(
+                teaching -> {
+                    if (professor.equals(teaching.getCourse().getCoordinator())) {
+                        teaching.setLaboratoryGroups(groupRepository.findByCourse(teaching.getCourse().getCode()));
+                    }
+                }
+        );
         return TeachingMapper.toDtoList(Objects.requireNonNull(teachings));
     }
 
