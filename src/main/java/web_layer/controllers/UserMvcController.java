@@ -35,4 +35,11 @@ public class UserMvcController {
             return "redirect:/professor/dashboard";
         }
     }
+
+//    @GetMapping("/")
+//    public String getProfileSettings(Principal crtUser){
+//        UserDto user = userService.getUserByUsername(crtUser.getName());
+//        return "redirect:/profile_settings";
+//    }
+
 }

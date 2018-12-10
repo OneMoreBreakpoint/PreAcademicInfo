@@ -37,4 +37,9 @@ public class ProfessorMvcController {
         mv.addObject("crtGroupCode", group);
         return mv;
     }
+
+    @GetMapping("/dashboard/profile_settings")
+    public ModelAndView getProfileSettingsPage() {
+        return new ModelAndView("/professor/profile_settings");
+    }
 }
