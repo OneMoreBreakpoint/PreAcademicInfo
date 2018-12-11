@@ -12,8 +12,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import bussiness_layer.dto.EnrollmentDto;
 import bussiness_layer.dto.GroupDto;
+import bussiness_layer.dto.ProfessorCourseDto;
 import bussiness_layer.dto.ProfessorRightDto;
-import bussiness_layer.dto.TaughtCourseDto;
 import bussiness_layer.services.IProfessorService;
 import web_layer.utils.ViewHelper;
 
@@ -26,8 +26,8 @@ public class ProfessorMvcController {
 
     @GetMapping("/dashboard")
     public ModelAndView getDashboardPage(Principal crtUser) {
-        List<TaughtCourseDto> taughtCourses = service.getRelatedCourses(crtUser.getName());
-        return new ModelAndView("/professor/dashboard").addObject("courses", taughtCourses);
+        List<ProfessorCourseDto> professorCourses = service.getRelatedCourses(crtUser.getName());
+        return new ModelAndView("/professor/dashboard").addObject("courses", professorCourses);
     }
 
     @GetMapping("/timeline")

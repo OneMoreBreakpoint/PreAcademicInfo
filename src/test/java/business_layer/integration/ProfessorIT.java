@@ -1,5 +1,14 @@
 package business_layer.integration;
 
+import java.util.Arrays;
+import java.util.List;
+
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.ExpectedException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
+
 import business_layer.BaseIntegrationTest;
 import bussiness_layer.dto.EnrollmentDto;
 import bussiness_layer.dto.LessonDto;
@@ -7,20 +16,14 @@ import bussiness_layer.dto.ProfessorRightDto;
 import bussiness_layer.services.IProfessorService;
 import data_layer.domain.Enrollment;
 import factory.LessonFactory;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 import utils.LessonType;
 import utils.TestConstants;
 import utils.exceptions.AccessForbiddenException;
 import utils.exceptions.ResourceNotFoundException;
 
-import java.util.Arrays;
-import java.util.List;
-
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 public class ProfessorIT extends BaseIntegrationTest {
 

@@ -10,14 +10,16 @@ import org.springframework.transaction.annotation.Transactional;
 import bussiness_layer.dto.EnrollmentDto;
 import bussiness_layer.dto.GroupDto;
 import bussiness_layer.dto.LessonDto;
+import bussiness_layer.dto.ProfessorCourseDto;
 import bussiness_layer.dto.ProfessorRightDto;
-import bussiness_layer.dto.TaughtCourseDto;
 import bussiness_layer.mappers.EnrollmentMapper;
 import bussiness_layer.mappers.GroupMapper;
 import bussiness_layer.mappers.ProfessorRightMapper;
 import bussiness_layer.utils.LessonDtoValidator;
 import data_layer.domain.Enrollment;
 import data_layer.domain.Lesson;
+import data_layer.domain.Professor;
+import data_layer.domain.ProfessorCourse;
 import data_layer.domain.ProfessorRight;
 import data_layer.repositories.ICourseRepository;
 import data_layer.repositories.IEnrollmentRepository;
@@ -105,12 +107,12 @@ public class ProfessorService implements IProfessorService {
     }
 
     @Override
-    public List<TaughtCourseDto> getRelatedCourses(String profUsername) {
+    public List<ProfessorCourseDto> getRelatedCourses(String profUsername) {
         Professor professor = professorRepository.findByUsername(profUsername);
         if (professor == null) {
             throw new ResourceNotFoundException();
         }
-        List<Teaching> teachings = teachingRepository.findByProfessorOrderByCourseAsc(professor);
+        List<ProfessorCourse> teachings = professorCourseRepository.findByProfessorOrderByCourseAsc(professor);
         teachings.forEach(
                 teaching -> {
                     if (professor.equals(teaching.getCourse().getCoordinator())) {

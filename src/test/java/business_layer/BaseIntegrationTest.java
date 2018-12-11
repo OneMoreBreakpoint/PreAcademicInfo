@@ -1,19 +1,37 @@
 package business_layer;
 
-import bd_config.H2TestConfiguration;
-import data_layer.domain.*;
-import data_layer.repositories.*;
-import factory.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import bd_config.H2TestConfiguration;
+import data_layer.domain.Course;
+import data_layer.domain.Enrollment;
+import data_layer.domain.Group;
+import data_layer.domain.Lesson;
+import data_layer.domain.Professor;
+import data_layer.domain.ProfessorRight;
+import data_layer.domain.Student;
+import data_layer.domain.User;
+import data_layer.repositories.ICourseRepository;
+import data_layer.repositories.IEnrollmentRepository;
+import data_layer.repositories.IGroupRepository;
+import data_layer.repositories.ILessonRepository;
+import data_layer.repositories.IProfessorRightRepository;
+import data_layer.repositories.IUserRepository;
+import factory.CourseFactory;
+import factory.GroupFactory;
+import factory.LessonFactory;
+import factory.ProfessorFactory;
+import factory.ProfessorRightFactory;
+import factory.StudentFactory;
 import utils.LessonType;
 import utils.RightType;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * Utilitary class for tests.

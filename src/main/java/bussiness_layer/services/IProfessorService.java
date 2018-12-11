@@ -5,8 +5,8 @@ import java.util.List;
 import bussiness_layer.dto.EnrollmentDto;
 import bussiness_layer.dto.GroupDto;
 import bussiness_layer.dto.LessonDto;
+import bussiness_layer.dto.ProfessorCourseDto;
 import bussiness_layer.dto.ProfessorRightDto;
-import bussiness_layer.dto.TaughtCourseDto;
 
 public interface IProfessorService {
     /**
@@ -22,6 +22,15 @@ public interface IProfessorService {
 
     void updateLessons(String profUsername, List<LessonDto> lessonDtos);
 
-    List<TaughtCourseDto> getRelatedCourses(String profUsername);
+    /**
+     * Return a list with all courses taught by a specific professor and the groups linked with, in dto format
+     * For the courses coordinated by the given professor it would be returned a list of all groups that have students
+     * enrolled at the respective courses
+     *
+     * @param profUsername
+     * @return dto list
+     * @throws utils.exceptions.ResourceNotFoundException if the given professor doesn't exist in database
+     */
+    List<ProfessorCourseDto> getRelatedCourses(String profUsername);
 
 }
