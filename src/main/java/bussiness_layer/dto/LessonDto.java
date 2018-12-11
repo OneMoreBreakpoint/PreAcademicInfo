@@ -1,5 +1,7 @@
 package bussiness_layer.dto;
 
+import java.util.Objects;
+
 import data_layer.domain.Lesson;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -36,4 +38,21 @@ public class LessonDto {
 
     private boolean readonly;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        LessonDto lessonDto = (LessonDto) o;
+        return Objects.equals(nr, lessonDto.nr) &&
+                type == lessonDto.type;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(nr, type);
+    }
 }

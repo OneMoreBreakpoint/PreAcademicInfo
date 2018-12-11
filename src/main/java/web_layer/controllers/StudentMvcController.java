@@ -2,6 +2,7 @@ package web_layer.controllers;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.SortedSet;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,10 +12,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import bussiness_layer.dto.EnrollmentDto;
+import bussiness_layer.dto.LessonDto;
+import bussiness_layer.dto.PartialExamDto;
 import bussiness_layer.dto.TeachingDto;
 import bussiness_layer.services.IProfessorService;
 import bussiness_layer.services.IStudentService;
 import bussiness_layer.utils.Authorizer;
+import bussiness_layer.utils.TemplateLists;
+import data_layer.domain.Lesson;
+import data_layer.domain.PartialExam;
 
 @Controller
 @RequestMapping("/student")
@@ -26,11 +32,14 @@ public class StudentMvcController {
     public ModelAndView getTimelinePage(Principal crtUser) {
         ModelAndView mv = new ModelAndView("/student/timeline");
         List<EnrollmentDto> enrollments = service.getEnrollments(crtUser.getName());
-        enrollments.forEach(x-> System.out.println(x.getStudent().getUsername() +" "+
-                x.getStudent().getFirstName()+" "+x.getCourse().getCode() +" "+x.getCourse().getName() +
-                " "+x.getLessons().get(1).getId()));
+        SortedSet<LessonDto> lessonsSet = service.getLessonsTemplateSet(crtUser.getName());
+        SortedSet<PartialExamDto> partialExamSortedSet = service.getExamsTemplateSet(crtUser.getName());
+
+        mv.addObject("templateLists", TemplateLists.class);
         mv.addObject("enrollments", enrollments);
-        mv.addObject("auth", Authorizer.class);
+        mv.addObject("lessonsTemplateSet", lessonsSet);
+        mv.addObject("partialExamTemplateSet", partialExamSortedSet);
+
         return mv;
     }
 }

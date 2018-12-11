@@ -1,5 +1,7 @@
 package bussiness_layer.dto;
 
+import java.util.Objects;
+
 import data_layer.domain.PartialExam;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,7 +21,7 @@ public class PartialExamDto {
 
     @Min(1)
     @Max(4)
-    private byte nr;
+    private Byte nr;
 
     @Max(10)
     @Min(1)
@@ -29,4 +31,21 @@ public class PartialExamDto {
 
     private PartialExam.PartialExamType type;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        PartialExamDto that = (PartialExamDto) o;
+        return nr.equals(that.nr) &&
+                type == that.type;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(nr, type);
+    }
 }

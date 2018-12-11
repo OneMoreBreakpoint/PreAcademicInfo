@@ -163,33 +163,3 @@ function hasMinimumAttendance(seminarAttendance, laboratoryAttendance) {
 function hasMinimumGrade(grade) {
     return grade >= 5;
 }
-
-function getMaxNrOfLabs() {
-    let maxLabs = 0;
-    for (let key in enrollments) {
-        if (enrollments[key].course.nrOfLaboratories > maxLabs) {
-            maxLabs = enrollments[key].course.nrOfLaboratories
-        }
-    return maxLabs;
-    }
-}
-
-function getMaxNrOfSeminars() {
-    let maxSem = 0;
-    for (let key in enrollments) {
-        if (enrollments[key].course.nrOfSeminars > maxSem) {
-            maxSem = enrollments[key].course.nrOfLaboratories
-        }
-        return maxSem;
-    }
-}
-
-function getMaxNrOfPartials() {
-    let maxPartials = 0;
-    for (let key in enrollments) {
-        if (enrollments[key].partialExams.length > maxPartials) {
-            maxPartials = enrollments[key].partialExams.length
-        }
-        return maxPartials;
-    }
-}
