@@ -54,7 +54,7 @@ public class StudentService implements IStudentService {
                 return 1;
             }
         });
-        enrollmentDtos.forEach(enrollmentDto -> enrollmentDto.getLessons().forEach(lessonDto -> lessonDtosTemplateSet.add(lessonDto)));
+        enrollmentDtos.forEach(enrollmentDto -> lessonDtosTemplateSet.addAll(enrollmentDto.getLessons()));
         return lessonDtosTemplateSet;
     }
 
@@ -83,7 +83,7 @@ public class StudentService implements IStudentService {
                 return 1;
             }
         });
-        enrollmentDtos.forEach(enrollmentDto -> enrollmentDto.getPartialExams().forEach(partialExamDto -> lessonsTemplateSet.add(partialExamDto)));
+        enrollmentDtos.forEach(enrollmentDto -> lessonsTemplateSet.addAll(enrollmentDto.getPartialExams()));
         return lessonsTemplateSet;
     }
 

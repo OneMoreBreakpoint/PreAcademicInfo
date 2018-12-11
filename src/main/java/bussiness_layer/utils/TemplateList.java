@@ -5,10 +5,8 @@ import java.util.stream.Collectors;
 
 import bussiness_layer.dto.LessonDto;
 import bussiness_layer.dto.PartialExamDto;
-import data_layer.domain.Lesson;
-import data_layer.domain.PartialExam;
 
-public class TemplateLists {
+public class TemplateList {
     public static LessonDto getRealLessonFromTemplate(List<LessonDto> realLessons, LessonDto templateLesson) {
         List<LessonDto> result = realLessons.stream().filter(lesson ->
                 (lesson.getType().equals(templateLesson.getType())) && (lesson.getNr().equals(templateLesson.getNr()))).collect(Collectors.toList());

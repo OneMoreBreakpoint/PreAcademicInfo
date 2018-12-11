@@ -11,7 +11,7 @@ public class CourseMapper {
         Course entity = new Course();
         entity.setId(dto.getId());
         entity.setCode(dto.getCode());
-		entity.setName(dto.getName());
+        entity.setName(dto.getName());
         entity.setNrOfSeminars(dto.getNrOfSeminars());
         entity.setNrOfLaboratories(dto.getNrOfLaboratories());
         entity.setCoordinator(ProfessorMapper.toEntity(dto.getCoordinator()));
@@ -22,7 +22,7 @@ public class CourseMapper {
         CourseDto dto = new CourseDto();
         dto.setId(entity.getId());
         dto.setCode(entity.getCode());
-		dto.setName(entity.getName());
+        dto.setName(entity.getName());
         dto.setNrOfSeminars(entity.getNrOfSeminars());
         dto.setNrOfLaboratories(entity.getNrOfLaboratories());
         dto.setCoordinator(ProfessorMapper.toDto(entity.getCoordinator()));

@@ -25,10 +25,10 @@
 <div th:replace="fragments/header :: header(true)"></div>
 <div class="timeline" id="timeline">
     <table>
-        <tr th:replace="/fragments/student-timeline :: t-head-row (${lessonsTemplateSet},${partialExamTemplateSet})"></tr>
+        <tr th:replace="/fragments/student-timeline :: t-head-row (${lessonsTemplateSet},${partialExamsTemplateSet})"></tr>
         <tbody>
         <th:block th:each="enrl : ${enrollments}">
-            <tr th:replace="/fragments/student-timeline :: t-data-row (${enrl},${lessonsTemplateSet},${partialExamTemplateSet}, ${templateLists})"></tr>
+            <tr th:replace="/fragments/student-timeline :: t-data-row (${enrl},${lessonsTemplateSet},${partialExamsTemplateSet}, ${templateList})"></tr>
         </th:block>
         </tbody>
     </table>
