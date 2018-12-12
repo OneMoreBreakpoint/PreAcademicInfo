@@ -23,7 +23,7 @@ public class GroupMapper {
         return dto;
     }
 
-    public static List<GroupDto> toDtoList(List<Group> groups){
+    public static List<GroupDto> toDtoList(List<Group> groups) {
         return groups.stream()
                 .map(GroupMapper::toDto)
                 .collect(Collectors.toList());

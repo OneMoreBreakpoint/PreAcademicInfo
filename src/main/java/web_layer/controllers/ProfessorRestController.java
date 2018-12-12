@@ -17,10 +17,14 @@ import java.util.ArrayList;
 public class ProfessorRestController {
 
     @Autowired
-    private IProfessorService service;
+    private final IProfessorService service;
+
+    public ProfessorRestController(IProfessorService service) {
+        this.service = service;
+    }
 
     @PutMapping("/lessons")
-    public ResponseEntity<?> putEnrollments(@RequestBody ArrayList<LessonDto> lessons, Principal crtUser) {
+    public ResponseEntity<?> putLessons(@RequestBody ArrayList<LessonDto> lessons, Principal crtUser) {
         service.updateLessons(crtUser.getName(), lessons);
         return ResponseEntity.ok(null);
     }

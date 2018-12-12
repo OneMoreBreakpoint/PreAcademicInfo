@@ -19,6 +19,7 @@ import utils.exceptions.ExceptionMessages;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AuthenticationService implements AuthenticationManager, UserDetailsService {
@@ -30,12 +31,12 @@ public class AuthenticationService implements AuthenticationManager, UserDetails
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         String username = authentication.getPrincipal().toString();
         String password = authentication.getCredentials().toString();
-        User user = userRepo.findByUsername(username);
-        if (user == null || !BCrypt.checkpw(password, user.getEncryptedPassword())) {
+        Optional<User> user = userRepo.findByUsername(username);
+        if (!user.isPresent() || !BCrypt.checkpw(password, user.get().getEncryptedPassword())) {
             throw new BadCredentialsException(ExceptionMessages.INVALID_USERNAME_OR_PASSWORD);
         }
         List<SimpleGrantedAuthority> grantedAuthorities = new ArrayList<>();
-        List<String> userRoles = Arrays.asList(user.getUserRole());
+        List<String> userRoles = Arrays.asList(user.get().getUserRole());
         userRoles.forEach(userRole -> {
             grantedAuthorities.add(new SimpleGrantedAuthority(userRole));
         });
@@ -44,10 +45,8 @@ public class AuthenticationService implements AuthenticationManager, UserDetails
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepo.findByUsername(username);
-        if (user == null) {
-            throw new UsernameNotFoundException(ExceptionMessages.INVALID_USERNAME);
-        }
+        User user = userRepo.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException(ExceptionMessages.INVALID_USERNAME));
         org.springframework.security.core.userdetails.User.UserBuilder builder;
         builder = org.springframework.security.core.userdetails.User.withUsername(user.getUsername());
         builder.password(user.getEncryptedPassword());

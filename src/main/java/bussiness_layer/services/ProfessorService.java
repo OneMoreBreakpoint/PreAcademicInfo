@@ -89,7 +89,7 @@ public class ProfessorService implements IProfessorService {
                     profUsername, courseCode, groupCode, lesson.getType(), RightType.WRITE)
                     .orElseThrow(AccessForbiddenException::new);
             //update only the fields that matter
-            if(lesson.getType() == LessonType.SEMINAR || lesson.getType() == LessonType.LABORATORY){
+            if (lesson.getType() == LessonType.SEMINAR || lesson.getType() == LessonType.LABORATORY) {
                 lesson.setBonus(lessonDto.getBonus());
             }
             lesson.setAttended(lessonDto.isAttended());

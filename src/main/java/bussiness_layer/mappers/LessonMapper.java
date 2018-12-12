@@ -32,14 +32,14 @@ public class LessonMapper {
         return lessonDTO;
     }
 
-    public static List<LessonDto> toDtoList(List<Lesson> lessons){
+    public static List<LessonDto> toDtoList(List<Lesson> lessons) {
         return lessons.stream()
                 .map(LessonMapper::toDto)
                 .sorted()
                 .collect(Collectors.toList());
     }
 
-    public static List<Lesson> toEntityList(List<LessonDto> dtos){
+    public static List<Lesson> toEntityList(List<LessonDto> dtos) {
         return dtos.stream()
                 .map(LessonMapper::toEntity)
                 .sorted()

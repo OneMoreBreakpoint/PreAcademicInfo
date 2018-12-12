@@ -10,12 +10,12 @@ import java.util.stream.Collectors;
 @UtilityClass
 public class ProfessorRightMapper {
 
-    public static ProfessorRight toEntity(ProfessorRightDto dto){
+    public static ProfessorRight toEntity(ProfessorRightDto dto) {
         return ProfessorRight.builder()
                 .build();
     }
 
-    public static ProfessorRightDto toDto(ProfessorRight entity){
+    public static ProfessorRightDto toDto(ProfessorRight entity) {
         return ProfessorRightDto.builder()
                 .course(CourseMapper.toDto(entity.getCourse()))
                 .group(GroupMapper.toDto(entity.getGroup()))
@@ -24,7 +24,7 @@ public class ProfessorRightMapper {
                 .build();
     }
 
-    public static List<ProfessorRightDto> toDtoList(List<ProfessorRight> professorRights){
+    public static List<ProfessorRightDto> toDtoList(List<ProfessorRight> professorRights) {
         return professorRights.stream()
                 .map(ProfessorRightMapper::toDto)
                 .collect(Collectors.toList());

@@ -6,7 +6,6 @@ import utils.RightType;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.Set;
 
 @Entity(name = "ProfessorRights")
 @Getter

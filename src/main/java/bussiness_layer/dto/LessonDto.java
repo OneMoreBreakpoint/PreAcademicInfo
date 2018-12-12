@@ -13,7 +13,7 @@ import javax.validation.constraints.NotNull;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class LessonDto implements Comparable<LessonDto>{
+public class LessonDto implements Comparable<LessonDto> {
 
     private Integer id;
 
@@ -38,15 +38,15 @@ public class LessonDto implements Comparable<LessonDto>{
 
     @Override
     public int compareTo(LessonDto o) {
-        if(this.type.ordinal() <= 1 && o.type.ordinal() > 1){ //if this=SEM||LAB and o=PARTIAL
+        if (this.type.ordinal() <= 1 && o.type.ordinal() > 1) { //if this=SEM||LAB and o=PARTIAL
             return -1;
         }
-        if(this.type.ordinal() > 1 && o.type.ordinal() <= 1){
+        if (this.type.ordinal() > 1 && o.type.ordinal() <= 1) {
             return 1;
         }
         //if both are SEM||LAB or both PARTIALS
         int nrDiff = this.nr - o.nr;
-        if(nrDiff != 0){
+        if (nrDiff != 0) {
             return nrDiff;
         }
         return this.getType().ordinal() - o.getType().ordinal();

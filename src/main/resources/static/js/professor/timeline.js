@@ -144,7 +144,7 @@ function assignLessonCellHandlers(enrlRow, lessonCell) {
         let lessonId = getNumericIdFromDomId(lessonCell.id);
         let checkedState = $(event.target).is(':checked');
         enrollments[enrlId].lessons[lessonId].attended = checkedState;
-        if(checkedState === false){
+        if (checkedState === false) {
             $(bonusField).val(undefined);
             $(bonusField).trigger('change');
         }
@@ -168,7 +168,7 @@ function assignLessonCellHandlers(enrlRow, lessonCell) {
             $(bonusField).val(actualValue);
         }
         enrollments[enrlId].lessons[lessonId].bonus = actualValue;
-        if(actualValue != undefined && actualValue !== 0){
+        if (actualValue != undefined && actualValue !== 0) {
             $(attendanceField).prop('checked', true);
             $(attendanceField).trigger('change');
         }
@@ -317,7 +317,7 @@ function getValidNumber(actualValue, minValue, maxValue) {
     if (typeof(actualValue) === "string") {
         actualValue = parseInt(actualValue);
     }
-    if(isNaN(actualValue)){
+    if (isNaN(actualValue)) {
         return undefined;
     }
     if (actualValue > maxValue) {
@@ -329,28 +329,28 @@ function getValidNumber(actualValue, minValue, maxValue) {
 }
 
 function profHasRight(lessonType, rightType) {
-    for(let i = 0; i < rights.length; i++){
-        if(rights[i].lessonType === lessonType && rights[i].rightType === rightType){
+    for (let i = 0; i < rights.length; i++) {
+        if (rights[i].lessonType === lessonType && rights[i].rightType === rightType) {
             return true;
         }
     }
     return false;
 }
 
-function getLessonList(){
+function getLessonList() {
     let lessons = [];
-    for(let ikey in enrollments){
-        for(let jkey in enrollments[ikey].lessons){
+    for (let ikey in enrollments) {
+        for (let jkey in enrollments[ikey].lessons) {
             lessons.push(enrollments[ikey].lessons[jkey]);
         }
     }
     return lessons;
 }
 
-function stripReadOnlyLessons(lessons){
+function stripReadOnlyLessons(lessons) {
     let result = [];
-    for(let i=0; i < lessons.length; i++){
-        if(lessons[i].rightType === "WRITE"){
+    for (let i = 0; i < lessons.length; i++) {
+        if (lessons[i].rightType === "WRITE") {
             result.push(lessons[i]);
         }
     }

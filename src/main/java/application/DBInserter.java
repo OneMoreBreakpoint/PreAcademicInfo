@@ -10,7 +10,6 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
 public class DBInserter {
@@ -755,7 +754,7 @@ public class DBInserter {
         right = ProfessorRight.builder().professor(guran).group(gr0).course(lftc)
                 .lessonType(LessonType.PARTIAL_EXAM_COURSE).rightType(RightType.WRITE).build();
         guranRights.add(right);
-        
+
 
         right = ProfessorRight.builder().professor(guran).group(gr933).course(flct)
                 .lessonType(LessonType.LABORATORY).rightType(RightType.READ).build();
@@ -769,7 +768,7 @@ public class DBInserter {
         right = ProfessorRight.builder().professor(guran).group(gr933).course(flct)
                 .lessonType(LessonType.PARTIAL_EXAM_LABORATORY).rightType(RightType.WRITE).build();
         guranRights.add(right);
-        
+
         guran.setRights(guranRights);
     }
 
@@ -807,7 +806,7 @@ public class DBInserter {
         right = ProfessorRight.builder().professor(mihis).group(gr232).course(lftc)
                 .lessonType(LessonType.PARTIAL_EXAM_LABORATORY).rightType(RightType.WRITE).build();
         mihisRights.add(right);
-        
+
         mihis.setRights(mihisRights);
     }
 
@@ -844,7 +843,7 @@ public class DBInserter {
         right = ProfessorRight.builder().professor(motogna).group(gr933).course(flct)
                 .lessonType(LessonType.PARTIAL_EXAM_COURSE).rightType(RightType.WRITE).build();
         motognaRights.add(right);
-        
+
         motogna.setRights(motognaRights);
     }
 
@@ -932,7 +931,7 @@ public class DBInserter {
         right = ProfessorRight.builder().professor(lazar).group(gr933).course(mdp)
                 .lessonType(LessonType.PARTIAL_EXAM_COURSE).rightType(RightType.WRITE).build();
         lazarRights.add(right);
-        
+
         lazar.setRights(lazarRights);
     }
 
@@ -963,7 +962,7 @@ public class DBInserter {
         right = ProfessorRight.builder().professor(forest).group(gr231).course(pdav)
                 .lessonType(LessonType.PARTIAL_EXAM_COURSE).rightType(RightType.WRITE).build();
         forestRights.add(right);
-        
+
         right = ProfessorRight.builder().professor(forest).group(gr232).course(pdav)
                 .lessonType(LessonType.SEMINAR).rightType(RightType.READ).build();
         forestRights.add(right);
@@ -1076,7 +1075,7 @@ public class DBInserter {
         right = ProfessorRight.builder().professor(forest).group(gr0).course(retele)
                 .lessonType(LessonType.PARTIAL_EXAM_COURSE).rightType(RightType.WRITE).build();
         forestRights.add(right);
-        
+
         forest.setRights(forestRights);
     }
 
@@ -1127,7 +1126,7 @@ public class DBInserter {
         right = ProfessorRight.builder().professor(camelia).group(gr933).course(pdav)
                 .lessonType(LessonType.PARTIAL_EXAM_SEMINAR).rightType(RightType.WRITE).build();
         cameliaRights.add(right);
-        
+
         camelia.setRights(cameliaRights);
     }
 
@@ -1179,7 +1178,7 @@ public class DBInserter {
         right = ProfessorRight.builder().professor(grigo).group(gr933).course(pdav)
                 .lessonType(LessonType.PARTIAL_EXAM_LABORATORY).rightType(RightType.WRITE).build();
         grigoRights.add(right);
-        
+
         grigo.setRights(grigoRights);
     }
 
@@ -1235,7 +1234,7 @@ public class DBInserter {
         right = ProfessorRight.builder().professor(suciu).group(gr232).course(ss)
                 .lessonType(LessonType.PARTIAL_EXAM_COURSE).rightType(RightType.WRITE).build();
         suciuRights.add(right);
-        
+
         right = ProfessorRight.builder().professor(suciu).group(gr933).course(ss)
                 .lessonType(LessonType.SEMINAR).rightType(RightType.READ).build();
         suciuRights.add(right);
@@ -1279,7 +1278,7 @@ public class DBInserter {
         right = ProfessorRight.builder().professor(ticle).group(gr231).course(ss)
                 .lessonType(LessonType.PARTIAL_EXAM_LABORATORY).rightType(RightType.WRITE).build();
         ticleRights.add(right);
-        
+
         right = ProfessorRight.builder().professor(ticle).group(gr933).course(ss)
                 .lessonType(LessonType.LABORATORY).rightType(RightType.READ).build();
         ticleRights.add(right);
@@ -1354,14 +1353,14 @@ public class DBInserter {
                     List<Lesson> lessons = new ArrayList<>();
                     int nrOfSeminars = enrollment.getCourse().getNrOfSeminars();
                     int nrOfLaboratories = enrollment.getCourse().getNrOfLaboratories();
-                    for(int i=1; i <= nrOfLaboratories; i++){
+                    for (int i = 1; i <= nrOfLaboratories; i++) {
                         Lesson l = new Lesson();
                         l.setType(LessonType.LABORATORY);
                         l.setNr((byte) i);
                         l.setEnrollment(enrollment);
                         lessons.add(l);
                     }
-                    for(int i=1; i <= nrOfSeminars; i++){
+                    for (int i = 1; i <= nrOfSeminars; i++) {
                         Lesson l = new Lesson();
                         l.setType(LessonType.SEMINAR);
                         l.setNr((byte) i);
