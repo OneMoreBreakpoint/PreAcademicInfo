@@ -24,12 +24,7 @@ public class Enrollment {
     @JoinColumn(name = "course_id", nullable = false)
     private Course course;
 
-    @OneToMany
-    @JoinColumn(name = "enrollment_id")
-    private List<PartialExam> partialExams;
-
-    @OneToMany
-    @JoinColumn(name = "enrollment_id")
+    @OneToMany(mappedBy = "enrollment")
     private List<Lesson> lessons;
 
 }

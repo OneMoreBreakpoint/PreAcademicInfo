@@ -20,14 +20,14 @@ public class Professor extends User {
     private String pathToProfilePhoto;
 
     @OneToMany(mappedBy = "professor")
-    private List<Teaching> teachingList;
+    private List<ProfessorRight> rights;
 
     @Builder
     public Professor(String username, String encryptedPassword, String firstName, String lastName, String email,
-                     String webPage, String pathToProfilePhoto, List<Teaching> teachingList) {
+                     String webPage, String pathToProfilePhoto, List<ProfessorRight> rights) {
         super(username, encryptedPassword, firstName, lastName, email);
         this.webPage = webPage;
         this.pathToProfilePhoto = pathToProfilePhoto;
-        this.teachingList = teachingList;
+        this.rights = rights;
     }
 }

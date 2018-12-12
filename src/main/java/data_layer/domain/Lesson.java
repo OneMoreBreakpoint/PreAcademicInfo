@@ -1,6 +1,7 @@
 package data_layer.domain;
 
 import lombok.*;
+import utils.LessonType;
 
 import javax.persistence.*;
 import javax.validation.constraints.Max;
@@ -21,10 +22,10 @@ public class Lesson {
 
     @Min(1)
     @Max(14)
+    @NotNull
     private byte nr;
 
-    @NotNull
-    private boolean attended;
+    private Boolean attended;
 
     @Max(10)
     @Min(1)
@@ -34,12 +35,12 @@ public class Lesson {
     @Enumerated(EnumType.ORDINAL)
     private LessonType type;
 
+    @Min(-10)
+    @Max(10)
     private Byte bonus;
 
-
-    public enum LessonType {
-        SEMINAR,
-        LABORATORY
-    }
+    @NotNull
+    @ManyToOne
+    private Enrollment enrollment;
 
 }

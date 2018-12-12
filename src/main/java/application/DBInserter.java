@@ -2,6 +2,8 @@ package application;
 
 import data_layer.domain.*;
 import org.mindrot.jbcrypt.BCrypt;
+import utils.LessonType;
+import utils.RightType;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -678,27 +680,109 @@ public class DBInserter {
         guran.setEmail("guran@scs.ubbcluj.ro");
         guran.setWebPage("http://www.cs.ubbcluj.ro/~dana");
 
-        Teaching t_lftc = new Teaching();
-        t_lftc.setLaboratoryGroups(new HashSet<>());
-        t_lftc.getLaboratoryGroups().add(gr231);
-        t_lftc.getLaboratoryGroups().add(gr0);
-        t_lftc.setSeminarGroups(new HashSet<>());
-        t_lftc.getSeminarGroups().add(gr232);
-        t_lftc.getSeminarGroups().add(gr0);
-        t_lftc.setCourse(lftc);
-        t_lftc.setProfessor(guran);
+        List<ProfessorRight> guranRights = new ArrayList<>();
+        ProfessorRight right = ProfessorRight.builder().professor(guran).group(gr231).course(lftc)
+                .lessonType(LessonType.SEMINAR).rightType(RightType.READ).build();
+        guranRights.add(right);
+        right = ProfessorRight.builder().professor(guran).group(gr231).course(lftc)
+                .lessonType(LessonType.LABORATORY).rightType(RightType.READ).build();
+        guranRights.add(right);
+        right = ProfessorRight.builder().professor(guran).group(gr231).course(lftc)
+                .lessonType(LessonType.LABORATORY).rightType(RightType.WRITE).build();
+        guranRights.add(right);
+        right = ProfessorRight.builder().professor(guran).group(gr231).course(lftc)
+                .lessonType(LessonType.PARTIAL_EXAM_SEMINAR).rightType(RightType.READ).build();
+        guranRights.add(right);
+        right = ProfessorRight.builder().professor(guran).group(gr231).course(lftc)
+                .lessonType(LessonType.PARTIAL_EXAM_LABORATORY).rightType(RightType.READ).build();
+        guranRights.add(right);
+        right = ProfessorRight.builder().professor(guran).group(gr231).course(lftc)
+                .lessonType(LessonType.PARTIAL_EXAM_LABORATORY).rightType(RightType.WRITE).build();
+        guranRights.add(right);
+        right = ProfessorRight.builder().professor(guran).group(gr231).course(lftc)
+                .lessonType(LessonType.PARTIAL_EXAM_COURSE).rightType(RightType.READ).build();
+        guranRights.add(right);
+        right = ProfessorRight.builder().professor(guran).group(gr231).course(lftc)
+                .lessonType(LessonType.PARTIAL_EXAM_COURSE).rightType(RightType.WRITE).build();
+        guranRights.add(right);
 
-        Teaching t_flct = new Teaching();
-        t_flct.setLaboratoryGroups(new HashSet<>());
-        t_flct.getLaboratoryGroups().add(gr933);
-        t_flct.setSeminarGroups(new HashSet<>());
-        t_flct.setCourse(flct);
-        t_flct.setProfessor(guran);
+        right = ProfessorRight.builder().professor(guran).group(gr232).course(lftc)
+                .lessonType(LessonType.SEMINAR).rightType(RightType.READ).build();
+        guranRights.add(right);
+        right = ProfessorRight.builder().professor(guran).group(gr232).course(lftc)
+                .lessonType(LessonType.SEMINAR).rightType(RightType.WRITE).build();
+        guranRights.add(right);
+        right = ProfessorRight.builder().professor(guran).group(gr232).course(lftc)
+                .lessonType(LessonType.LABORATORY).rightType(RightType.READ).build();
+        guranRights.add(right);
+        right = ProfessorRight.builder().professor(guran).group(gr232).course(lftc)
+                .lessonType(LessonType.PARTIAL_EXAM_SEMINAR).rightType(RightType.READ).build();
+        guranRights.add(right);
+        right = ProfessorRight.builder().professor(guran).group(gr232).course(lftc)
+                .lessonType(LessonType.PARTIAL_EXAM_SEMINAR).rightType(RightType.WRITE).build();
+        guranRights.add(right);
+        right = ProfessorRight.builder().professor(guran).group(gr232).course(lftc)
+                .lessonType(LessonType.PARTIAL_EXAM_LABORATORY).rightType(RightType.READ).build();
+        guranRights.add(right);
+        right = ProfessorRight.builder().professor(guran).group(gr232).course(lftc)
+                .lessonType(LessonType.PARTIAL_EXAM_COURSE).rightType(RightType.READ).build();
+        guranRights.add(right);
+        right = ProfessorRight.builder().professor(guran).group(gr232).course(lftc)
+                .lessonType(LessonType.PARTIAL_EXAM_COURSE).rightType(RightType.WRITE).build();
+        guranRights.add(right);
 
-        List<Teaching> teachings = new ArrayList<>();
-        teachings.add(t_lftc);
-        teachings.add(t_flct);
-        guran.setTeachingList(teachings);
+        right = ProfessorRight.builder().professor(guran).group(gr0).course(lftc)
+                .lessonType(LessonType.SEMINAR).rightType(RightType.READ).build();
+        guranRights.add(right);
+        right = ProfessorRight.builder().professor(guran).group(gr0).course(lftc)
+                .lessonType(LessonType.SEMINAR).rightType(RightType.WRITE).build();
+        guranRights.add(right);
+        right = ProfessorRight.builder().professor(guran).group(gr0).course(lftc)
+                .lessonType(LessonType.LABORATORY).rightType(RightType.READ).build();
+        guranRights.add(right);
+        right = ProfessorRight.builder().professor(guran).group(gr0).course(lftc)
+                .lessonType(LessonType.PARTIAL_EXAM_SEMINAR).rightType(RightType.READ).build();
+        guranRights.add(right);
+        right = ProfessorRight.builder().professor(guran).group(gr0).course(lftc)
+                .lessonType(LessonType.PARTIAL_EXAM_SEMINAR).rightType(RightType.WRITE).build();
+        guranRights.add(right);
+        right = ProfessorRight.builder().professor(guran).group(gr0).course(lftc)
+                .lessonType(LessonType.PARTIAL_EXAM_LABORATORY).rightType(RightType.READ).build();
+        guranRights.add(right);
+        right = ProfessorRight.builder().professor(guran).group(gr0).course(lftc)
+                .lessonType(LessonType.PARTIAL_EXAM_COURSE).rightType(RightType.READ).build();
+        guranRights.add(right);
+        right = ProfessorRight.builder().professor(guran).group(gr0).course(lftc)
+                .lessonType(LessonType.PARTIAL_EXAM_COURSE).rightType(RightType.WRITE).build();
+        guranRights.add(right);
+        
+
+        right = ProfessorRight.builder().professor(guran).group(gr933).course(flct)
+                .lessonType(LessonType.SEMINAR).rightType(RightType.READ).build();
+        guranRights.add(right);
+        right = ProfessorRight.builder().professor(guran).group(gr933).course(flct)
+                .lessonType(LessonType.LABORATORY).rightType(RightType.READ).build();
+        guranRights.add(right);
+        right = ProfessorRight.builder().professor(guran).group(gr933).course(flct)
+                .lessonType(LessonType.LABORATORY).rightType(RightType.WRITE).build();
+        guranRights.add(right);
+        right = ProfessorRight.builder().professor(guran).group(gr933).course(flct)
+                .lessonType(LessonType.PARTIAL_EXAM_SEMINAR).rightType(RightType.READ).build();
+        guranRights.add(right);
+        right = ProfessorRight.builder().professor(guran).group(gr933).course(flct)
+                .lessonType(LessonType.PARTIAL_EXAM_LABORATORY).rightType(RightType.READ).build();
+        guranRights.add(right);
+        right = ProfessorRight.builder().professor(guran).group(gr933).course(flct)
+                .lessonType(LessonType.PARTIAL_EXAM_LABORATORY).rightType(RightType.WRITE).build();
+        guranRights.add(right);
+        right = ProfessorRight.builder().professor(guran).group(gr933).course(flct)
+                .lessonType(LessonType.PARTIAL_EXAM_COURSE).rightType(RightType.READ).build();
+        guranRights.add(right);
+        right = ProfessorRight.builder().professor(guran).group(gr933).course(flct)
+                .lessonType(LessonType.PARTIAL_EXAM_COURSE).rightType(RightType.WRITE).build();
+        guranRights.add(right);
+        
+        guran.setRights(guranRights);
     }
 
     private static void initProfMihis() {
@@ -709,17 +793,34 @@ public class DBInserter {
         mihis.setEmail("mihis@scs.ubbcluj.ro");
         mihis.setWebPage("http://www.cs.ubbcluj.ro/~mihis/");
 
-        Teaching t_lftc = new Teaching();
-        t_lftc.setLaboratoryGroups(new HashSet<>());
-        t_lftc.getLaboratoryGroups().add(gr232);
-        t_lftc.setSeminarGroups(new HashSet<>());
-        t_lftc.getSeminarGroups().add(gr231);
-        t_lftc.setCourse(lftc);
-        t_lftc.setProfessor(mihis);
+        List<ProfessorRight> mihisRights = new ArrayList<>();
+        ProfessorRight right = ProfessorRight.builder().professor(mihis).group(gr231).course(lftc)
+                .lessonType(LessonType.SEMINAR).rightType(RightType.READ).build();
+        mihisRights.add(right);
+        right = ProfessorRight.builder().professor(mihis).group(gr231).course(lftc)
+                .lessonType(LessonType.SEMINAR).rightType(RightType.WRITE).build();
+        mihisRights.add(right);
+        right = ProfessorRight.builder().professor(mihis).group(gr231).course(lftc)
+                .lessonType(LessonType.PARTIAL_EXAM_SEMINAR).rightType(RightType.READ).build();
+        mihisRights.add(right);
+        right = ProfessorRight.builder().professor(mihis).group(gr231).course(lftc)
+                .lessonType(LessonType.PARTIAL_EXAM_SEMINAR).rightType(RightType.WRITE).build();
+        mihisRights.add(right);
 
-        List<Teaching> teachings = new ArrayList<>();
-        teachings.add(t_lftc);
-        mihis.setTeachingList(teachings);
+        right = ProfessorRight.builder().professor(mihis).group(gr232).course(lftc)
+                .lessonType(LessonType.LABORATORY).rightType(RightType.READ).build();
+        mihisRights.add(right);
+        right = ProfessorRight.builder().professor(mihis).group(gr232).course(lftc)
+                .lessonType(LessonType.LABORATORY).rightType(RightType.WRITE).build();
+        mihisRights.add(right);
+        right = ProfessorRight.builder().professor(mihis).group(gr232).course(lftc)
+                .lessonType(LessonType.PARTIAL_EXAM_LABORATORY).rightType(RightType.READ).build();
+        mihisRights.add(right);
+        right = ProfessorRight.builder().professor(mihis).group(gr232).course(lftc)
+                .lessonType(LessonType.PARTIAL_EXAM_LABORATORY).rightType(RightType.WRITE).build();
+        mihisRights.add(right);
+        
+        mihis.setRights(mihisRights);
     }
 
     private static void initProfMotogna() {
@@ -730,15 +831,33 @@ public class DBInserter {
         motogna.setEmail("motogna@scs.ubbcluj.ro");
         motogna.setWebPage("https://motogna.wordpress.com/");
 
-        Teaching t_flct = new Teaching();
-        t_flct.setSeminarGroups(new HashSet<>());
-        t_flct.getSeminarGroups().add(gr933);
-        t_flct.setCourse(flct);
-        t_flct.setProfessor(motogna);
-
-        List<Teaching> teachings = new ArrayList<>();
-        teachings.add(t_flct);
-        motogna.setTeachingList(teachings);
+        List<ProfessorRight> motognaRights = new ArrayList<>();
+        ProfessorRight right = ProfessorRight.builder().professor(motogna).group(gr933).course(flct)
+                .lessonType(LessonType.SEMINAR).rightType(RightType.READ).build();
+        motognaRights.add(right);
+        right = ProfessorRight.builder().professor(motogna).group(gr933).course(flct)
+                .lessonType(LessonType.SEMINAR).rightType(RightType.WRITE).build();
+        motognaRights.add(right);
+        right = ProfessorRight.builder().professor(motogna).group(gr933).course(flct)
+                .lessonType(LessonType.LABORATORY).rightType(RightType.READ).build();
+        motognaRights.add(right);
+        right = ProfessorRight.builder().professor(motogna).group(gr933).course(flct)
+                .lessonType(LessonType.PARTIAL_EXAM_SEMINAR).rightType(RightType.READ).build();
+        motognaRights.add(right);
+        right = ProfessorRight.builder().professor(motogna).group(gr933).course(flct)
+                .lessonType(LessonType.PARTIAL_EXAM_SEMINAR).rightType(RightType.WRITE).build();
+        motognaRights.add(right);
+        right = ProfessorRight.builder().professor(motogna).group(gr933).course(flct)
+                .lessonType(LessonType.PARTIAL_EXAM_LABORATORY).rightType(RightType.READ).build();
+        motognaRights.add(right);
+        right = ProfessorRight.builder().professor(motogna).group(gr933).course(flct)
+                .lessonType(LessonType.PARTIAL_EXAM_COURSE).rightType(RightType.READ).build();
+        motognaRights.add(right);
+        right = ProfessorRight.builder().professor(motogna).group(gr933).course(flct)
+                .lessonType(LessonType.PARTIAL_EXAM_COURSE).rightType(RightType.WRITE).build();
+        motognaRights.add(right);
+        
+        motogna.setRights(motognaRights);
     }
 
     private static void initProfLazar() {
@@ -749,23 +868,84 @@ public class DBInserter {
         lazar.setEmail("lazar@scs.ubbcluj.ro");
         lazar.setWebPage("http://www.cs.ubbcluj.ro/~ilazar/");
 
-        Teaching t_pdm = new Teaching();
-        t_pdm.setLaboratoryGroups(new HashSet<>());
-        t_pdm.getLaboratoryGroups().add(gr231);
-        t_pdm.getLaboratoryGroups().add(gr232);
-        t_pdm.setCourse(pdm);
-        t_pdm.setProfessor(lazar);
 
-        Teaching t_mdp = new Teaching();
-        t_mdp.setLaboratoryGroups(new HashSet<>());
-        t_mdp.getLaboratoryGroups().add(gr933);
-        t_mdp.setCourse(mdp);
-        t_mdp.setProfessor(lazar);
+        List<ProfessorRight> lazarRights = new ArrayList<>();
+        ProfessorRight right = ProfessorRight.builder().professor(lazar).group(gr231).course(pdm)
+                .lessonType(LessonType.SEMINAR).rightType(RightType.READ).build();
+        lazarRights.add(right);
+        right = ProfessorRight.builder().professor(lazar).group(gr231).course(pdm)
+                .lessonType(LessonType.LABORATORY).rightType(RightType.READ).build();
+        lazarRights.add(right);
+        right = ProfessorRight.builder().professor(lazar).group(gr231).course(pdm)
+                .lessonType(LessonType.LABORATORY).rightType(RightType.WRITE).build();
+        lazarRights.add(right);
+        right = ProfessorRight.builder().professor(lazar).group(gr231).course(pdm)
+                .lessonType(LessonType.PARTIAL_EXAM_SEMINAR).rightType(RightType.READ).build();
+        lazarRights.add(right);
+        right = ProfessorRight.builder().professor(lazar).group(gr231).course(pdm)
+                .lessonType(LessonType.PARTIAL_EXAM_LABORATORY).rightType(RightType.READ).build();
+        lazarRights.add(right);
+        right = ProfessorRight.builder().professor(lazar).group(gr231).course(pdm)
+                .lessonType(LessonType.PARTIAL_EXAM_LABORATORY).rightType(RightType.WRITE).build();
+        lazarRights.add(right);
+        right = ProfessorRight.builder().professor(lazar).group(gr231).course(pdm)
+                .lessonType(LessonType.PARTIAL_EXAM_COURSE).rightType(RightType.READ).build();
+        lazarRights.add(right);
+        right = ProfessorRight.builder().professor(lazar).group(gr231).course(pdm)
+                .lessonType(LessonType.PARTIAL_EXAM_COURSE).rightType(RightType.WRITE).build();
+        lazarRights.add(right);
 
-        List<Teaching> teachings = new ArrayList<>();
-        teachings.add(t_pdm);
-        teachings.add(t_mdp);
-        lazar.setTeachingList(teachings);
+        right = ProfessorRight.builder().professor(lazar).group(gr232).course(pdm)
+                .lessonType(LessonType.SEMINAR).rightType(RightType.READ).build();
+        lazarRights.add(right);
+        right = ProfessorRight.builder().professor(lazar).group(gr232).course(pdm)
+                .lessonType(LessonType.LABORATORY).rightType(RightType.READ).build();
+        lazarRights.add(right);
+        right = ProfessorRight.builder().professor(lazar).group(gr232).course(pdm)
+                .lessonType(LessonType.LABORATORY).rightType(RightType.WRITE).build();
+        lazarRights.add(right);
+        right = ProfessorRight.builder().professor(lazar).group(gr232).course(pdm)
+                .lessonType(LessonType.PARTIAL_EXAM_SEMINAR).rightType(RightType.READ).build();
+        lazarRights.add(right);
+        right = ProfessorRight.builder().professor(lazar).group(gr232).course(pdm)
+                .lessonType(LessonType.PARTIAL_EXAM_LABORATORY).rightType(RightType.READ).build();
+        lazarRights.add(right);
+        right = ProfessorRight.builder().professor(lazar).group(gr232).course(pdm)
+                .lessonType(LessonType.PARTIAL_EXAM_LABORATORY).rightType(RightType.WRITE).build();
+        lazarRights.add(right);
+        right = ProfessorRight.builder().professor(lazar).group(gr232).course(pdm)
+                .lessonType(LessonType.PARTIAL_EXAM_COURSE).rightType(RightType.READ).build();
+        lazarRights.add(right);
+        right = ProfessorRight.builder().professor(lazar).group(gr232).course(pdm)
+                .lessonType(LessonType.PARTIAL_EXAM_COURSE).rightType(RightType.WRITE).build();
+        lazarRights.add(right);
+
+        right = ProfessorRight.builder().professor(lazar).group(gr933).course(mdp)
+                .lessonType(LessonType.SEMINAR).rightType(RightType.READ).build();
+        lazarRights.add(right);
+        right = ProfessorRight.builder().professor(lazar).group(gr933).course(mdp)
+                .lessonType(LessonType.LABORATORY).rightType(RightType.READ).build();
+        lazarRights.add(right);
+        right = ProfessorRight.builder().professor(lazar).group(gr933).course(mdp)
+                .lessonType(LessonType.LABORATORY).rightType(RightType.WRITE).build();
+        lazarRights.add(right);
+        right = ProfessorRight.builder().professor(lazar).group(gr933).course(mdp)
+                .lessonType(LessonType.PARTIAL_EXAM_SEMINAR).rightType(RightType.READ).build();
+        lazarRights.add(right);
+        right = ProfessorRight.builder().professor(lazar).group(gr933).course(mdp)
+                .lessonType(LessonType.PARTIAL_EXAM_LABORATORY).rightType(RightType.READ).build();
+        lazarRights.add(right);
+        right = ProfessorRight.builder().professor(lazar).group(gr933).course(mdp)
+                .lessonType(LessonType.PARTIAL_EXAM_LABORATORY).rightType(RightType.WRITE).build();
+        lazarRights.add(right);
+        right = ProfessorRight.builder().professor(lazar).group(gr933).course(mdp)
+                .lessonType(LessonType.PARTIAL_EXAM_COURSE).rightType(RightType.READ).build();
+        lazarRights.add(right);
+        right = ProfessorRight.builder().professor(lazar).group(gr933).course(mdp)
+                .lessonType(LessonType.PARTIAL_EXAM_COURSE).rightType(RightType.WRITE).build();
+        lazarRights.add(right);
+        
+        lazar.setRights(lazarRights);
     }
 
     private static void initProfForest() {
@@ -776,22 +956,140 @@ public class DBInserter {
         forest.setEmail("forest@scs.ubbcluj.ro");
         forest.setWebPage("http://www.cs.ubbcluj.ro/~forest/");
 
-        Teaching t_pdav = new Teaching();
-        t_pdav.setCourse(pdav);
-        t_pdav.setProfessor(forest);
+        List<ProfessorRight> forestRights = new ArrayList<>();
+        ProfessorRight right = ProfessorRight.builder().professor(forest).group(gr231).course(pdav)
+                .lessonType(LessonType.SEMINAR).rightType(RightType.READ).build();
+        forestRights.add(right);
+        right = ProfessorRight.builder().professor(forest).group(gr231).course(pdav)
+                .lessonType(LessonType.LABORATORY).rightType(RightType.READ).build();
+        forestRights.add(right);
+        right = ProfessorRight.builder().professor(forest).group(gr231).course(pdav)
+                .lessonType(LessonType.PARTIAL_EXAM_SEMINAR).rightType(RightType.READ).build();
+        forestRights.add(right);
+        right = ProfessorRight.builder().professor(forest).group(gr231).course(pdav)
+                .lessonType(LessonType.PARTIAL_EXAM_LABORATORY).rightType(RightType.READ).build();
+        forestRights.add(right);
+        right = ProfessorRight.builder().professor(forest).group(gr231).course(pdav)
+                .lessonType(LessonType.PARTIAL_EXAM_COURSE).rightType(RightType.READ).build();
+        forestRights.add(right);
+        right = ProfessorRight.builder().professor(forest).group(gr231).course(pdav)
+                .lessonType(LessonType.PARTIAL_EXAM_COURSE).rightType(RightType.WRITE).build();
+        forestRights.add(right);
+        
+        right = ProfessorRight.builder().professor(forest).group(gr232).course(pdav)
+                .lessonType(LessonType.SEMINAR).rightType(RightType.READ).build();
+        forestRights.add(right);
+        right = ProfessorRight.builder().professor(forest).group(gr232).course(pdav)
+                .lessonType(LessonType.LABORATORY).rightType(RightType.READ).build();
+        forestRights.add(right);
+        right = ProfessorRight.builder().professor(forest).group(gr232).course(pdav)
+                .lessonType(LessonType.PARTIAL_EXAM_SEMINAR).rightType(RightType.READ).build();
+        forestRights.add(right);
+        right = ProfessorRight.builder().professor(forest).group(gr232).course(pdav)
+                .lessonType(LessonType.PARTIAL_EXAM_LABORATORY).rightType(RightType.READ).build();
+        forestRights.add(right);
+        right = ProfessorRight.builder().professor(forest).group(gr232).course(pdav)
+                .lessonType(LessonType.PARTIAL_EXAM_COURSE).rightType(RightType.READ).build();
+        forestRights.add(right);
+        right = ProfessorRight.builder().professor(forest).group(gr232).course(pdav)
+                .lessonType(LessonType.PARTIAL_EXAM_COURSE).rightType(RightType.WRITE).build();
+        forestRights.add(right);
 
-        Teaching t_retele = new Teaching();
-        t_retele.setLaboratoryGroups(new HashSet<>());
-        t_retele.getLaboratoryGroups().add(gr221);
-        t_retele.getLaboratoryGroups().add(gr231);
-        t_retele.getLaboratoryGroups().add(gr0);
-        t_retele.setCourse(retele);
-        t_retele.setProfessor(forest);
+        right = ProfessorRight.builder().professor(forest).group(gr933).course(pdav)
+                .lessonType(LessonType.SEMINAR).rightType(RightType.READ).build();
+        forestRights.add(right);
+        right = ProfessorRight.builder().professor(forest).group(gr933).course(pdav)
+                .lessonType(LessonType.LABORATORY).rightType(RightType.READ).build();
+        forestRights.add(right);
+        right = ProfessorRight.builder().professor(forest).group(gr933).course(pdav)
+                .lessonType(LessonType.PARTIAL_EXAM_SEMINAR).rightType(RightType.READ).build();
+        forestRights.add(right);
+        right = ProfessorRight.builder().professor(forest).group(gr933).course(pdav)
+                .lessonType(LessonType.PARTIAL_EXAM_LABORATORY).rightType(RightType.READ).build();
+        forestRights.add(right);
+        right = ProfessorRight.builder().professor(forest).group(gr933).course(pdav)
+                .lessonType(LessonType.PARTIAL_EXAM_COURSE).rightType(RightType.READ).build();
+        forestRights.add(right);
+        right = ProfessorRight.builder().professor(forest).group(gr933).course(pdav)
+                .lessonType(LessonType.PARTIAL_EXAM_COURSE).rightType(RightType.WRITE).build();
+        forestRights.add(right);
 
-        List<Teaching> teachings = new ArrayList<>();
-        teachings.add(t_pdav);
-        teachings.add(t_retele);
-        forest.setTeachingList(teachings);
+        right = ProfessorRight.builder().professor(forest).group(gr221).course(retele)
+                .lessonType(LessonType.SEMINAR).rightType(RightType.READ).build();
+        forestRights.add(right);
+        right = ProfessorRight.builder().professor(forest).group(gr221).course(retele)
+                .lessonType(LessonType.LABORATORY).rightType(RightType.READ).build();
+        forestRights.add(right);
+        right = ProfessorRight.builder().professor(forest).group(gr221).course(retele)
+                .lessonType(LessonType.LABORATORY).rightType(RightType.WRITE).build();
+        forestRights.add(right);
+        right = ProfessorRight.builder().professor(forest).group(gr221).course(retele)
+                .lessonType(LessonType.PARTIAL_EXAM_SEMINAR).rightType(RightType.READ).build();
+        forestRights.add(right);
+        right = ProfessorRight.builder().professor(forest).group(gr221).course(retele)
+                .lessonType(LessonType.PARTIAL_EXAM_LABORATORY).rightType(RightType.READ).build();
+        forestRights.add(right);
+        right = ProfessorRight.builder().professor(forest).group(gr221).course(retele)
+                .lessonType(LessonType.PARTIAL_EXAM_LABORATORY).rightType(RightType.WRITE).build();
+        forestRights.add(right);
+        right = ProfessorRight.builder().professor(forest).group(gr221).course(retele)
+                .lessonType(LessonType.PARTIAL_EXAM_COURSE).rightType(RightType.READ).build();
+        forestRights.add(right);
+        right = ProfessorRight.builder().professor(forest).group(gr221).course(retele)
+                .lessonType(LessonType.PARTIAL_EXAM_COURSE).rightType(RightType.WRITE).build();
+        forestRights.add(right);
+
+        right = ProfessorRight.builder().professor(forest).group(gr231).course(retele)
+                .lessonType(LessonType.SEMINAR).rightType(RightType.READ).build();
+        forestRights.add(right);
+        right = ProfessorRight.builder().professor(forest).group(gr231).course(retele)
+                .lessonType(LessonType.LABORATORY).rightType(RightType.READ).build();
+        forestRights.add(right);
+        right = ProfessorRight.builder().professor(forest).group(gr231).course(retele)
+                .lessonType(LessonType.LABORATORY).rightType(RightType.WRITE).build();
+        forestRights.add(right);
+        right = ProfessorRight.builder().professor(forest).group(gr231).course(retele)
+                .lessonType(LessonType.PARTIAL_EXAM_SEMINAR).rightType(RightType.READ).build();
+        forestRights.add(right);
+        right = ProfessorRight.builder().professor(forest).group(gr231).course(retele)
+                .lessonType(LessonType.PARTIAL_EXAM_LABORATORY).rightType(RightType.READ).build();
+        forestRights.add(right);
+        right = ProfessorRight.builder().professor(forest).group(gr231).course(retele)
+                .lessonType(LessonType.PARTIAL_EXAM_LABORATORY).rightType(RightType.WRITE).build();
+        forestRights.add(right);
+        right = ProfessorRight.builder().professor(forest).group(gr231).course(retele)
+                .lessonType(LessonType.PARTIAL_EXAM_COURSE).rightType(RightType.READ).build();
+        forestRights.add(right);
+        right = ProfessorRight.builder().professor(forest).group(gr231).course(retele)
+                .lessonType(LessonType.PARTIAL_EXAM_COURSE).rightType(RightType.WRITE).build();
+        forestRights.add(right);
+
+        right = ProfessorRight.builder().professor(forest).group(gr0).course(retele)
+                .lessonType(LessonType.SEMINAR).rightType(RightType.READ).build();
+        forestRights.add(right);
+        right = ProfessorRight.builder().professor(forest).group(gr0).course(retele)
+                .lessonType(LessonType.LABORATORY).rightType(RightType.READ).build();
+        forestRights.add(right);
+        right = ProfessorRight.builder().professor(forest).group(gr0).course(retele)
+                .lessonType(LessonType.LABORATORY).rightType(RightType.WRITE).build();
+        forestRights.add(right);
+        right = ProfessorRight.builder().professor(forest).group(gr0).course(retele)
+                .lessonType(LessonType.PARTIAL_EXAM_SEMINAR).rightType(RightType.READ).build();
+        forestRights.add(right);
+        right = ProfessorRight.builder().professor(forest).group(gr0).course(retele)
+                .lessonType(LessonType.PARTIAL_EXAM_LABORATORY).rightType(RightType.READ).build();
+        forestRights.add(right);
+        right = ProfessorRight.builder().professor(forest).group(gr0).course(retele)
+                .lessonType(LessonType.PARTIAL_EXAM_LABORATORY).rightType(RightType.WRITE).build();
+        forestRights.add(right);
+        right = ProfessorRight.builder().professor(forest).group(gr0).course(retele)
+                .lessonType(LessonType.PARTIAL_EXAM_COURSE).rightType(RightType.READ).build();
+        forestRights.add(right);
+        right = ProfessorRight.builder().professor(forest).group(gr0).course(retele)
+                .lessonType(LessonType.PARTIAL_EXAM_COURSE).rightType(RightType.WRITE).build();
+        forestRights.add(right);
+        
+        forest.setRights(forestRights);
     }
 
     private static void initProfCamelia() {
@@ -802,18 +1100,47 @@ public class DBInserter {
         camelia.setEmail("camelia@scs.ubbcluj.ro");
         camelia.setWebPage("https://www.cs.ubbcluj.ro/~camelia/");
 
-        Teaching t_pdav = new Teaching();
-        t_pdav.setLaboratoryGroups(new HashSet<>());
-        t_pdav.getLaboratoryGroups().add(gr231);
-        t_pdav.getLaboratoryGroups().add(gr232);
-        t_pdav.setSeminarGroups(new HashSet<>());
-        t_pdav.getSeminarGroups().add(gr933);
-        t_pdav.setCourse(pdav);
-        t_pdav.setProfessor(camelia);
+        List<ProfessorRight> cameliaRights = new ArrayList<>();
+        ProfessorRight right = ProfessorRight.builder().professor(camelia).group(gr231).course(pdav)
+                .lessonType(LessonType.LABORATORY).rightType(RightType.READ).build();
+        cameliaRights.add(right);
+        right = ProfessorRight.builder().professor(camelia).group(gr231).course(pdav)
+                .lessonType(LessonType.LABORATORY).rightType(RightType.WRITE).build();
+        cameliaRights.add(right);
+        right = ProfessorRight.builder().professor(camelia).group(gr231).course(pdav)
+                .lessonType(LessonType.PARTIAL_EXAM_LABORATORY).rightType(RightType.READ).build();
+        cameliaRights.add(right);
+        right = ProfessorRight.builder().professor(camelia).group(gr231).course(pdav)
+                .lessonType(LessonType.PARTIAL_EXAM_LABORATORY).rightType(RightType.WRITE).build();
+        cameliaRights.add(right);
 
-        List<Teaching> teachings = new ArrayList<>();
-        teachings.add(t_pdav);
-        camelia.setTeachingList(teachings);
+        right = ProfessorRight.builder().professor(camelia).group(gr232).course(pdav)
+                .lessonType(LessonType.LABORATORY).rightType(RightType.READ).build();
+        cameliaRights.add(right);
+        right = ProfessorRight.builder().professor(camelia).group(gr232).course(pdav)
+                .lessonType(LessonType.LABORATORY).rightType(RightType.WRITE).build();
+        cameliaRights.add(right);
+        right = ProfessorRight.builder().professor(camelia).group(gr232).course(pdav)
+                .lessonType(LessonType.PARTIAL_EXAM_LABORATORY).rightType(RightType.READ).build();
+        cameliaRights.add(right);
+        right = ProfessorRight.builder().professor(camelia).group(gr232).course(pdav)
+                .lessonType(LessonType.PARTIAL_EXAM_LABORATORY).rightType(RightType.WRITE).build();
+        cameliaRights.add(right);
+
+        right = ProfessorRight.builder().professor(camelia).group(gr933).course(pdav)
+                .lessonType(LessonType.SEMINAR).rightType(RightType.READ).build();
+        cameliaRights.add(right);
+        right = ProfessorRight.builder().professor(camelia).group(gr933).course(pdav)
+                .lessonType(LessonType.SEMINAR).rightType(RightType.WRITE).build();
+        cameliaRights.add(right);
+        right = ProfessorRight.builder().professor(camelia).group(gr933).course(pdav)
+                .lessonType(LessonType.PARTIAL_EXAM_SEMINAR).rightType(RightType.READ).build();
+        cameliaRights.add(right);
+        right = ProfessorRight.builder().professor(camelia).group(gr933).course(pdav)
+                .lessonType(LessonType.PARTIAL_EXAM_SEMINAR).rightType(RightType.WRITE).build();
+        cameliaRights.add(right);
+        
+        camelia.setRights(cameliaRights);
     }
 
     private static void initProfGrigo() {
@@ -824,18 +1151,48 @@ public class DBInserter {
         grigo.setEmail("grigo@scs.ubbcluj.ro");
         grigo.setWebPage("https://www.cs.ubbcluj.ro/~grigo/");
 
-        Teaching t_pdav = new Teaching();
-        t_pdav.setLaboratoryGroups(new HashSet<>());
-        t_pdav.getLaboratoryGroups().add(gr933);
-        t_pdav.setSeminarGroups(new HashSet<>());
-        t_pdav.getSeminarGroups().add(gr231);
-        t_pdav.getSeminarGroups().add(gr232);
-        t_pdav.setCourse(pdav);
-        t_pdav.setProfessor(grigo);
 
-        List<Teaching> teachings = new ArrayList<>();
-        teachings.add(t_pdav);
-        grigo.setTeachingList(teachings);
+        List<ProfessorRight> grigoRights = new ArrayList<>();
+        ProfessorRight right = ProfessorRight.builder().professor(grigo).group(gr231).course(pdav)
+                .lessonType(LessonType.SEMINAR).rightType(RightType.READ).build();
+        grigoRights.add(right);
+        right = ProfessorRight.builder().professor(grigo).group(gr231).course(pdav)
+                .lessonType(LessonType.SEMINAR).rightType(RightType.WRITE).build();
+        grigoRights.add(right);
+        right = ProfessorRight.builder().professor(grigo).group(gr231).course(pdav)
+                .lessonType(LessonType.PARTIAL_EXAM_SEMINAR).rightType(RightType.READ).build();
+        grigoRights.add(right);
+        right = ProfessorRight.builder().professor(grigo).group(gr231).course(pdav)
+                .lessonType(LessonType.PARTIAL_EXAM_SEMINAR).rightType(RightType.WRITE).build();
+        grigoRights.add(right);
+
+        right = ProfessorRight.builder().professor(grigo).group(gr232).course(pdav)
+                .lessonType(LessonType.SEMINAR).rightType(RightType.READ).build();
+        grigoRights.add(right);
+        right = ProfessorRight.builder().professor(grigo).group(gr232).course(pdav)
+                .lessonType(LessonType.SEMINAR).rightType(RightType.WRITE).build();
+        grigoRights.add(right);
+        right = ProfessorRight.builder().professor(grigo).group(gr232).course(pdav)
+                .lessonType(LessonType.PARTIAL_EXAM_SEMINAR).rightType(RightType.READ).build();
+        grigoRights.add(right);
+        right = ProfessorRight.builder().professor(grigo).group(gr232).course(pdav)
+                .lessonType(LessonType.PARTIAL_EXAM_SEMINAR).rightType(RightType.WRITE).build();
+        grigoRights.add(right);
+
+        right = ProfessorRight.builder().professor(grigo).group(gr933).course(pdav)
+                .lessonType(LessonType.LABORATORY).rightType(RightType.READ).build();
+        grigoRights.add(right);
+        right = ProfessorRight.builder().professor(grigo).group(gr933).course(pdav)
+                .lessonType(LessonType.LABORATORY).rightType(RightType.WRITE).build();
+        grigoRights.add(right);
+        right = ProfessorRight.builder().professor(grigo).group(gr933).course(pdav)
+                .lessonType(LessonType.PARTIAL_EXAM_LABORATORY).rightType(RightType.READ).build();
+        grigoRights.add(right);
+        right = ProfessorRight.builder().professor(grigo).group(gr933).course(pdav)
+                .lessonType(LessonType.PARTIAL_EXAM_LABORATORY).rightType(RightType.WRITE).build();
+        grigoRights.add(right);
+        
+        grigo.setRights(grigoRights);
     }
 
     private static void initProfSuciu() {
@@ -846,15 +1203,71 @@ public class DBInserter {
         suciu.setEmail("suciu@scs.ubbcluj.ro");
         suciu.setWebPage("https://www.cs.ubbcluj.ro/~mihai-suciu/");
 
-        Teaching t_ss = new Teaching();
-        t_ss.setLaboratoryGroups(new HashSet<>());
-        t_ss.getLaboratoryGroups().add(gr232);
-        t_ss.setCourse(ss);
-        t_ss.setProfessor(suciu);
+        List<ProfessorRight> suciuRights = new ArrayList<>();
+        ProfessorRight right = ProfessorRight.builder().professor(suciu).group(gr231).course(ss)
+                .lessonType(LessonType.SEMINAR).rightType(RightType.READ).build();
+        suciuRights.add(right);
+        right = ProfessorRight.builder().professor(suciu).group(gr231).course(ss)
+                .lessonType(LessonType.LABORATORY).rightType(RightType.READ).build();
+        suciuRights.add(right);
+        right = ProfessorRight.builder().professor(suciu).group(gr231).course(ss)
+                .lessonType(LessonType.PARTIAL_EXAM_SEMINAR).rightType(RightType.READ).build();
+        suciuRights.add(right);
+        right = ProfessorRight.builder().professor(suciu).group(gr231).course(ss)
+                .lessonType(LessonType.PARTIAL_EXAM_LABORATORY).rightType(RightType.READ).build();
+        suciuRights.add(right);
+        right = ProfessorRight.builder().professor(suciu).group(gr231).course(ss)
+                .lessonType(LessonType.PARTIAL_EXAM_COURSE).rightType(RightType.READ).build();
+        suciuRights.add(right);
+        right = ProfessorRight.builder().professor(suciu).group(gr231).course(ss)
+                .lessonType(LessonType.PARTIAL_EXAM_COURSE).rightType(RightType.WRITE).build();
+        suciuRights.add(right);
 
-        List<Teaching> teachings = new ArrayList<>();
-        teachings.add(t_ss);
-        suciu.setTeachingList(teachings);
+        right = ProfessorRight.builder().professor(suciu).group(gr232).course(ss)
+                .lessonType(LessonType.SEMINAR).rightType(RightType.READ).build();
+        suciuRights.add(right);
+        right = ProfessorRight.builder().professor(suciu).group(gr232).course(ss)
+                .lessonType(LessonType.LABORATORY).rightType(RightType.READ).build();
+        suciuRights.add(right);
+        right = ProfessorRight.builder().professor(suciu).group(gr232).course(ss)
+                .lessonType(LessonType.LABORATORY).rightType(RightType.WRITE).build();
+        suciuRights.add(right);
+        right = ProfessorRight.builder().professor(suciu).group(gr232).course(ss)
+                .lessonType(LessonType.PARTIAL_EXAM_SEMINAR).rightType(RightType.READ).build();
+        suciuRights.add(right);
+        right = ProfessorRight.builder().professor(suciu).group(gr232).course(ss)
+                .lessonType(LessonType.PARTIAL_EXAM_LABORATORY).rightType(RightType.READ).build();
+        suciuRights.add(right);
+        right = ProfessorRight.builder().professor(suciu).group(gr232).course(ss)
+                .lessonType(LessonType.PARTIAL_EXAM_LABORATORY).rightType(RightType.WRITE).build();
+        suciuRights.add(right);
+        right = ProfessorRight.builder().professor(suciu).group(gr232).course(ss)
+                .lessonType(LessonType.PARTIAL_EXAM_COURSE).rightType(RightType.READ).build();
+        suciuRights.add(right);
+        right = ProfessorRight.builder().professor(suciu).group(gr232).course(ss)
+                .lessonType(LessonType.PARTIAL_EXAM_COURSE).rightType(RightType.WRITE).build();
+        suciuRights.add(right);
+        
+        right = ProfessorRight.builder().professor(suciu).group(gr933).course(ss)
+                .lessonType(LessonType.SEMINAR).rightType(RightType.READ).build();
+        suciuRights.add(right);
+        right = ProfessorRight.builder().professor(suciu).group(gr933).course(ss)
+                .lessonType(LessonType.LABORATORY).rightType(RightType.READ).build();
+        suciuRights.add(right);
+        right = ProfessorRight.builder().professor(suciu).group(gr933).course(ss)
+                .lessonType(LessonType.PARTIAL_EXAM_SEMINAR).rightType(RightType.READ).build();
+        suciuRights.add(right);
+        right = ProfessorRight.builder().professor(suciu).group(gr933).course(ss)
+                .lessonType(LessonType.PARTIAL_EXAM_LABORATORY).rightType(RightType.READ).build();
+        suciuRights.add(right);
+        right = ProfessorRight.builder().professor(suciu).group(gr933).course(ss)
+                .lessonType(LessonType.PARTIAL_EXAM_COURSE).rightType(RightType.READ).build();
+        suciuRights.add(right);
+        right = ProfessorRight.builder().professor(suciu).group(gr933).course(ss)
+                .lessonType(LessonType.PARTIAL_EXAM_COURSE).rightType(RightType.WRITE).build();
+        suciuRights.add(right);
+
+        suciu.setRights(suciuRights);
     }
 
     private static void initProfTicle() {
@@ -865,16 +1278,34 @@ public class DBInserter {
         ticle.setEmail("ticle@scs.ubbcluj.ro");
         ticle.setWebPage("http://www.cs.ubbcluj.ro/~daniel/");
 
-        Teaching t_ss = new Teaching();
-        t_ss.setLaboratoryGroups(new HashSet<>());
-        t_ss.getLaboratoryGroups().add(gr231);
-        t_ss.getLaboratoryGroups().add(gr933);
-        t_ss.setCourse(ss);
-        t_ss.setProfessor(ticle);
+        List<ProfessorRight> ticleRights = new ArrayList<>();
+        ProfessorRight right = ProfessorRight.builder().professor(ticle).group(gr231).course(ss)
+                .lessonType(LessonType.LABORATORY).rightType(RightType.READ).build();
+        ticleRights.add(right);
+        right = ProfessorRight.builder().professor(ticle).group(gr231).course(ss)
+                .lessonType(LessonType.LABORATORY).rightType(RightType.WRITE).build();
+        ticleRights.add(right);
+        right = ProfessorRight.builder().professor(ticle).group(gr231).course(ss)
+                .lessonType(LessonType.PARTIAL_EXAM_LABORATORY).rightType(RightType.READ).build();
+        ticleRights.add(right);
+        right = ProfessorRight.builder().professor(ticle).group(gr231).course(ss)
+                .lessonType(LessonType.PARTIAL_EXAM_LABORATORY).rightType(RightType.WRITE).build();
+        ticleRights.add(right);
+        
+        right = ProfessorRight.builder().professor(ticle).group(gr933).course(ss)
+                .lessonType(LessonType.LABORATORY).rightType(RightType.READ).build();
+        ticleRights.add(right);
+        right = ProfessorRight.builder().professor(ticle).group(gr933).course(ss)
+                .lessonType(LessonType.LABORATORY).rightType(RightType.WRITE).build();
+        ticleRights.add(right);
+        right = ProfessorRight.builder().professor(ticle).group(gr933).course(ss)
+                .lessonType(LessonType.PARTIAL_EXAM_LABORATORY).rightType(RightType.READ).build();
+        ticleRights.add(right);
+        right = ProfessorRight.builder().professor(ticle).group(gr933).course(ss)
+                .lessonType(LessonType.PARTIAL_EXAM_LABORATORY).rightType(RightType.WRITE).build();
+        ticleRights.add(right);
 
-        List<Teaching> teachings = new ArrayList<>();
-        teachings.add(t_ss);
-        ticle.setTeachingList(teachings);
+        ticle.setRights(ticleRights);
     }
 
     private static void initCourses() {
@@ -935,97 +1366,44 @@ public class DBInserter {
                     List<Lesson> lessons = new ArrayList<>();
                     int nrOfSeminars = enrollment.getCourse().getNrOfSeminars();
                     int nrOfLaboratories = enrollment.getCourse().getNrOfLaboratories();
-                    int nrOfLessons = +nrOfLaboratories + nrOfSeminars;
-                    if (nrOfSeminars == 0) {
-                        for (int i = 1; i <= nrOfLessons; i++) {
-                            Lesson l = new Lesson();
-                            l.setType(Lesson.LessonType.LABORATORY);
-                            l.setNr((byte) i);
-                            lessons.add(l);
-                        }
-                    } else if (nrOfSeminars == nrOfLaboratories) {
-                        boolean pingPong = true;
-                        for (int i = 1, j = 1; i <= nrOfLessons; i++) {
-                            Lesson l = new Lesson();
-                            if (pingPong) {
-                                l.setType(Lesson.LessonType.SEMINAR);
-                                l.setNr((byte) j);
-                            } else {
-                                l.setType(Lesson.LessonType.LABORATORY);
-                                l.setNr((byte) j++);
-                            }
-                            pingPong = !pingPong;
-                            lessons.add(l);
-                        }
-                    } else if (nrOfSeminars == 7 && nrOfLaboratories == 14) {
-                        for (int i = 1, j = 1; i <= nrOfSeminars; i++, j += 2) {
-                            Lesson l1 = new Lesson(), l2 = new Lesson(), l3 = new Lesson();
-                            l1.setType(Lesson.LessonType.SEMINAR);
-                            l1.setNr((byte) i);
-                            l2.setType(Lesson.LessonType.LABORATORY);
-                            l2.setNr((byte) j);
-                            l3.setType(Lesson.LessonType.LABORATORY);
-                            int jj = j + 1;
-                            l3.setNr((byte) jj);
-                            lessons.add(l1);
-                            lessons.add(l2);
-                            lessons.add(l3);
-                        }
-                    } else if (nrOfSeminars == 14 && nrOfLaboratories == 7) {
-                        for (int i = 1, j = 1; i <= nrOfLaboratories; i++, j += 2) {
-                            Lesson l1 = new Lesson(), l2 = new Lesson(), l3 = new Lesson();
-                            l1.setType(Lesson.LessonType.SEMINAR);
-                            l1.setNr((byte) j);
-                            l2.setType(Lesson.LessonType.LABORATORY);
-                            l2.setNr((byte) i);
-                            l3.setType(Lesson.LessonType.SEMINAR);
-                            int jj = j + 1;
-                            l3.setNr((byte) jj);
-                            lessons.add(l1);
-                            lessons.add(l2);
-                            lessons.add(l3);
-                        }
+                    for(int i=1; i <= nrOfLaboratories; i++){
+                        Lesson l = new Lesson();
+                        l.setType(LessonType.LABORATORY);
+                        l.setNr((byte) i);
+                        l.setEnrollment(enrollment);
+                        lessons.add(l);
                     }
-                    enrollment.setLessons(lessons);
-                });
-            });
-        });
-    }
-
-    public static void initPartialExams() {
-        List<Group> groups = new ArrayList<>();
-        groups.add(gr231);
-        groups.add(gr232);
-        groups.add(gr221);
-        groups.add(gr933);
-        groups.add(gr0);
-        groups.forEach(group -> {
-            group.getStudents().forEach(student -> {
-                student.getEnrollments().forEach(enrollment -> {
+                    for(int i=1; i <= nrOfSeminars; i++){
+                        Lesson l = new Lesson();
+                        l.setType(LessonType.SEMINAR);
+                        l.setNr((byte) i);
+                        l.setEnrollment(enrollment);
+                        lessons.add(l);
+                    }
                     String courseCode = enrollment.getCourse().getCode();
                     if (courseCode.equals("MLR8114")) { // SS
-                        List<PartialExam> exams = new ArrayList<>();
                         for (int i = 1; i <= 4; i++) {
-                            PartialExam exam = new PartialExam();
-                            exam.setType(PartialExam.PartialExamType.LABORATORY);
+                            Lesson exam = new Lesson();
+                            exam.setType(LessonType.PARTIAL_EXAM_LABORATORY);
                             exam.setNr((byte) i);
-                            exams.add(exam);
+                            exam.setEnrollment(enrollment);
+                            lessons.add(exam);
                         }
-                        enrollment.setPartialExams(exams);
                     } else if (courseCode.equals("MLR5023") || courseCode.equals("MLE5023")) { // LFTC, FLCT
-                        List<PartialExam> exams = new ArrayList<>();
                         for (int i = 1; i <= 2; i++) {
-                            PartialExam exam = new PartialExam();
-                            exam.setType(PartialExam.PartialExamType.COURSE);
+                            Lesson exam = new Lesson();
+                            exam.setType(LessonType.PARTIAL_EXAM_COURSE);
                             exam.setNr((byte) i);
-                            exams.add(exam);
+                            exam.setEnrollment(enrollment);
+                            lessons.add(exam);
                         }
-                        PartialExam exam = new PartialExam();
-                        exam.setType(PartialExam.PartialExamType.SEMINAR);
+                        Lesson exam = new Lesson();
+                        exam.setType(LessonType.PARTIAL_EXAM_SEMINAR);
                         exam.setNr((byte) 1);
-                        exams.add(exam);
-                        enrollment.setPartialExams(exams);
+                        exam.setEnrollment(enrollment);
+                        lessons.add(exam);
                     }
+                    enrollment.setLessons(lessons);
                 });
             });
         });
@@ -1042,24 +1420,6 @@ public class DBInserter {
             groups.add(gr221);
             groups.add(gr933);
             groups.add(gr0);
-            groups.forEach(group -> {
-                group.getStudents().forEach(student -> {
-                    student.getEnrollments().forEach(enrollment -> {
-                        entityManager.persist(enrollment.getCourse());
-                        if (enrollment.getPartialExams() != null) {
-                            enrollment.getPartialExams().forEach(partialExam -> {
-                                entityManager.persist(partialExam);
-                            });
-                        }
-                        enrollment.getLessons().forEach(lesson -> {
-                            entityManager.persist(lesson);
-                        });
-                        entityManager.persist(enrollment);
-                    });
-                    entityManager.persist(student);
-                });
-                entityManager.persist(group);
-            });
             List<Professor> professors = new ArrayList<>();
             professors.add(guran);
             professors.add(mihis);
@@ -1071,10 +1431,25 @@ public class DBInserter {
             professors.add(suciu);
             professors.add(ticle);
             professors.forEach(professor -> {
-                professor.getTeachingList().forEach(teaching -> {
+                entityManager.persist(professor);
+            });
+            groups.forEach(group -> {
+                group.getStudents().forEach(student -> {
+                    student.getEnrollments().forEach(enrollment -> {
+                        entityManager.persist(enrollment.getCourse());
+                        entityManager.persist(enrollment);
+                        enrollment.getLessons().forEach(lesson -> {
+                            entityManager.persist(lesson);
+                        });
+                    });
+                    entityManager.persist(student);
+                });
+                entityManager.persist(group);
+            });
+            professors.forEach(professor -> {
+                professor.getRights().forEach(teaching -> {
                     entityManager.persist(teaching);
                 });
-                entityManager.persist(professor);
             });
             entityManager.flush();
             tran.commit();
@@ -1107,8 +1482,6 @@ public class DBInserter {
         initProfTicle();
         System.out.println("init lessons");
         initLessons();
-        System.out.println("init partial exams");
-        initPartialExams();
         EntityManagerFactory emFactory = Persistence.createEntityManagerFactory("db-insert");
         entityManager = emFactory.createEntityManager();
         persist();

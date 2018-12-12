@@ -10,7 +10,7 @@
         <class>data_layer.domain.PartialExam</class>
         <class>data_layer.domain.Professor</class>
         <class>data_layer.domain.Student</class>
-        <class>data_layer.domain.Teaching</class>
+        <class>data_layer.domain.ProfessorRight</class>
         <class>data_layer.domain.User</class>
         <properties>
             <property name="javax.persistence.jdbc.driver" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/>
@@ -30,7 +30,7 @@
         <class>data_layer.domain.PartialExam</class>
         <class>data_layer.domain.Professor</class>
         <class>data_layer.domain.Student</class>
-        <class>data_layer.domain.Teaching</class>
+        <class>data_layer.domain.ProfessorRight</class>
         <class>data_layer.domain.User</class>
         <properties>
             <property name="javax.persistence.jdbc.driver" value="org.h2.Driver" />
@@ -52,7 +52,7 @@
         <class>data_layer.domain.PartialExam</class>
         <class>data_layer.domain.Professor</class>
         <class>data_layer.domain.Student</class>
-        <class>data_layer.domain.Teaching</class>
+        <class>data_layer.domain.ProfessorRight</class>
         <class>data_layer.domain.User</class>
         <properties>
             <property name="javax.persistence.jdbc.driver" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/>
