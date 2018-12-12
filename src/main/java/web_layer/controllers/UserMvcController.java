@@ -1,15 +1,20 @@
 package web_layer.controllers;
 
 
+import bussiness_layer.dto.EnrollmentDto;
 import bussiness_layer.dto.StudentDto;
+import bussiness_layer.dto.TeachingDto;
 import bussiness_layer.dto.UserDto;
 import bussiness_layer.services.IUserService;
+import bussiness_layer.utils.Authorizer;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.security.Principal;
+import java.util.List;
 
 @Controller
 public class UserMvcController {
@@ -35,11 +40,17 @@ public class UserMvcController {
             return "redirect:/professor/dashboard";
         }
     }
-
-//    @GetMapping("/")
-//    public String getProfileSettings(Principal crtUser){
-//        UserDto user = userService.getUserByUsername(crtUser.getName());
-//        return "redirect:/profile_settings";
-//    }
-
+    @GetMapping("/profile_settings")
+    public ModelAndView getProfileSettingsPage(Principal crtUser) {
+        ModelAndView mv = new ModelAndView("/profile_settings");
+        System.out.println(crtUser.getName());
+        UserDto user = userService.getUserByUsername(crtUser.getName());
+        System.out.println(user.getUsername());
+        if (user instanceof StudentDto)
+            mv.addObject("Type", "student");
+        else
+            mv.addObject("Type", "teacher");
+        mv.addObject("User", user);
+        return mv;
+    }
 }
