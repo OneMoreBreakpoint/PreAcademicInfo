@@ -758,28 +758,16 @@ public class DBInserter {
         
 
         right = ProfessorRight.builder().professor(guran).group(gr933).course(flct)
-                .lessonType(LessonType.SEMINAR).rightType(RightType.READ).build();
-        guranRights.add(right);
-        right = ProfessorRight.builder().professor(guran).group(gr933).course(flct)
                 .lessonType(LessonType.LABORATORY).rightType(RightType.READ).build();
         guranRights.add(right);
         right = ProfessorRight.builder().professor(guran).group(gr933).course(flct)
                 .lessonType(LessonType.LABORATORY).rightType(RightType.WRITE).build();
         guranRights.add(right);
         right = ProfessorRight.builder().professor(guran).group(gr933).course(flct)
-                .lessonType(LessonType.PARTIAL_EXAM_SEMINAR).rightType(RightType.READ).build();
-        guranRights.add(right);
-        right = ProfessorRight.builder().professor(guran).group(gr933).course(flct)
                 .lessonType(LessonType.PARTIAL_EXAM_LABORATORY).rightType(RightType.READ).build();
         guranRights.add(right);
         right = ProfessorRight.builder().professor(guran).group(gr933).course(flct)
                 .lessonType(LessonType.PARTIAL_EXAM_LABORATORY).rightType(RightType.WRITE).build();
-        guranRights.add(right);
-        right = ProfessorRight.builder().professor(guran).group(gr933).course(flct)
-                .lessonType(LessonType.PARTIAL_EXAM_COURSE).rightType(RightType.READ).build();
-        guranRights.add(right);
-        right = ProfessorRight.builder().professor(guran).group(gr933).course(flct)
-                .lessonType(LessonType.PARTIAL_EXAM_COURSE).rightType(RightType.WRITE).build();
         guranRights.add(right);
         
         guran.setRights(guranRights);

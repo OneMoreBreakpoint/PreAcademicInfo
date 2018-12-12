@@ -1,4 +1,4 @@
-package bussiness_layer.utils;
+package data_layer.utils;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

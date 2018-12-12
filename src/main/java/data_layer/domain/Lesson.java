@@ -25,10 +25,10 @@ public class Lesson {
     @NotNull
     private byte nr;
 
-    private Boolean attended;
+    private boolean attended;
 
     @Max(10)
-    @Min(1)
+    @Min(0)
     private Byte grade;
 
     @NotNull

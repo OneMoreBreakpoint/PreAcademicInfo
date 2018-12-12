@@ -11,7 +11,7 @@
     <link rel="stylesheet" th:href="@{/css/professor/timeline.css}"/>
     <script th:inline="javascript">
         let enrollments = /*[[${enrollments}]]*/ '';
-        let teaching = /*[[${teaching}]]*/ '';
+        let rights = /*[[${rights}]]*/ '';
         let msgs = {};
         msgs.leavePage = /*[[#{confirm.leavePage}]]*/ '';
     </script>
@@ -30,7 +30,7 @@
     <div>
         <label th:text="|#{timeline.filter.group}:|" for="combo_groupCode"></label>
         <select id="combo_groupCode">
-            <th:block th:each="group : ${teaching.allGroups}" th:switch="${group.code}">
+            <th:block th:each="group : ${groups}" th:switch="${group.code}">
                 <option th:case="0" th:text="#{timeline.filter.extensionGroup}" th:value="${group.code}"
                         th:selected="${group.code == crtGroupCode}"></option>
                 <option th:case="*" th:text="${group.code}" th:value="${group.code}"
@@ -49,10 +49,10 @@
 </div>
 <div class="timeline" id="timeline">
     <table>
-        <tr th:replace="/fragments/timeline :: t-head-row (${enrollments[0]}, ${teaching}, ${crtGroupCode}, ${auth})"></tr>
+        <tr th:replace="/fragments/timeline :: t-head-row (${enrollments[0]}, ${viewHelper})"></tr>
         <tbody>
         <th:block th:each="enrl : ${enrollments}">
-            <tr th:replace="/fragments/timeline :: t-data-row (${enrl}, ${teaching}, ${crtGroupCode}, ${auth})"></tr>
+            <tr th:replace="/fragments/timeline :: t-data-row (${enrl}, ${viewHelper})"></tr>
         </th:block>
         </tbody>
     </table>

@@ -13,8 +13,8 @@ function convertEnrollmentListToEnrollmentMap() {
     let enrollmentList = enrollments, enrollmentMap = {};
     for (let i = 0; i < enrollmentList.length; i++) {
         let enrollment = {};
-        let lessonMap = {}, examMap = {};
-        let lessonList = enrollmentList[i].lessons, examList = enrollmentList[i].partialExams;
+        let lessonMap = {};
+        let lessonList = enrollmentList[i].lessons;
         for (let key in enrollmentList[i]) {
             enrollment[key] = enrollmentList[i][key];
         }
@@ -22,52 +22,10 @@ function convertEnrollmentListToEnrollmentMap() {
             let lesson = lessonList[j];
             lessonMap[lesson.id] = lesson;
         }
-        for (let j = 0; j < examList.length; j++) {
-            let exam = examList[j];
-            examMap[exam.id] = exam;
-        }
         enrollment.lessons = lessonMap;
-        enrollment.partialExams = examMap;
         enrollmentMap[enrollment.id] = enrollment;
     }
     enrollments = enrollmentMap;
-}
-
-function stripReadonlyLessonsAndExams(enrollments) {
-    for (let ikey in enrollments) {
-        let lessons = enrollments[ikey].lessons;
-        let exams = enrollments[ikey].partialExams;
-        for (let jkey in lessons) {
-            if (lessons[jkey].readonly == true) {
-                delete lessons[jkey];
-            }
-        }
-        for (let jkey in exams) {
-            if (exams[jkey].readonly == true) {
-                delete exams[jkey];
-            }
-        }
-    }
-    return enrollments;
-}
-
-function convertEnrollmentMapToEnrollmentList(enrollmentMap) {
-    let enrollmentList = [];
-    for (let key in enrollmentMap) {
-        enrollmentList.push(deepClone(enrollmentMap[key]));
-    }
-    for (i = 0; i < enrollmentList.length; i++) {
-        let lessons = [], partialExams = [];
-        for (let key in enrollmentList[i].lessons) {
-            lessons.push(enrollmentList[i].lessons[key]);
-        }
-        for (let key in enrollmentList[i].partialExams) {
-            partialExams.push(enrollmentList[i].partialExams[key]);
-        }
-        enrollmentList[i].lessons = lessons;
-        enrollmentList[i].partialExams = partialExams;
-    }
-    return enrollmentList;
 }
 
 function stickRightColumns() {
@@ -116,7 +74,6 @@ function assignTimelineHandlers() {
         let photoCell = $(enrlRow).children("td.photo-cell").first();
         let nameCell = $(enrlRow).children("td.name-cell").first();
         let lessonCells = $(enrlRow).children("td.lesson-cell");
-        let examCells = $(enrlRow).children("td.exam-cell");
         $(photoCell).click(() => {
             //TODO: open modal
         });
@@ -125,9 +82,6 @@ function assignTimelineHandlers() {
         });
         $(lessonCells).each((index, lessonCell) => {
             assignLessonCellHandlers(enrlRow, lessonCell);
-        });
-        $(examCells).each((index, examCell) => {
-            assignExamCellHandlers(enrlRow, examCell);
         });
     });
 }
@@ -161,11 +115,10 @@ function assignFilterHandlers() {
 
 function assignActionHandlers() {
     $("#btn_submitChanges").click(() => {
-        debugger;
-        let strippedEnrollmentMap = stripReadonlyLessonsAndExams(deepClone(enrollments));
-        let reqBody = JSON.stringify(convertEnrollmentMapToEnrollmentList(strippedEnrollmentMap));
+        let reqBody = JSON.stringify(stripReadOnlyLessons(getLessonList()));
+        console.log(reqBody);
         $.ajax({
-            url: "/app/professor/enrollments",
+            url: "/app/professor/lessons",
             type: "PUT",
             data: reqBody,
             contentType: "application/json; charset=utf-8",
@@ -191,6 +144,10 @@ function assignLessonCellHandlers(enrlRow, lessonCell) {
         let lessonId = getNumericIdFromDomId(lessonCell.id);
         let checkedState = $(event.target).is(':checked');
         enrollments[enrlId].lessons[lessonId].attended = checkedState;
+        if(checkedState === false){
+            $(bonusField).val(undefined);
+            $(bonusField).trigger('change');
+        }
         setDataHasBeenChangedFlag(true);
         updateTotalAttendance(enrlRow);
     });
@@ -211,23 +168,12 @@ function assignLessonCellHandlers(enrlRow, lessonCell) {
             $(bonusField).val(actualValue);
         }
         enrollments[enrlId].lessons[lessonId].bonus = actualValue;
+        if(actualValue != undefined && actualValue !== 0){
+            $(attendanceField).prop('checked', true);
+            $(attendanceField).trigger('change');
+        }
         setDataHasBeenChangedFlag(true);
         updateTotalBonus(enrlRow);
-    });
-}
-
-function assignExamCellHandlers(enrlRow, examCell) {
-    let enrlId = getNumericIdFromDomId(enrlRow.id);
-    let gradeField = $(examCell).find("input.grade-field");
-    $(gradeField).change((event) => {
-        let examId = getNumericIdFromDomId(examCell.id);
-        let actualValue = getValidGrade(event.target.value);
-        if (actualValue != event.target.value) {
-            $(gradeField).val(actualValue);
-        }
-        enrollments[enrlId].partialExams[examId].grade = actualValue;
-        setDataHasBeenChangedFlag(true);
-        updateAverageGrade(enrlRow);
     });
 }
 
@@ -285,12 +231,11 @@ function updateTotalAttendance(enrlRow) {
 function updateTotalAttendanceView(enrlRow, totalLabAttendance, totalSemAttendance) {
     let totalAttendanceCell = $(enrlRow).children("td.attendances-cell").first();
     let precisionLab = (totalLabAttendance < 100 ? 2 : 0), precisionSem = (totalSemAttendance < 100 ? 2 : 0);
-    let hasSeminarRights = teachingHasSeminarRightsOverGroup(teaching, crtGroupCode);
-    let hasLabRights = teachingHasLaboratoryRightsOverGroup(teaching, crtGroupCode);
-    debugger;
-    let hasCoordinatorRights = teachingHasCoordinatorRights(teaching);
+    let hasSeminarRights = profHasRight("SEMINAR", "READ");
+    let hasLabRights = profHasRight("LABORATORY", "READ");
+    let hasCoordinatorRights = profHasRight("PARTIAL_EXAM_COURSE", "WRITE");
     let totalAttendanceViewText;
-    if (hasCoordinatorRights) {
+    if ((hasSeminarRights && hasLabRights) || hasCoordinatorRights) {
         totalAttendanceViewText = `${totalSemAttendance.toFixed(precisionSem)}% / ${totalLabAttendance.toFixed(precisionLab)}%`;
     } else if (hasSeminarRights && !hasLabRights) {
         totalAttendanceViewText = `${totalSemAttendance.toFixed(precisionSem)}%`;
@@ -344,10 +289,10 @@ function getNrOfSeminars() {
 
 function hasMinimumAttendance(seminarAttendance, laboratoryAttendance) {
     const MIN_SEM_ATT = 75, MIN_LAB_ATT = 90;
-    let hasSeminarRights = teachingHasSeminarRightsOverGroup(teaching, crtGroupCode);
-    let hasLabRights = teachingHasLaboratoryRightsOverGroup(teaching, crtGroupCode);
-    let hasCoordinatorRights = teachingHasCoordinatorRights(teaching);
-    if (hasCoordinatorRights) {
+    let hasSeminarRights = profHasRight("SEMINAR", "READ");
+    let hasLabRights = profHasRight("LABORATORY", "READ");
+    let hasCoordinatorRights = profHasRight("PARTIAL_EXAM_COURSE", "WRITE");
+    if ((hasSeminarRights && hasLabRights) || hasCoordinatorRights) {
         return seminarAttendance >= MIN_SEM_ATT && laboratoryAttendance >= MIN_LAB_ATT;
     } else if (hasSeminarRights && !hasLabRights) {
         return seminarAttendance >= MIN_SEM_ATT;
@@ -361,7 +306,7 @@ function hasMinimumGrade(grade) {
 }
 
 function getValidGrade(actualValue) {
-    return getValidNumber(actualValue, 1, 10);
+    return getValidNumber(actualValue, 0, 10);
 }
 
 function getValidBonus(actualValue) {
@@ -372,6 +317,9 @@ function getValidNumber(actualValue, minValue, maxValue) {
     if (typeof(actualValue) === "string") {
         actualValue = parseInt(actualValue);
     }
+    if(isNaN(actualValue)){
+        return undefined;
+    }
     if (actualValue > maxValue) {
         return maxValue;
     } else if (actualValue < minValue) {
@@ -380,24 +328,31 @@ function getValidNumber(actualValue, minValue, maxValue) {
     return actualValue;
 }
 
-function teachingHasSeminarRightsOverGroup(teaching, groupCode) {
-    for (let i = 0; i < teaching.seminarGroups.length; i++) {
-        if (teaching.seminarGroups[i].code == groupCode) {
+function profHasRight(lessonType, rightType) {
+    for(let i = 0; i < rights.length; i++){
+        if(rights[i].lessonType === lessonType && rights[i].rightType === rightType){
             return true;
         }
     }
     return false;
 }
 
-function teachingHasLaboratoryRightsOverGroup(teaching, groupCode) {
-    for (let i = 0; i < teaching.laboratoryGroups.length; i++) {
-        if (teaching.laboratoryGroups[i].code == groupCode) {
-            return true;
+function getLessonList(){
+    let lessons = [];
+    for(let ikey in enrollments){
+        for(let jkey in enrollments[ikey].lessons){
+            lessons.push(enrollments[ikey].lessons[jkey]);
         }
     }
-    return false;
+    return lessons;
 }
 
-function teachingHasCoordinatorRights(teaching) {
-    return teaching.course.coordinator.username == teaching.professor.username;
+function stripReadOnlyLessons(lessons){
+    let result = [];
+    for(let i=0; i < lessons.length; i++){
+        if(lessons[i].rightType === "WRITE"){
+            result.push(lessons[i]);
+        }
+    }
+    return result;
 }
