@@ -1,19 +1,27 @@
 package bussiness_layer.dto;
 
-import lombok.*;
-import utils.LessonType;
-import utils.RightType;
+import java.io.Serializable;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import utils.LessonType;
+import utils.RightType;
 
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class LessonDto implements Comparable<LessonDto> {
+public class LessonDto implements Comparable<LessonDto>, Serializable {
+
+    private static final long serialVersionUID = 2024L;
 
     private Integer id;
 

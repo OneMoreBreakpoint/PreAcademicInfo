@@ -1,18 +1,27 @@
 package bussiness_layer.dto;
 
-import lombok.*;
+import java.io.Serializable;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CourseDto {
+public class CourseDto implements Serializable {
+
+    public static final long serialVersionUID = 2023L;
+
     private Integer id;
 
     @NotNull

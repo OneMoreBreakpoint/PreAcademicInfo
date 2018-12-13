@@ -1,16 +1,18 @@
 package web_layer.controllers;
 
-import bussiness_layer.dto.LessonDto;
-import bussiness_layer.services.IProfessorService;
+import java.security.Principal;
+import java.util.ArrayList;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.security.Principal;
-import java.util.ArrayList;
+import bussiness_layer.dto.LessonDto;
+import bussiness_layer.services.IProfessorService;
 
 @RestController
 @RequestMapping("/app/professor")
@@ -28,4 +30,11 @@ public class ProfessorRestController {
         service.updateLessons(crtUser.getName(), lessons);
         return ResponseEntity.ok(null);
     }
+
+    @GetMapping("/courses")
+    public ResponseEntity<?> getRelatedCourses(Principal crtUser) {
+        service.getRelatedCourses(crtUser.getName());
+        return ResponseEntity.ok(null);
+    }
+
 }

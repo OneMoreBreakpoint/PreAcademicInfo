@@ -1,10 +1,11 @@
 package data_layer.repositories;
 
-import data_layer.domain.Course;
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
+import data_layer.domain.Course;
 
 @Repository
 public interface ICourseRepository extends JpaRepository<Course, Integer> {

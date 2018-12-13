@@ -1,8 +1,17 @@
 package bussiness_layer.services;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
+import bussiness_layer.handlers.ProfessorHandler;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import bussiness_layer.dto.EnrollmentDto;
 import bussiness_layer.dto.GroupDto;
 import bussiness_layer.dto.LessonDto;
+import bussiness_layer.dto.ProfessorCourseDto;
 import bussiness_layer.dto.ProfessorRightDto;
 import bussiness_layer.mappers.EnrollmentMapper;
 import bussiness_layer.mappers.GroupMapper;
@@ -11,17 +20,15 @@ import bussiness_layer.utils.LessonDtoValidator;
 import data_layer.domain.Enrollment;
 import data_layer.domain.Lesson;
 import data_layer.domain.ProfessorRight;
-import data_layer.repositories.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import data_layer.repositories.ICourseRepository;
+import data_layer.repositories.IEnrollmentRepository;
+import data_layer.repositories.IGroupRepository;
+import data_layer.repositories.ILessonRepository;
+import data_layer.repositories.IProfessorRightRepository;
 import utils.LessonType;
 import utils.RightType;
 import utils.exceptions.AccessForbiddenException;
 import utils.exceptions.ResourceNotFoundException;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -43,6 +50,8 @@ public class ProfessorService implements IProfessorService {
     @Autowired
     private ICourseRepository courseRepository;
 
+    @Autowired
+    private ProfessorHandler professorHandler;
 
     @Override
     public List<EnrollmentDto> getEnrollments(String profUsername, String courseCode, String groupCode) {
@@ -96,6 +105,13 @@ public class ProfessorService implements IProfessorService {
             lesson.setGrade(lessonDto.getGrade());
         });
         lessonRepository.flush();
+    }
+
+    @Override
+    public List<ProfessorCourseDto> getRelatedCourses(String profUsername) {
+        List<ProfessorRight> professorRights = professorRightRepository.findByProfessor(profUsername);
+
+        return professorHandler.getProfessorCourseDtoList(profUsername, professorRights);
     }
 
     private void stripEnrollmentsOfUnauthorizedLessons(List<EnrollmentDto> enrollmentDtos, List<ProfessorRight> rights) {
