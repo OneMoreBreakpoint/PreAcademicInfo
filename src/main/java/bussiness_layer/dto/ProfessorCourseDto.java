@@ -18,7 +18,7 @@ import lombok.Setter;
 public class ProfessorCourseDto {
 
     @NotNull
-    CourseDto courseDto;
+    CourseDto course;
 
     @NotNull
     List<GroupDto> groups;

@@ -27,20 +27,19 @@ public class ProfessorMvcController {
     @GetMapping("/dashboard")
     public ModelAndView getDashboardPage(Principal crtUser) {
         List<ProfessorCourseDto> professorCourses = service.getRelatedCourses(crtUser.getName());
-        return new ModelAndView("/professor/dashboard").addObject("courses", professorCourses);
+        return new ModelAndView("/professor/dashboard").addObject("professorCourses", professorCourses);
     }
 
     @GetMapping("/timeline")
     public ModelAndView getTimelinePage(@RequestParam String course, @RequestParam String group, Principal crtUser) {
-        ModelAndView mv = new ModelAndView("/professor/timeline");
         List<EnrollmentDto> enrollments = service.getEnrollments(crtUser.getName(), course, group);
         List<ProfessorRightDto> professorRights = service.getProfessorRights(crtUser.getName(), course, group);
         List<GroupDto> groups = service.getGroups(crtUser.getName(), course);
-        mv.addObject("enrollments", enrollments);
-        mv.addObject("rights", professorRights);
-        mv.addObject("groups", groups);
-        mv.addObject("crtGroupCode", group);
-        mv.addObject("viewHelper", ViewHelper.class);
-        return mv;
+        return new ModelAndView("/professor/timeline")
+                .addObject("enrollments", enrollments)
+                .addObject("rights", professorRights)
+                .addObject("groups", groups)
+                .addObject("crtGroupCode", group)
+                .addObject("viewHelper", ViewHelper.class);
     }
 }
