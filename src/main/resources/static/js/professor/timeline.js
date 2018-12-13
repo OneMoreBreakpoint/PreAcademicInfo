@@ -114,7 +114,6 @@ function assignFilterHandlers() {
 function assignActionHandlers() {
     $("#btn_submitChanges").click(() => {
         let reqBody = JSON.stringify(stripReadOnlyLessons(getLessonList()));
-        console.log(reqBody);
         $.ajax({
             url: "/app/professor/lessons",
             type: "PUT",

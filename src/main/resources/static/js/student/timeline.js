@@ -1,10 +1,8 @@
 function updateTotalAttendanceView(enrlRow, totalLabAttendance, totalSemAttendance) {
     let totalAttendanceCell = $(enrlRow).children("td.attendances-cell").first();
     let precisionLab = (totalLabAttendance < 100 ? 2 : 0), precisionSem = (totalSemAttendance < 100 ? 2 : 0);
-    debugger;
     let totalAttendanceViewText;
     totalAttendanceViewText = `${totalSemAttendance.toFixed(precisionSem)}% / ${totalLabAttendance.toFixed(precisionLab)}%`;
-    console.log(totalAttendanceViewText)
     $(totalAttendanceCell).text(totalAttendanceViewText);
     if (!hasMinimumAttendance(totalSemAttendance, totalLabAttendance)) {
         $(totalAttendanceCell).addClass('err');
