@@ -2,11 +2,13 @@ package web_layer.controllers;
 
 
 import bussiness_layer.dto.EnrollmentDto;
+import bussiness_layer.dto.ProfessorDto;
 import bussiness_layer.dto.StudentDto;
 import bussiness_layer.dto.TeachingDto;
 import bussiness_layer.dto.UserDto;
 import bussiness_layer.services.IUserService;
 import bussiness_layer.utils.Authorizer;
+import data_layer.domain.Professor;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -42,15 +44,24 @@ public class UserMvcController {
     }
     @GetMapping("/profile_settings")
     public ModelAndView getProfileSettingsPage(Principal crtUser) {
-        ModelAndView mv = new ModelAndView("/profile_settings");
         System.out.println(crtUser.getName());
+        ModelAndView mv = new ModelAndView("/profile_settings");
         UserDto user = userService.getUserByUsername(crtUser.getName());
-        System.out.println(user.getUsername());
-        if (user instanceof StudentDto)
-            mv.addObject("Type", "student");
-        else
-            mv.addObject("Type", "teacher");
-        mv.addObject("User", user);
+//        if (user instanceof StudentDto)
+//        {
+//            StudentDto studentDto = (StudentDto) userService.getUserByUsername(crtUser.getName());
+//            System.out.println(studentDto.getUsername());
+//            mv.addObject("User", studentDto);
+//        }
+//        else
+//        {
+            ProfessorDto professorDto = userService.getProffesorByUsername(crtUser.getName());
+//        }
+
+//        if (user instanceof StudentDto)
+//            mv.addObject("Type", "student");
+//        else
+//            mv.addObject("Type", "teacher");
         return mv;
     }
 }

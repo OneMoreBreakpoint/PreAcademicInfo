@@ -44,6 +44,8 @@ public class ProfessorService implements IProfessorService {
     @Autowired
     private ICourseRepository courseRepository;
 
+    @Autowired
+    private IProffesorRepository proffesorRepository;
 
     @Override
     public List<EnrollmentDto> getEnrollments(String profUsername, String courseCode, String groupCode) {

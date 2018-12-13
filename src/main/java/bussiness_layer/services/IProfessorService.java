@@ -1,6 +1,7 @@
 package bussiness_layer.services;
 
 import bussiness_layer.dto.EnrollmentDto;
+import bussiness_layer.dto.ProfessorDto;
 import bussiness_layer.dto.TeachingDto;
 
 import java.util.List;
