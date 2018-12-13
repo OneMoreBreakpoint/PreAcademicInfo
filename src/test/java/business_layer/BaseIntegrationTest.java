@@ -102,7 +102,7 @@ public abstract class BaseIntegrationTest {
         return rights;
     }
 
-    private ProfessorRight createProfessorRight(Professor professor, Course course, Group group
+    protected ProfessorRight createProfessorRight(Professor professor, Course course, Group group
             , LessonType lessonType, RightType rightType) {
         return professorRightRepository.save(ProfessorRightFactory.generateProfessorRightBuilder()
                 .professor(professor)

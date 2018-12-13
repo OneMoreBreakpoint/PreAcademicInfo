@@ -1,6 +1,12 @@
 package bussiness_layer.dto;
 
-import lombok.*;
+import java.io.Serializable;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 
 @Getter
@@ -8,7 +14,10 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class GroupDto implements Comparable<GroupDto> {
+public class GroupDto implements Comparable<GroupDto>, Serializable {
+
+    public static final long serialVersionUID = 2026L;
+
     private Short id;
     private String code;
 
@@ -33,6 +42,7 @@ public class GroupDto implements Comparable<GroupDto> {
             return false;
         }
         GroupDto that = (GroupDto) obj;
+        //TODO(all) maybe use groupname instead of code
         return this.code.equals(that.code);
     }
 

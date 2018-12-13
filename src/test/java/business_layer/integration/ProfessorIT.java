@@ -3,6 +3,7 @@ package business_layer.integration;
 import java.util.Arrays;
 import java.util.List;
 
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -12,11 +13,17 @@ import org.springframework.transaction.annotation.Transactional;
 import business_layer.BaseIntegrationTest;
 import bussiness_layer.dto.EnrollmentDto;
 import bussiness_layer.dto.LessonDto;
+import bussiness_layer.dto.ProfessorCourseDto;
 import bussiness_layer.dto.ProfessorRightDto;
 import bussiness_layer.services.IProfessorService;
+import data_layer.domain.Course;
 import data_layer.domain.Enrollment;
+import data_layer.domain.Group;
+import data_layer.domain.Professor;
 import factory.LessonFactory;
+import factory.ProfessorFactory;
 import utils.LessonType;
+import utils.RightType;
 import utils.TestConstants;
 import utils.exceptions.AccessForbiddenException;
 import utils.exceptions.ResourceNotFoundException;
@@ -144,6 +151,41 @@ public class ProfessorIT extends BaseIntegrationTest {
         exception.expect(ResourceNotFoundException.class);
         //When
         professorService.updateLessons(TestConstants.PROF_USERNAME, Arrays.asList(inexistentLessonDto));
+    }
+
+    @Test
+    public void givenProfessorWithoutCoursesTaught_whenGetRelatedCourses_thenNullListIsReturned() {
+        //Given
+        String profUsername = createUser(ProfessorFactory.generateProfessor()).getUsername();
+
+        //When
+        List<ProfessorCourseDto> professorCourseDtos = professorService.getRelatedCourses(profUsername);
+
+        //Then
+        assertEquals(professorCourseDtos.size(), 0);
+
+    }
+
+    @Ignore
+    @Test
+    public void givenProfessorWithTwoCoursesTaught_whenGetRelatedCourses_thenProfessorCourseDtoListIsReturned() {
+        //Given
+        createEnrollment(TestConstants.PROF_USERNAME, TestConstants.COURSE_CODE, TestConstants.GROUP_CODE);
+        createEnrollment(TestConstants.PROF_USERNAME + "abc", TestConstants.COURSE_CODE + 1, TestConstants.GROUP_CODE + 1);
+
+        Group group = groupRepository.findByCode(TestConstants.GROUP_CODE).get();
+        Course course = courseRepository.findAll().get(courseRepository.findAll().size() - 1);
+        Course course2 = courseRepository.findAll().get(courseRepository.findAll().size() - 2);
+        Professor professor = (Professor) userRepository.findByUsername(TestConstants.PROF_USERNAME).get();
+
+        createProfessorRight(professor, course, group, LessonType.LABORATORY, RightType.READ);
+        createProfessorRights(professor.getUsername(), course2.getCode(), group.getCode());
+
+        //When
+        List<ProfessorCourseDto> professorCourseDtos = professorService.getRelatedCourses(TestConstants.PROF_USERNAME);
+
+        //Then
+        assertEquals(professorCourseDtos.size(), 2);
     }
 
 }

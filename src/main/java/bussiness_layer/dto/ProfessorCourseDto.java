@@ -1,6 +1,6 @@
 package bussiness_layer.dto;
 
-import java.util.Set;
+import java.util.List;
 
 import javax.validation.constraints.NotNull;
 
@@ -17,11 +17,10 @@ import lombok.Setter;
 @AllArgsConstructor
 public class ProfessorCourseDto {
 
-    //TODO(Norberth) check if this should be a sorted set, or maybe use on the predefined sorted methods in jpa repository
     @NotNull
-    private Set<GroupDto> groups;
+    CourseDto courseDto;
 
     @NotNull
-    private CourseDto course;
+    List<GroupDto> groups;
 
 }
