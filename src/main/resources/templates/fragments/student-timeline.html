@@ -6,25 +6,19 @@
 <body>
 
 
-<td th:fragment="name-cell (course)" class="name-cell" th:object="${course}"
-    th:text="${course.name}">
+<td th:fragment="name-cell (course)" class="name-cell" th:text="${course.name}">
 </td>
 
 <td th:fragment="lesson-cell (lesson)" class="lesson-cell" th:id="|lessonCell-${lesson?.id}|">
-    <th:block th:if="${lesson!=null}">
-        <input type="checkbox" th:checked="${lesson.attended}" disabled class="attendance-field">
-        <input type="number" th:value="${lesson.grade}" th:placeholder="#{timeline.head.grade}" disabled class="grade-field">
-        <input type="number" th:value="${lesson.bonus}" th:placeholder="#{timeline.head.bonus}" disabled class="bonus-field">
+    <th:block th:if="${lesson!=null}" th:with="lessonType=${lesson.type.toString()}">
+        <input type="checkbox" th:checked="${lesson.attended}" disabled class="attendance-field"
+               th:if="${lessonType=='SEMINAR' || lessonType=='LABORATORY'}">
+        <input type="number" th:value="${lesson.grade}" min="0" max="10" disabled class="grade-field"
+               th:if="${lessonType!='SEMINAR'}">
+        <input type="number" th:value="${lesson.bonus}" disabled min="-10" max="10" class="bonus-field"
+               th:if="${lessonType=='SEMINAR' || lessonType=='LABORATORY'}">
     </th:block>
 </td>
-
-
-<td th:fragment="exam-cell (exam)" class="exam-cell" th:id="|examCell-${exam?.id}|">
-    <th:block th:if="${exam!=null}">
-        <input type="number" th:value="${exam.grade}" th:placeholder="#{timeline.head.grade}" disabled class="grade-field">
-    </th:block>
-</td>
-
 
 <td th:fragment="bonus-cell (enrollment)" class="bonus-cell">
 </td>
@@ -38,7 +32,7 @@
 </td>
 
 
-<thead th:fragment="t-head-row (lessonsTemplateSet, partialExamsTemplateSet)">
+<thead th:fragment="t-head-row (lessonsTemplateSet)">
 <tr>
     <th th:text="#{timeline.head.courseName}" class="name-cell"></th>
     <th:block th:each="lesson : ${lessonsTemplateSet}">
@@ -49,18 +43,14 @@
             <th th:case="'LABORATORY'" class="lesson-cell"
                 th:text="|#{timeline.head.laboratory} ${lesson.nr} (#{timeline.head.attendance}/#{timeline.head.grade}/#{timeline.head.bonus})|">
             </th>
-        </th:block>
-    </th:block>
-    <th:block th:each="partial : ${partialExamsTemplateSet}">
-        <th:block th:switch="${partial.type.toString()}">
-            <th th:case="'SEMINAR'" class="exam-cell"
-                th:text="|#{timeline.head.partial} #{timeline.head.seminar} ${partial.nr}|">
+            <th th:case="'PARTIAL_EXAM_SEMINAR'" class="lesson-cell"
+                th:text="|#{timeline.head.partial} #{timeline.head.seminar} ${lesson.nr}|">
             </th>
-            <th th:case="'LABORATORY'" class="exam-cell"
-                th:text="|#{timeline.head.partial} #{timeline.head.laboratory} ${partial.nr}|">
+            <th th:case="'PARTIAL_EXAM_LABORATORY'" class="lesson-cell"
+                th:text="|#{timeline.head.partial} #{timeline.head.laboratory} ${lesson.nr}|">
             </th>
-            <th th:case="'COURSE'" class="exam-cell"
-                th:text="|#{timeline.head.partial} #{timeline.head.course} ${partial.nr}|">
+            <th th:case="'PARTIAL_EXAM_COURSE'" class="lesson-cell"
+                th:text="|#{timeline.head.partial} #{timeline.head.course} ${lesson.nr}|">
             </th>
         </th:block>
     </th:block>
@@ -70,23 +60,16 @@
 </tr>
 </thead>
 
-<tr th:fragment="t-data-row(enrollment,lessonsTemplateSet, partialExamsTemplateSet, templateListUtils)" th:object="${enrollment}"
-    th:id="|enrollmentRow-${enrollment.id}|" class="enrollment-row">
-    <td th:replace="this :: name-cell (*{course})">
-    </td>
+<tr th:fragment="t-data-row(enrollment, lessonsTemplateSet, viewHelper)" th:id="|enrollmentRow-${enrollment.id}|"
+    class="enrollment-row">
+    <td th:replace="this :: name-cell (${enrollment.course})"></td>
     <th:block th:each="lesson : ${lessonsTemplateSet}"
-              th:with="goodLesson=${templateListUtils.getRealLessonFromTemplate(enrollment.lessons, lesson)}">
+              th:with="goodLesson=${viewHelper.getRealLessonFromTemplate(enrollment.lessons, lesson)}">
         <td th:replace="this :: lesson-cell(${goodLesson})"></td>
-    </th:block>
-    <th:block th:each="exam : ${partialExamsTemplateSet}"
-              th:with="goodExam=${templateListUtils.getRealPartialExamFromTemplate(enrollment.partialExams, exam)}">
-        <td th:replace="this :: exam-cell(${goodExam})"></td>
     </th:block>
     <td th:replace="this :: bonus-cell (${enrollment})"></td>
     <td th:replace="this :: attendances-cell (${enrollment})"></td>
-    <th:block>
-        <td th:replace="this :: average-cell (${enrollment})"></td>
-    </th:block>
+    <td th:replace="this :: average-cell (${enrollment})"></td>
 </tr>
 
 </body>

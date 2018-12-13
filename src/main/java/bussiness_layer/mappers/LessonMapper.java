@@ -4,6 +4,9 @@ import bussiness_layer.dto.LessonDto;
 import data_layer.domain.Lesson;
 import lombok.experimental.UtilityClass;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @UtilityClass
 public class LessonMapper {
 
@@ -27,5 +30,19 @@ public class LessonMapper {
         lessonDTO.setBonus(lesson.getBonus());
         lessonDTO.setAttended(lesson.isAttended());
         return lessonDTO;
+    }
+
+    public static List<LessonDto> toDtoList(List<Lesson> lessons) {
+        return lessons.stream()
+                .map(LessonMapper::toDto)
+                .sorted()
+                .collect(Collectors.toList());
+    }
+
+    public static List<Lesson> toEntityList(List<LessonDto> dtos) {
+        return dtos.stream()
+                .map(LessonMapper::toEntity)
+                .sorted()
+                .collect(Collectors.toList());
     }
 }

@@ -44,6 +44,10 @@ public abstract class User {
         this.lastName = lastName;
         this.email = email;
     }
+
+    public String getUserRole() {
+        return this.getClass().getSimpleName().toUpperCase();
+    }
 }
 
 

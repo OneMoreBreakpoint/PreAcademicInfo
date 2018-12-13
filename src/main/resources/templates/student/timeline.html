@@ -16,6 +16,7 @@
     <script th:src="@{/js/common.js}"></script>
     <script th:src="@{/js/fragments/lang-picker.js}"></script>
     <script th:src="@{/js/fragments/modals.js}"></script>
+    <script th:src="@{/js/fragments/timeline.js}"></script>
     <script th:src="@{/js/student/timeline.js}"></script>
     <script defer src="https://use.fontawesome.com/releases/v5.5.0/js/all.js"
             integrity="sha384-GqVMZRt5Gn7tB9D9q7ONtcp4gtHIUEW/yG7h98J7IpE3kpi+srfFyyB/04OV6pG0"
@@ -24,11 +25,11 @@
 <body>
 <div th:replace="fragments/header :: header(true)"></div>
 <div class="timeline" id="timeline">
-    <table>
-        <tr th:replace="/fragments/student-timeline :: t-head-row (${lessonsTemplateSet},${partialExamsTemplateSet})"></tr>
+    <table th:with="lessonsTemplate=${viewHelper.getLessonsTemplateSet(enrollments)}">
+        <tr th:replace="/fragments/student-timeline :: t-head-row (${lessonsTemplate})"></tr>
         <tbody>
         <th:block th:each="enrl : ${enrollments}">
-            <tr th:replace="/fragments/student-timeline :: t-data-row (${enrl},${lessonsTemplateSet},${partialExamsTemplateSet}, ${templateList})"></tr>
+            <tr th:replace="/fragments/student-timeline :: t-data-row (${enrl},${lessonsTemplate}, ${viewHelper})"></tr>
         </th:block>
         </tbody>
     </table>

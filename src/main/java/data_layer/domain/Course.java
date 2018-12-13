@@ -39,7 +39,7 @@ public class Course {
 
     @ManyToOne
     @JoinColumn(name = "coordinator_id")
-    //TODO: @not null
+    @NotNull
     private Professor coordinator;
 
 }

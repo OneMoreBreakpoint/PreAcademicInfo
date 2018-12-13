@@ -1,22 +1,19 @@
 package bussiness_layer.dto;
 
-import java.util.Objects;
-
-import data_layer.domain.Lesson;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import utils.LessonType;
+import utils.RightType;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
-@Data
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class LessonDto {
+public class LessonDto implements Comparable<LessonDto> {
 
     private Integer id;
 
@@ -32,27 +29,35 @@ public class LessonDto {
     private Byte grade;
 
     @NotNull
-    private Lesson.LessonType type;
+    private LessonType type;
 
+    @Min(-10)
+    @Max(10)
     private Byte bonus;
 
-    private boolean readonly;
+    private RightType rightType;
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
+    public int compareTo(LessonDto o) {
+        if (this.type.ordinal() <= 1 && o.type.ordinal() > 1) { //if this=SEM||LAB and o=PARTIAL
+            return -1;
         }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
+        if (this.type.ordinal() > 1 && o.type.ordinal() <= 1) {
+            return 1;
         }
-        LessonDto lessonDto = (LessonDto) o;
-        return Objects.equals(nr, lessonDto.nr) &&
-                type == lessonDto.type;
+        //if both are SEM||LAB or both PARTIALS
+        int nrDiff = this.nr - o.nr;
+        if (nrDiff != 0) {
+            return nrDiff;
+        }
+        return this.getType().ordinal() - o.getType().ordinal();
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hash(nr, type);
+    public boolean equals(Object o) {
+        if (!(o instanceof LessonDto)) {
+            return false;
+        }
+        return this.compareTo((LessonDto) o) == 0;
     }
 }
