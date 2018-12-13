@@ -8,9 +8,12 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import utils.LessonType;
+import utils.RightType;
 
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
+import java.util.List;
 
 /**
  * Utilitary class for tests.
@@ -30,7 +33,7 @@ public abstract class BaseIntegrationTest {
     protected ICourseRepository courseRepository;
 
     @Autowired
-    protected ITeachingRepository teachingRepository;
+    protected IProfessorRightRepository professorRightRepository;
 
     @Autowired
     protected IEnrollmentRepository enrollmentRepository;
@@ -38,31 +41,58 @@ public abstract class BaseIntegrationTest {
     @Autowired
     protected ILessonRepository lessonRepository;
 
-    @Autowired
-    private IPartialExamRepository partialExamRepository;
-
 
     protected User createUser(User u) {
         return userRepository.save(u);
     }
 
-    protected Enrollment createTeachingAndEnrollment(String profUsername, String courseCode, String groupCode) {
-        Professor professor = userRepository.save(ProfessorFactory.generateProfessorBuilder().username(profUsername).build());
-        Course course = courseRepository.save(CourseFactory.generateCourseBuilder().coordinator(professor).code(courseCode).build());
-        Group group = groupRepository.save(GroupFactory.generateGroupBuilder().code(groupCode).build());
-        Student student = userRepository.save(StudentFactory.generateStudentBuilder().group(group).build());
-        Teaching teaching = teachingRepository.save(TeachingFactory.generateTeachingBuilder()
-                .professor(professor)
-                .laboratoryGroups(new HashSet<>(Arrays.asList(group)))
-                .course(course)
+    protected Enrollment createEnrollment(String profUsername, String courseCode, String groupCode) {
+        Professor professor = userRepository.save(ProfessorFactory.generateProfessorBuilder()
+                .username(profUsername)
+                .build());
+        Course course = courseRepository.save(CourseFactory.generateCourseBuilder()
+                .coordinator(userRepository.save(ProfessorFactory.generateProfessor()))
+                .code(courseCode)
+                .build());
+        Group group = groupRepository.save(GroupFactory.generateGroupBuilder()
+                .code(groupCode)
+                .build());
+        Student student = userRepository.save(StudentFactory.generateStudentBuilder()
+                .group(group)
                 .build());
         Enrollment enrollment = enrollmentRepository.save(Enrollment.builder()
                 .course(course)
                 .student(student)
-                .lessons(Arrays.asList(lessonRepository.save(LessonFactory.generateLesson())))
-                .partialExams(Arrays.asList(partialExamRepository.save(PartialExamFactory.generatePartialExam())))
                 .build());
+        Lesson lesson = lessonRepository.save(LessonFactory.generateLessonBuilder()
+                .enrollment(enrollment)
+                .build());
+        enrollment.setLessons(Arrays.asList(lesson));
         return enrollment;
+    }
+
+    protected List<ProfessorRight> createProfessorRights(String profUsername, String courseCode, String groupCode) {
+        Professor professor = (Professor) userRepository.findByUsername(profUsername).get();
+        Course course = courseRepository.findByCode(courseCode).get();
+        Group group = groupRepository.findByCode(groupCode).get();
+
+        List<ProfessorRight> rights = new ArrayList<>();
+        rights.add(createProfessorRight(professor, course, group, LessonType.LABORATORY, RightType.READ));
+        rights.add(createProfessorRight(professor, course, group, LessonType.LABORATORY, RightType.WRITE));
+        rights.add(createProfessorRight(professor, course, group, LessonType.PARTIAL_EXAM_LABORATORY, RightType.READ));
+        rights.add(createProfessorRight(professor, course, group, LessonType.PARTIAL_EXAM_LABORATORY, RightType.WRITE));
+        return rights;
+    }
+
+    private ProfessorRight createProfessorRight(Professor professor, Course course, Group group
+            , LessonType lessonType, RightType rightType) {
+        return professorRightRepository.save(ProfessorRightFactory.generateProfessorRightBuilder()
+                .professor(professor)
+                .course(course)
+                .group(group)
+                .lessonType(lessonType)
+                .rightType(rightType)
+                .build());
     }
 
 }

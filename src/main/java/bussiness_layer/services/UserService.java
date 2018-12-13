@@ -1,8 +1,9 @@
 package bussiness_layer.services;
 
 import bussiness_layer.dto.ProfessorDto;
-import bussiness_layer.dto.StudentDto;
 import bussiness_layer.dto.UserDto;
+import bussiness_layer.mappers.ProfessorMapper;
+import bussiness_layer.mappers.StudentMapper;
 import data_layer.domain.Professor;
 import data_layer.domain.Student;
 import data_layer.domain.User;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import utils.exceptions.ExceptionMessages;
+import utils.exceptions.ResourceNotFoundException;
 
 import javax.transaction.Transactional;
 
@@ -28,14 +30,11 @@ public class UserService implements IUserService {
     @Override
     @Transactional
     public UserDto getUserByUsername(String username) {
-        User user = userRepo.findByUsername(username);
-        if (user == null) {
-            throw new UsernameNotFoundException(ExceptionMessages.INVALID_USERNAME);
-        }
+        User user = userRepo.findByUsername(username).orElseThrow(ResourceNotFoundException::new);
         if (user instanceof Student) {
-            return new StudentDto();
+            return StudentMapper.toDto((Student) user);
         } else {
-            return new ProfessorDto();
+            return ProfessorMapper.toDto((Professor) user);
         }
     }
 

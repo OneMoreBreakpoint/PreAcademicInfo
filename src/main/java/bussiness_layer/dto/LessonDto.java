@@ -1,20 +1,19 @@
 package bussiness_layer.dto;
 
-import data_layer.domain.Lesson;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import utils.LessonType;
+import utils.RightType;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
-@Data
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class LessonDto {
+public class LessonDto implements Comparable<LessonDto> {
 
     private Integer id;
 
@@ -22,7 +21,6 @@ public class LessonDto {
     @Max(14)
     private Byte nr;
 
-    @NotNull
     private boolean attended;
 
     @Max(10)
@@ -30,10 +28,27 @@ public class LessonDto {
     private Byte grade;
 
     @NotNull
-    private Lesson.LessonType type;
+    private LessonType type;
 
+    @Min(-10)
+    @Max(10)
     private Byte bonus;
 
-    private boolean readonly;
+    private RightType rightType;
 
+    @Override
+    public int compareTo(LessonDto o) {
+        if (this.type.ordinal() <= 1 && o.type.ordinal() > 1) { //if this=SEM||LAB and o=PARTIAL
+            return -1;
+        }
+        if (this.type.ordinal() > 1 && o.type.ordinal() <= 1) {
+            return 1;
+        }
+        //if both are SEM||LAB or both PARTIALS
+        int nrDiff = this.nr - o.nr;
+        if (nrDiff != 0) {
+            return nrDiff;
+        }
+        return this.getType().ordinal() - o.getType().ordinal();
+    }
 }

@@ -3,29 +3,24 @@ package business_layer.integration;
 import business_layer.BaseIntegrationTest;
 import bussiness_layer.dto.EnrollmentDto;
 import bussiness_layer.dto.LessonDto;
-import bussiness_layer.dto.PartialExamDto;
-import bussiness_layer.dto.TeachingDto;
-import bussiness_layer.mappers.CourseMapper;
+import bussiness_layer.dto.ProfessorRightDto;
 import bussiness_layer.services.IProfessorService;
 import data_layer.domain.Enrollment;
-import data_layer.domain.Lesson;
-import factory.StudentFactory;
-import org.junit.Ignore;
+import factory.LessonFactory;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
+import utils.LessonType;
 import utils.TestConstants;
+import utils.exceptions.AccessForbiddenException;
 import utils.exceptions.ResourceNotFoundException;
-import utils.exceptions.UnprocessableEntityException;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 public class ProfessorIT extends BaseIntegrationTest {
 
@@ -39,21 +34,22 @@ public class ProfessorIT extends BaseIntegrationTest {
     @Transactional
     public void givenProfessorHasRights_whenGetEnrollments_thenEnrollmentsRetrieved() {
         //Given
-        createTeachingAndEnrollment(TestConstants.PROF_USERNAME, TestConstants.COURSE_CODE, TestConstants.GROUP_CODE);
+        createEnrollment(TestConstants.PROF_USERNAME, TestConstants.COURSE_CODE, TestConstants.GROUP_CODE);
+        createProfessorRights(TestConstants.PROF_USERNAME, TestConstants.COURSE_CODE, TestConstants.GROUP_CODE);
         //When
         List<EnrollmentDto> enrollmentDtoList = professorService.getEnrollments(
                 TestConstants.PROF_USERNAME, TestConstants.COURSE_CODE, TestConstants.GROUP_CODE);
-
         //Then
         assertNotNull(enrollmentDtoList);
-        assertEquals(enrollmentDtoList.size(), 1);
+        assertEquals(1, enrollmentDtoList.size());
     }
 
     @Test
     @Transactional
     public void givenCourseDoesNotExist_whenGetEnrollments_thenResourceNotFoundExceptionThrown() {
         //Given
-        createTeachingAndEnrollment(TestConstants.PROF_USERNAME, TestConstants.COURSE_CODE, TestConstants.GROUP_CODE);
+        createEnrollment(TestConstants.PROF_USERNAME, TestConstants.COURSE_CODE, TestConstants.GROUP_CODE);
+        createProfessorRights(TestConstants.PROF_USERNAME, TestConstants.COURSE_CODE, TestConstants.GROUP_CODE);
         //Then
         exception.expect(ResourceNotFoundException.class);
         //When
@@ -63,67 +59,88 @@ public class ProfessorIT extends BaseIntegrationTest {
 
     @Test
     @Transactional
-    public void givenProfessorTeachesAtCourse_whenGetTeaching_thenTeachingRetrieved() {
+    public void givenProfessorTeachesAtCourse_whenGetProfessorRights_thenProfessorRightsRetrieved() {
         //Given
-        createTeachingAndEnrollment(TestConstants.PROF_USERNAME, TestConstants.COURSE_CODE, TestConstants.GROUP_CODE);
+        createEnrollment(TestConstants.PROF_USERNAME, TestConstants.COURSE_CODE, TestConstants.GROUP_CODE);
+        createProfessorRights(TestConstants.PROF_USERNAME, TestConstants.COURSE_CODE, TestConstants.GROUP_CODE);
         //When
-        TeachingDto teaching = professorService.getTeaching(TestConstants.PROF_USERNAME, TestConstants.COURSE_CODE);
+        List<ProfessorRightDto> rights = professorService.getProfessorRights(
+                TestConstants.PROF_USERNAME, TestConstants.COURSE_CODE, TestConstants.GROUP_CODE);
         //Then
-        assertNotNull(teaching);
+        assertNotNull(rights);
+        assertTrue(rights.size() > 0);
     }
 
     @Test
     @Transactional
-    public void givenProfessorDoesNotTeachAtCourse_whenGetTeaching_thenResourceNotFoundExceptionThrown() {
+    public void givenProfessorDoesNotTeachAtCourse_whenGetProfessorRight_thenNoProfessorRightsRetrieved() {
         //Given
-        createTeachingAndEnrollment(TestConstants.PROF_USERNAME, TestConstants.COURSE_CODE, TestConstants.GROUP_CODE);
+        createEnrollment(TestConstants.PROF_USERNAME, TestConstants.COURSE_CODE, TestConstants.GROUP_CODE);
+        createProfessorRights(TestConstants.PROF_USERNAME, TestConstants.COURSE_CODE, TestConstants.GROUP_CODE);
+        //When
+        List<ProfessorRightDto> rights = professorService.getProfessorRights(
+                TestConstants.PROF_USERNAME, "__", TestConstants.GROUP_CODE);
+        //Then
+        assertNotNull(rights);
+        assertEquals(0, rights.size());
+    }
+
+    @Test
+    @Transactional
+    public void givenProfessorHasRights_whenUpdateLessons_thenLessonsAreUpdated() {
+        //Given
+        Enrollment enrollment = createEnrollment(TestConstants.PROF_USERNAME, TestConstants.COURSE_CODE, TestConstants.GROUP_CODE);
+        createProfessorRights(TestConstants.PROF_USERNAME, TestConstants.COURSE_CODE, TestConstants.GROUP_CODE);
+        enrollment.getLessons().get(0).setType(LessonType.LABORATORY); //prof has LAB rights only so he can only write LABS
+        int lessonId = enrollment.getLessons().get(0).getId();
+        boolean attended = true;
+        byte bonus = 2, grade = 10;
+        LessonDto lessonDto = LessonFactory.generateLessonDtoBuilder()
+                .id(lessonId)
+                .attended(attended)
+                .bonus(bonus)
+                .grade(grade)
+                .build();
+        //When
+        professorService.updateLessons(TestConstants.PROF_USERNAME, Arrays.asList(lessonDto));
+        //Then
+        assertEquals(attended, enrollment.getLessons().get(0).isAttended());
+        assertEquals(bonus, (byte) enrollment.getLessons().get(0).getBonus());
+        assertEquals(grade, (byte) enrollment.getLessons().get(0).getGrade());
+    }
+
+    @Test
+    @Transactional
+    public void givenProfessorDoesNotHaveRights_whenUpdateLessons_thenAccessForbiddenExceptionThrown() {
+        //Given
+        Enrollment enrollment = createEnrollment(TestConstants.PROF_USERNAME, TestConstants.COURSE_CODE, TestConstants.GROUP_CODE);
+        createProfessorRights(TestConstants.PROF_USERNAME, TestConstants.COURSE_CODE, TestConstants.GROUP_CODE);
+        //prof has LAB rights only so he can only write LABS, but lesson is of type SEM
+        int lessonId = enrollment.getLessons().get(0).getId();
+        boolean attended = true;
+        byte bonus = 2;
+        LessonDto lessonDto = LessonFactory.generateLessonDtoBuilder()
+                .id(lessonId)
+                .attended(attended)
+                .bonus(bonus)
+                .build();
+        //Then
+        exception.expect(AccessForbiddenException.class);
+        //When
+        professorService.updateLessons(TestConstants.PROF_USERNAME, Arrays.asList(lessonDto));
+    }
+
+    @Test
+    @Transactional
+    public void givenLessonsDoesNotExist_whenUpdateLesson_thenResourceNotFoundExceptionThrown() {
+        //Given
+        LessonDto inexistentLessonDto = LessonFactory.generateLessonDtoBuilder()
+                .id(-1)
+                .build();
         //Then
         exception.expect(ResourceNotFoundException.class);
         //When
-        professorService.getTeaching(TestConstants.PROF_USERNAME, "__");
-    }
-
-    @Test
-    @Ignore
-    @Transactional
-    public void givenProfessorHasRights_whenUpdateEnrollments_thenEnrollmentsAreUpdated() {
-        //Given
-        Enrollment enrollment = createTeachingAndEnrollment(TestConstants.PROF_USERNAME, TestConstants.COURSE_CODE, TestConstants.GROUP_CODE);
-        int lessonId = enrollment.getLessons().get(0).getId();
-        int examId = enrollment.getPartialExams().get(0).getId();
-        List<EnrollmentDto> enrollmentsBeforeUpdate = Arrays.asList(EnrollmentDto.builder()
-                .lessons(Arrays.asList(LessonDto.builder()
-                        .id(lessonId)
-                        .attended(false)
-                        .grade((byte) 10)
-                        .nr((byte) 1)
-                        .type(Lesson.LessonType.LABORATORY)
-                        .build()))
-                .partialExams(Arrays.asList(PartialExamDto.builder()
-                        .id(examId)
-                        .grade((byte) 10)
-                        .nr((byte) 1)
-                        .build()))
-                .student(StudentFactory.generateStudentDto())
-                .course(CourseMapper.toDto(courseRepository.findByCode(TestConstants.COURSE_CODE)))
-                .build());
-        //When
-        professorService.updateEnrollments(TestConstants.PROF_USERNAME, enrollmentsBeforeUpdate);
-        //Then
-        List<EnrollmentDto> enrollmentsAfterUpdate = professorService.getEnrollments(TestConstants.PROF_USERNAME, TestConstants.COURSE_CODE, TestConstants.GROUP_CODE);
-        assertEquals((byte) 10, (byte) enrollmentsAfterUpdate.get(0).getLessons().get(0).getGrade());
-        assertEquals((byte) 10, (byte) enrollmentsAfterUpdate.get(0).getPartialExams().get(0).getGrade());
-    }
-
-    @Test
-    @Transactional
-    public void givenNoEnrollmentsAreGiven_whenUpdateEnrollments_throwUnproccesableEntityExceptionThrown() {
-        //Given
-        List<EnrollmentDto> enrollmentDtos = new ArrayList<>();
-        //Then
-        exception.expect(UnprocessableEntityException.class);
-        //When
-        professorService.updateEnrollments(TestConstants.PROF_USERNAME, enrollmentDtos);
+        professorService.updateLessons(TestConstants.PROF_USERNAME, Arrays.asList(inexistentLessonDto));
     }
 
 }

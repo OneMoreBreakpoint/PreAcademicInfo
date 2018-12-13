@@ -1,13 +1,16 @@
-#div_filters{
+#div_filters {
     display: flex;
     justify-content: left;
 }
-#div_filters > *{
+
+#div_filters > * {
     margin-right: 20px;
 }
-body > *{
+
+body > * {
     margin-bottom: 10px;
 }
-#btn_submitChanges{
+
+#btn_submitChanges {
     float: right;
 }

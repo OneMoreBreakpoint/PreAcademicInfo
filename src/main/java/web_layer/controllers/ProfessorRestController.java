@@ -1,6 +1,6 @@
 package web_layer.controllers;
 
-import bussiness_layer.dto.EnrollmentDto;
+import bussiness_layer.dto.LessonDto;
 import bussiness_layer.services.IProfessorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,11 +17,15 @@ import java.util.ArrayList;
 public class ProfessorRestController {
 
     @Autowired
-    private IProfessorService service;
+    private final IProfessorService service;
 
-    @PutMapping("/enrollments")
-    public ResponseEntity<?> putEnrollments(@RequestBody ArrayList<EnrollmentDto> enrollments, Principal crtUser) {
-        service.updateEnrollments(crtUser.getName(), enrollments);
+    public ProfessorRestController(IProfessorService service) {
+        this.service = service;
+    }
+
+    @PutMapping("/lessons")
+    public ResponseEntity<?> putLessons(@RequestBody ArrayList<LessonDto> lessons, Principal crtUser) {
+        service.updateLessons(crtUser.getName(), lessons);
         return ResponseEntity.ok(null);
     }
 }
