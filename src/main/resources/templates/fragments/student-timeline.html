@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:with="lang=${#locale.language}" th:lang="${lang}">
+<head>
+</head>
+<body>
+
+
+<td th:fragment="name-cell (course)" class="name-cell" th:text="${course.name}">
+</td>
+
+<td th:fragment="lesson-cell (lesson)" class="lesson-cell" th:id="|lessonCell-${lesson?.id}|">
+    <th:block th:if="${lesson!=null}" th:with="lessonType=${lesson.type.toString()}">
+        <input type="checkbox" th:checked="${lesson.attended}" disabled class="attendance-field"
+               th:if="${lessonType=='SEMINAR' || lessonType=='LABORATORY'}">
+        <input type="number" th:value="${lesson.grade}" min="0" max="10" disabled class="grade-field"
+               th:if="${lessonType!='SEMINAR'}">
+        <input type="number" th:value="${lesson.bonus}" disabled min="-10" max="10" class="bonus-field"
+               th:if="${lessonType=='SEMINAR' || lessonType=='LABORATORY'}">
+    </th:block>
+</td>
+
+<td th:fragment="bonus-cell (enrollment)" class="bonus-cell">
+</td>
+
+
+<td th:fragment="attendances-cell (enrollment)" class="attendances-cell">
+</td>
+
+
+<td th:fragment="average-cell (enrollment)" class="average-cell">
+</td>
+
+
+<thead th:fragment="t-head-row (lessonsTemplateSet)">
+<tr>
+    <th th:text="#{timeline.head.courseName}" class="name-cell"></th>
+    <th:block th:each="lesson : ${lessonsTemplateSet}">
+        <th:block th:switch="${lesson.type.toString()}">
+            <th th:case="'SEMINAR'" class="lesson-cell"
+                th:text="|#{timeline.head.seminar} ${lesson.nr} (#{timeline.head.attendance}/#{timeline.head.bonus})|">
+            </th>
+            <th th:case="'LABORATORY'" class="lesson-cell"
+                th:text="|#{timeline.head.laboratory} ${lesson.nr} (#{timeline.head.attendance}/#{timeline.head.grade}/#{timeline.head.bonus})|">
+            </th>
+            <th th:case="'PARTIAL_EXAM_SEMINAR'" class="lesson-cell"
+                th:text="|#{timeline.head.partial} #{timeline.head.seminar} ${lesson.nr}|">
+            </th>
+            <th th:case="'PARTIAL_EXAM_LABORATORY'" class="lesson-cell"
+                th:text="|#{timeline.head.partial} #{timeline.head.laboratory} ${lesson.nr}|">
+            </th>
+            <th th:case="'PARTIAL_EXAM_COURSE'" class="lesson-cell"
+                th:text="|#{timeline.head.partial} #{timeline.head.course} ${lesson.nr}|">
+            </th>
+        </th:block>
+    </th:block>
+    <th class="bonus-cell" th:text="#{timeline.head.bonus}"></th>
+    <th class="attendances-cell" th:text="#{timeline.head.totalAttendances}"></th>
+    <th class="average-cell" th:text="#{timeline.head.averageGrade}"></th>
+</tr>
+</thead>
+
+<tr th:fragment="t-data-row(enrollment, lessonsTemplateSet, viewHelper)" th:id="|enrollmentRow-${enrollment.id}|"
+    class="enrollment-row">
+    <td th:replace="this :: name-cell (${enrollment.course})"></td>
+    <th:block th:each="lesson : ${lessonsTemplateSet}"
+              th:with="goodLesson=${viewHelper.getRealLessonFromTemplate(enrollment.lessons, lesson)}">
+        <td th:replace="this :: lesson-cell(${goodLesson})"></td>
+    </th:block>
+    <td th:replace="this :: bonus-cell (${enrollment})"></td>
+    <td th:replace="this :: attendances-cell (${enrollment})"></td>
+    <td th:replace="this :: average-cell (${enrollment})"></td>
+</tr>
+
+</body>
+</html>

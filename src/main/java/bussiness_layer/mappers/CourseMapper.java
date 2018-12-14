@@ -11,6 +11,7 @@ public class CourseMapper {
         Course entity = new Course();
         entity.setId(dto.getId());
         entity.setCode(dto.getCode());
+        entity.setName(dto.getName());
         entity.setNrOfSeminars(dto.getNrOfSeminars());
         entity.setNrOfLaboratories(dto.getNrOfLaboratories());
         entity.setCoordinator(ProfessorMapper.toEntity(dto.getCoordinator()));

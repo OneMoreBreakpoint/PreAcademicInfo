@@ -29,6 +29,7 @@ public class LessonDto implements Comparable<LessonDto>, Serializable {
     @Max(14)
     private Byte nr;
 
+    @NotNull
     private boolean attended;
 
     @Max(10)
@@ -58,5 +59,13 @@ public class LessonDto implements Comparable<LessonDto>, Serializable {
             return nrDiff;
         }
         return this.getType().ordinal() - o.getType().ordinal();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof LessonDto)) {
+            return false;
+        }
+        return this.compareTo((LessonDto) o) == 0;
     }
 }
