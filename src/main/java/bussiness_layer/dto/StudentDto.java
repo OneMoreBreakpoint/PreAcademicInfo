@@ -1,16 +1,20 @@
 package bussiness_layer.dto;
 
+import java.io.Serializable;
+
+import javax.validation.constraints.Size;
+
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.validation.constraints.Size;
-
 @Getter
 @Setter
 @NoArgsConstructor
-public class StudentDto extends UserDto {
+public class StudentDto extends UserDto implements Serializable {
+
+    private static final long serialVersionUID = 2022L;
 
     private Integer registrationNr;
 

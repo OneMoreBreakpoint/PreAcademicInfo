@@ -6,6 +6,8 @@
     <title>PreAcademic Info</title>
     <link rel="stylesheet" th:href="@{/css/common.css}"/>
     <link rel="stylesheet" th:href="@{/css/fragments/header.css}"/>
+    <link rel="stylesheet" th:href="@{/css/fragments/courses.css}"/>
+    <link rel="stylesheet" th:href="@{/css/professor/dashboard.css}"/>
     <script th:src="@{/dependencies/jquery-3.3.1.min.js}"></script>
     <script th:src="@{/js/common.js}"></script>
     <script th:src="@{/js/fragments/lang-picker.js}"></script>
@@ -15,5 +17,10 @@
 </head>
 <body>
 <div th:replace="fragments/header :: header(true)"></div>
+<div id="professor-courses">
+    <th:block th:each="profCourse : ${professorCourses}">
+        <div th:replace="fragments/courses :: professor-course(${profCourse})"></div>
+    </th:block>
+</div>
 </body>
 </html>
