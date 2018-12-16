@@ -26,6 +26,7 @@ public class ProfessorMapper {
         dto.setEmail(entity.getEmail());
         dto.setWebPage(entity.getWebPage());
         dto.setPathToProfilePhoto(entity.getPathToProfilePhoto());
+        dto.setUserRole(entity.getUserRole());
         return dto;
     }
 }

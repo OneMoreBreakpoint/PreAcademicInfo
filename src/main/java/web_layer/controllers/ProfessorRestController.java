@@ -1,7 +1,12 @@
 package web_layer.controllers;
 
 import bussiness_layer.dto.LessonDto;
+import bussiness_layer.dto.ProfessorDto;
+import bussiness_layer.dto.UserDto;
 import bussiness_layer.services.IProfessorService;
+import data_layer.domain.User;
+
+import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -26,6 +31,13 @@ public class ProfessorRestController {
     @PutMapping("/lessons")
     public ResponseEntity<?> putLessons(@RequestBody ArrayList<LessonDto> lessons, Principal crtUser) {
         service.updateLessons(crtUser.getName(), lessons);
+        return ResponseEntity.ok(null);
+    }
+
+    @PutMapping("/")
+    public ResponseEntity<?> put(@RequestBody ProfessorDto professorDto, Principal crtUSer){
+        System.out.println("aici " + professorDto.getUsername() + professorDto.getPassword());
+        service.updateProfessor(professorDto);
         return ResponseEntity.ok(null);
     }
 }

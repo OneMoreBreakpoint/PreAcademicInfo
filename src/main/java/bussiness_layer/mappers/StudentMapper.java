@@ -31,6 +31,7 @@ public class StudentMapper {
         dto.setPathToProfilePhoto(entity.getPathToProfilePhoto());
         dto.setNotifiedByEmail(entity.isNotifiedByEmail());
         dto.setGroup(GroupMapper.toDto(entity.getGroup()));
+        dto.setUserRole(entity.getUserRole());
         return dto;
     }
 }

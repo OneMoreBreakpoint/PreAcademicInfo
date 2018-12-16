@@ -3,6 +3,7 @@ package bussiness_layer.services;
 import bussiness_layer.dto.EnrollmentDto;
 import bussiness_layer.dto.GroupDto;
 import bussiness_layer.dto.LessonDto;
+import bussiness_layer.dto.ProfessorDto;
 import bussiness_layer.dto.ProfessorRightDto;
 import bussiness_layer.mappers.EnrollmentMapper;
 import bussiness_layer.mappers.GroupMapper;
@@ -10,9 +11,11 @@ import bussiness_layer.mappers.ProfessorRightMapper;
 import bussiness_layer.utils.LessonDtoValidator;
 import data_layer.domain.Enrollment;
 import data_layer.domain.Lesson;
+import data_layer.domain.Professor;
 import data_layer.domain.ProfessorRight;
 import data_layer.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import utils.LessonType;
@@ -98,6 +101,17 @@ public class ProfessorService implements IProfessorService {
             lesson.setGrade(lessonDto.getGrade());
         });
         lessonRepository.flush();
+    }
+
+    @Override
+    public void updateProfessor(ProfessorDto professorDto)
+    {
+        Professor professor = proffesorRepository.findByUsername(professorDto.getUsername());
+        professor.setWebPage(professorDto.getWebPage());
+        if (professorDto.getPassword() != null)
+            professor.setEncryptedPassword(BCrypt.hashpw(professorDto.getPassword(), BCrypt.gensalt()));
+        System.out.println(professor.toString());
+        proffesorRepository.flush();
     }
 
     private void stripEnrollmentsOfUnauthorizedLessons(List<EnrollmentDto> enrollmentDtos, List<ProfessorRight> rights) {

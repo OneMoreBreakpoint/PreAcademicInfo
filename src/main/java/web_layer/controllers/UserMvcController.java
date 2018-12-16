@@ -43,21 +43,7 @@ public class UserMvcController {
         System.out.println(crtUser.getName());
         ModelAndView mv = new ModelAndView("/profile_settings");
         UserDto user = userService.getUserByUsername(crtUser.getName());
-//        if (user instanceof StudentDto)
-//        {
-//            StudentDto studentDto = (StudentDto) userService.getUserByUsername(crtUser.getName());
-//            System.out.println(studentDto.getUsername());
-//            mv.addObject("User", studentDto);
-//        }
-//        else
-//        {
-        ProfessorDto professorDto = userService.getProffesorByUsername(crtUser.getName());
-//        }
-
-//        if (user instanceof StudentDto)
-//            mv.addObject("Type", "student");
-//        else
-//            mv.addObject("Type", "teacher");
+        mv.addObject("user", user);
         return mv;
     }
 }

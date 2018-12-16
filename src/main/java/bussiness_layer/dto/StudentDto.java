@@ -25,8 +25,8 @@ public class StudentDto extends UserDto {
 
     @Builder
     public StudentDto(String username, String password, String firstName, String lastName, String email,
-                      Integer registrationNr, String fathersInitials, String pathToProfilePhoto, boolean notifiedByEmail, GroupDto group) {
-        super(username, password, firstName, lastName, email);
+                      Integer registrationNr, String fathersInitials, String pathToProfilePhoto, boolean notifiedByEmail, GroupDto group, String user_role) {
+        super(username, password, firstName, lastName, email, user_role);
         this.registrationNr = registrationNr;
         this.fathersInitials = fathersInitials;
         this.pathToProfilePhoto = pathToProfilePhoto;

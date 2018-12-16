@@ -33,12 +33,17 @@ public class UserDto {
     @Email(regexp = UBB_EMAIL_FORMAT)
     private String email;
 
+    private String userRole;
 
-    public UserDto(String username, String password, String firstName, String lastName, String email) {
+//    private String newPassword;
+
+
+    public UserDto(String username, String password, String firstName, String lastName, String email, String userRole) {
         this.username = username;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
+        this.userRole = userRole;
     }
 }

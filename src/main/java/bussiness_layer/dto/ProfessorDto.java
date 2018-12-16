@@ -13,4 +13,11 @@ public class ProfessorDto extends UserDto {
     @Size(max = 50)
     private String webPage;
     private String pathToProfilePhoto;
+
+    public ProfessorDto(String username, String password, String firstName, String lastName, String email,
+                        String userRole, String webPage, String pathToProfilePhoto) {
+        super(username, password, firstName, lastName, email, userRole);
+        this.webPage = webPage;
+        this.pathToProfilePhoto = pathToProfilePhoto;
+    }
 }
