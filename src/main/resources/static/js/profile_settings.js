@@ -132,13 +132,7 @@ function update_user_settings(){
     save();
 }
 
-function change_password() {
-    $("#change_passwd-btn").css('display', "none");
-    $("#save-btn").css('display', "");
-    $("#cancel-btn").css('display', "");
-    $("#current-password").prop("disabled", false);
-    $("#new-password").prop("disabled", false);
-    $("#repeat-password").prop("disabled", false);
+function save_passwd() {
     let new_passwd = $("#new-password").val();
     if (new_passwd != $("#repeat-password").val()) {
         $("#error-passwd-msg").css('display', 'block');
@@ -147,6 +141,15 @@ function change_password() {
     $("#error-passwd-msg").css('display', 'none');
     user.password = new_passwd;
     save();
+}
+
+function change_password() {
+    $("#change_passwd-btn").css('display', "none");
+    $("#save-btn").css('display', "");
+    $("#cancel-btn").css('display', "");
+    $("#current-password").prop("disabled", false);
+    $("#new-password").prop("disabled", false);
+    $("#repeat-password").prop("disabled", false);
 }
 
 function save() {

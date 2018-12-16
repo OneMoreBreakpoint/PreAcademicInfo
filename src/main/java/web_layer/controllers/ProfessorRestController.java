@@ -18,9 +18,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import bussiness_layer.dto.LessonDto;
-import bussiness_layer.services.IProfessorService;
-
 @RestController
 @RequestMapping("/app/professor")
 public class ProfessorRestController {

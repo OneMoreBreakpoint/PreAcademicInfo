@@ -1,6 +1,7 @@
 package bussiness_layer.services;
 
 import bussiness_layer.dto.EnrollmentDto;
+import bussiness_layer.dto.StudentDto;
 
 import java.util.List;
 
@@ -12,4 +13,6 @@ public interface IStudentService {
      * @return - the enrollments for the  given student
      */
     List<EnrollmentDto> getEnrollments(String studUsername);
+
+    void updateStudent(StudentDto studentDto);
 }
