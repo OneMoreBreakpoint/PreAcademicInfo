@@ -36,3 +36,29 @@
 .professor-course .group:hover{
     background-color: var(--color1-light);
 }
+
+.professor-course .professor-course-settings-btn{
+    float: right;
+}
+
+.professor-course-settings-modal .modal-footer{
+    justify-content: flex-end !important;
+}
+
+.professor-course-settings-modal .modal-footer > *{
+    margin: 5px;
+}
+
+.professor-course-settings-modal .modal-body *{
+    margin-top: 10px;
+}
+
+.professor-course-settings-modal h3{
+    margin: 30px 0 0 0 !important;
+    color: var(--color1);
+}
+
+.professor-course-settings-modal h2{
+    margin: 0;
+}
+

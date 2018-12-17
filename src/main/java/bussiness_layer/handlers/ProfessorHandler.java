@@ -37,7 +37,8 @@ public class ProfessorHandler {
                     .map(professorRight -> professorRight.getGroup())
                     .distinct()
                     .collect(Collectors.toList());
-            professorCourseDtos.add(ProfessorCourseMapper.toDto(course, groups));
+            boolean profIsCoordinator = course.getCoordinator().getUsername().equals(profUsername);
+            professorCourseDtos.add(ProfessorCourseMapper.toDto(course, groups, profIsCoordinator));
         });
 
         return professorCourseDtos;

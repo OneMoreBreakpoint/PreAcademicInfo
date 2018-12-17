@@ -7,9 +7,69 @@
 </head>
 <body>
 
-<div th:fragment="response-modal (domId, success, msg)" class="response-modal modal-box" th:id="${domId}">
+<div th:fragment="professor-course-settings-modal (domId, lessonTemplates)" class="professor-course-settings-modal modal-box modal-close"
+     th:id="${domId}">
     <div class="modal-window">
-        <i class="modal-close fas fa-times"></i>
+        <span class="modal-close">
+            <i class="fas fa-times"></i>
+        </span>
+        <div class="modal-header">
+            <h2 th:text="#{settings}"></h2>
+        </div>
+        <div class="modal-body">
+            <h3 th:text="#{courseSettings.defineNrOfPartialExams}"></h3>
+            <hr>
+            <label th:text="|#{courseSettings.nrOfSeminarPartials}:|" for="spinner_nrOfSeminarPartialExams"></label>
+            <input type="number" min="0" max="14" id="spinner_nrOfSeminarPartialExams"
+                   th:value="${viewHelper.getNrOfLessonsOfType(lessonTemplates, 'PARTIAL_EXAM_SEMINAR')}">
+            <br>
+            <label th:text="|#{courseSettings.nrOfLaboratoryPartials}:|" for="spinner_nrOfLaboratoryPartialExams"></label>
+            <input type="number" min="0" max="14" id="spinner_nrOfLaboratoryPartialExams"
+                   th:value="${viewHelper.getNrOfLessonsOfType(lessonTemplates, 'PARTIAL_EXAM_LABORATORY')}">
+            <br>
+            <label th:text="|#{courseSettings.nrOfCoursePartials}:|" for="spinner_nrOfCoursePartialExams"></label>
+            <input type="number" min="0" max="14" id="spinner_nrOfCoursePartialExams"
+                   th:value="${viewHelper.getNrOfLessonsOfType(lessonTemplates, 'PARTIAL_EXAM_COURSE')}">
+            <br>
+            <h3 th:text="#{courseSettings.defineWeights}"></h3>
+            <hr>
+            <p th:text="|*#{courseSettings.zeroWeightMeansNoGrade}|" class="footnote"></p>
+            <p th:text="|**#{courseSettings.sumOfWeightsMustBe100}|" class="footnote"></p>
+            <div th:each="lessonTemplate : ${lessonTemplates}" th:id="|lesson_template-${lessonTemplate.id}|"
+                 th:switch="${lessonTemplate.type.toString()}" class="lesson-weight">
+                <th:block th:case="'LABORATORY'">
+                    <label th:text="|#{timeline.head.laboratory} ${lessonTemplate.nr}|"></label>
+                </th:block>
+                <th:block th:case="'PARTIAL_EXAM_SEMINAR'">
+                    <label th:text="|#{timeline.head.partial} #{timeline.head.seminar} ${lessonTemplate.nr}|"></label>
+                </th:block>
+                <th:block th:case="'PARTIAL_EXAM_LABORATORY'">
+                    <label th:text="|#{timeline.head.partial} #{timeline.head.laboratory} ${lessonTemplate.nr}|"></label>
+                </th:block>
+                <th:block th:case="'PARTIAL_EXAM_COURSE'">
+                    <label th:text="|#{timeline.head.partial} #{timeline.head.course} ${lessonTemplate.nr}|"></label>
+                </th:block>
+                <th:block th:unless="${lessonTemplate.type.toString() == 'SEMINAR'}">
+                    <input type="number" min="0" max="100" step="1" class="lesson-weight"
+                           th:value="${#numbers.formatDecimal(100 * lessonTemplate.weight, 0, 0)}">
+                    %
+                </th:block>
+            </div>
+            </th:block>
+        </div>
+        <div class="modal-footer">
+            <input type="button" class="modal-close" th:value="#{action.discardChanges}">
+            <input type="button" th:value="#{action.saveChanges}">
+        </div>
+    </div>
+</div>
+
+
+<div th:fragment="response-modal (domId, success, msg)" class="response-modal modal-box modal-close" th:id="${domId}">
+    <div class="modal-window">
+         <span class="modal-close">
+            <i class="fas fa-times"></i>
+        </span>
         <div class="modal-header">
         </div>
         <div class="modal-body" th:text="${msg}"

@@ -2,6 +2,7 @@ package web_layer.utils;
 
 import bussiness_layer.dto.EnrollmentDto;
 import bussiness_layer.dto.LessonDto;
+import bussiness_layer.dto.LessonTemplateDto;
 import lombok.experimental.UtilityClass;
 import utils.LessonType;
 
@@ -38,9 +39,9 @@ public class ViewHelper {
         return lessonDtosTemplateSet;
     }
 
-    public static long getNrOfLessonsOfType(List<LessonDto> lessonDtos, String type){
-        return lessonDtos.stream()
-                .filter(lessonDto -> lessonDto.getTemplate().getType() == LessonType.valueOf(type))
+    public static long getNrOfLessonsOfType(List<LessonTemplateDto> lessonTemplateDtos, String type) {
+        return lessonTemplateDtos.stream()
+                .filter(lessonDto -> lessonDto.getType() == LessonType.valueOf(type))
                 .count();
     }
 }

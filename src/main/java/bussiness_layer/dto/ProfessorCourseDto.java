@@ -17,4 +17,6 @@ public class ProfessorCourseDto {
 
     @NotNull
     List<GroupDto> groups;
+
+    boolean coordinator;
 }

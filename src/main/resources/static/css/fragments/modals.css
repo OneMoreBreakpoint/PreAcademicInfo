@@ -38,3 +38,12 @@
 .response-modal input[type=button].modal-close {
     min-width: 120px;
 }
+
+.modal-body {
+    display: block;
+    max-height: 60vh;
+    overflow: auto;
+    border-style: solid none;
+    border-width: 1px;
+    border-color: var(--color0-dark);
+}
