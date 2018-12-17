@@ -101,7 +101,7 @@ public class ProfessorIT extends BaseIntegrationTest {
         //Given
         Enrollment enrollment = createEnrollment(TestConstants.PROF_USERNAME, TestConstants.COURSE_CODE, TestConstants.GROUP_CODE);
         createProfessorRights(TestConstants.PROF_USERNAME, TestConstants.COURSE_CODE, TestConstants.GROUP_CODE);
-        enrollment.getLessons().get(0).setType(LessonType.LABORATORY); //prof has LAB rights only so he can only write LABS
+        enrollment.getLessons().get(0).getTemplate().setType(LessonType.LABORATORY); //prof has LAB rights only so he can only write LABS
         int lessonId = enrollment.getLessons().get(0).getId();
         boolean attended = true;
         byte bonus = 2, grade = 10;

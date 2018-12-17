@@ -1,18 +1,18 @@
 package bussiness_layer.handlers;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import bussiness_layer.dto.ProfessorCourseDto;
 import bussiness_layer.mappers.ProfessorCourseMapper;
 import data_layer.domain.Course;
 import data_layer.domain.Group;
 import data_layer.domain.ProfessorRight;
+import data_layer.repositories.ILessonRepository;
 import data_layer.repositories.IProfessorRightRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class ProfessorHandler {
@@ -37,7 +37,7 @@ public class ProfessorHandler {
                     .map(professorRight -> professorRight.getGroup())
                     .distinct()
                     .collect(Collectors.toList());
-            professorCourseDtos.add(ProfessorCourseMapper.toProfessorCourseDto(course, groups));
+            professorCourseDtos.add(ProfessorCourseMapper.toDto(course, groups));
         });
 
         return professorCourseDtos;

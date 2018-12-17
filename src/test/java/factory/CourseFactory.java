@@ -8,9 +8,7 @@ public class CourseFactory {
         return Course.builder()
                 .code("MLR0000")
 //                .coordinator(ProfessorFactory.generateProfessor())
-                .name("LFTC")
-                .nrOfLaboratories((byte) 14)
-                .nrOfSeminars((byte) 14);
+                .name("LFTC");
     }
 
     public static Course generateCourse() {
@@ -21,9 +19,7 @@ public class CourseFactory {
         return CourseDto.builder()
                 .code("MLR0000")
 //                .coordinator(ProfessorFactory.generateProfessorDto())
-                .name("LFTC")
-                .nrOfLaboratories((byte) 14)
-                .nrOfSeminars((byte) 14);
+                .name("LFTC");
     }
 
     public static CourseDto generateCourseDto() {

@@ -15,10 +15,10 @@ public class ViewHelper {
     public static boolean shouldRenderAverageCell(EnrollmentDto enrollmentTemplate) {
         return enrollmentTemplate.getLessons().stream()
                 .anyMatch(lessonDto ->
-                        lessonDto.getType() == LessonType.LABORATORY
-                                || lessonDto.getType() == LessonType.PARTIAL_EXAM_SEMINAR
-                                || lessonDto.getType() == LessonType.PARTIAL_EXAM_LABORATORY
-                                || lessonDto.getType() == LessonType.PARTIAL_EXAM_COURSE
+                        lessonDto.getTemplate().getType() == LessonType.LABORATORY
+                                || lessonDto.getTemplate().getType() == LessonType.PARTIAL_EXAM_SEMINAR
+                                || lessonDto.getTemplate().getType() == LessonType.PARTIAL_EXAM_LABORATORY
+                                || lessonDto.getTemplate().getType() == LessonType.PARTIAL_EXAM_COURSE
                 );
     }
 
@@ -36,5 +36,11 @@ public class ViewHelper {
         SortedSet<LessonDto> lessonDtosTemplateSet = new TreeSet<>();
         enrollmentDtos.forEach(enrollmentDto -> lessonDtosTemplateSet.addAll(enrollmentDto.getLessons()));
         return lessonDtosTemplateSet;
+    }
+
+    public static long getNrOfLessonsOfType(List<LessonDto> lessonDtos, String type){
+        return lessonDtos.stream()
+                .filter(lessonDto -> lessonDto.getTemplate().getType() == LessonType.valueOf(type))
+                .count();
     }
 }

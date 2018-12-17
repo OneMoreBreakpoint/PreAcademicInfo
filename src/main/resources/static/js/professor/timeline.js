@@ -190,7 +190,7 @@ function getLessonList() {
 function stripReadOnlyLessons(lessons) {
     let result = [];
     for (let i = 0; i < lessons.length; i++) {
-        if (lessons[i].rightType === "WRITE") {
+        if (lessons[i].template.rightType === "WRITE") {
             result.push(lessons[i]);
         }
     }

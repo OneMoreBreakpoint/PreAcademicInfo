@@ -8,34 +8,28 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
-@Entity(name = "Lessons")
+@Entity(name = "LessonTemplates")
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Lesson {
+public class LessonTemplate {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private boolean attended;
+    @Min(1)
+    @Max(14)
+    @NotNull
+    private byte nr;
 
-    @Max(10)
     @Min(0)
-    private Byte grade;
-
-    @Min(-10)
-    @Max(10)
-    private Byte bonus;
+    @Max(100)
+    private Double weight;
 
     @NotNull
-    @ManyToOne
-    private Enrollment enrollment;
-
-    @NotNull
-    @ManyToOne
-    private LessonTemplate template;
-
+    @Enumerated(EnumType.ORDINAL)
+    private LessonType type;
 }

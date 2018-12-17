@@ -7,8 +7,7 @@
 </head>
 <body>
 
-<div th:fragment="response-modal (domId, success, msg)" class="response-modal modal-box" tabindex="-1" role="dialog"
-     th:id="${domId}">
+<div th:fragment="response-modal (domId, success, msg)" class="response-modal modal-box" th:id="${domId}">
     <div class="modal-window">
         <i class="modal-close fas fa-times"></i>
         <div class="modal-header">

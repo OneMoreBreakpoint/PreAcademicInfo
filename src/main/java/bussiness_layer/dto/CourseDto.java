@@ -1,6 +1,7 @@
 package bussiness_layer.dto;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -31,17 +32,9 @@ public class CourseDto implements Serializable {
     @NotNull
     private String name;
 
-    @NotNull
-    @Max(14)
-    @Min(0)
-    private Byte nrOfSeminars;
-
-    @NotNull
-    @Max(14)
-    @Min(7)
-    private Byte nrOfLaboratories;
-
     //TODO: @not null
     private ProfessorDto coordinator;
+
+    private List<LessonTemplateDto> lessonTemplates;
 
 }

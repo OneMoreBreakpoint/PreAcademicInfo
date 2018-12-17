@@ -3,16 +3,12 @@ package bussiness_layer.services;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import bussiness_layer.dto.*;
 import bussiness_layer.handlers.ProfessorHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import bussiness_layer.dto.EnrollmentDto;
-import bussiness_layer.dto.GroupDto;
-import bussiness_layer.dto.LessonDto;
-import bussiness_layer.dto.ProfessorCourseDto;
-import bussiness_layer.dto.ProfessorRightDto;
 import bussiness_layer.mappers.EnrollmentMapper;
 import bussiness_layer.mappers.GroupMapper;
 import bussiness_layer.mappers.ProfessorRightMapper;
@@ -95,10 +91,10 @@ public class ProfessorService implements IProfessorService {
             String groupCode = lesson.getEnrollment().getStudent().getGroup().getCode();
             //check if crt prof has right to modify this lesson
             professorRightRepository.findByProfessorAndCourseAndGroupAndLessonTypeAndRightType(
-                    profUsername, courseCode, groupCode, lesson.getType(), RightType.WRITE)
+                    profUsername, courseCode, groupCode, lesson.getTemplate().getType(), RightType.WRITE)
                     .orElseThrow(AccessForbiddenException::new);
             //update only the fields that matter
-            if (lesson.getType() == LessonType.SEMINAR || lesson.getType() == LessonType.LABORATORY) {
+            if (lesson.getTemplate().getType() == LessonType.SEMINAR || lesson.getTemplate().getType() == LessonType.LABORATORY) {
                 lesson.setBonus(lessonDto.getBonus());
             }
             lesson.setAttended(lessonDto.isAttended());
@@ -114,19 +110,20 @@ public class ProfessorService implements IProfessorService {
         return professorHandler.getProfessorCourseDtoList(profUsername, professorRights);
     }
 
+
     private void stripEnrollmentsOfUnauthorizedLessons(List<EnrollmentDto> enrollmentDtos, List<ProfessorRight> rights) {
         enrollmentDtos.forEach(enrollmentDto -> {
             List<LessonDto> filteredLessons = enrollmentDto.getLessons().stream()
                     .filter(lessonDto -> {
                         boolean crtProfCanReadLesson = rights.stream()
-                                .anyMatch(right -> right.getLessonType() == lessonDto.getType() && right.getRightType() == RightType.READ);
+                                .anyMatch(right -> right.getLessonType() == lessonDto.getTemplate().getType() && right.getRightType() == RightType.READ);
                         boolean crtProfCanWriteLesson = rights.stream()
-                                .anyMatch(right -> right.getLessonType() == lessonDto.getType() && right.getRightType() == RightType.WRITE);
+                                .anyMatch(right -> right.getLessonType() == lessonDto.getTemplate().getType() && right.getRightType() == RightType.WRITE);
                         if (crtProfCanReadLesson) {
-                            lessonDto.setRightType(RightType.READ);
+                            lessonDto.getTemplate().setRightType(RightType.READ);
                         }
                         if (crtProfCanWriteLesson) {
-                            lessonDto.setRightType(RightType.WRITE); //set to higher right
+                            lessonDto.getTemplate().setRightType(RightType.WRITE); //set to higher right
                         }
                         return crtProfCanReadLesson;
                     })

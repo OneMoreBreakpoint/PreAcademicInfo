@@ -11,7 +11,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import utils.LessonType;
 import utils.RightType;
 
 @Getter
@@ -25,10 +24,6 @@ public class LessonDto implements Comparable<LessonDto>, Serializable {
 
     private Integer id;
 
-    @Min(1)
-    @Max(14)
-    private Byte nr;
-
     @NotNull
     private boolean attended;
 
@@ -36,36 +31,24 @@ public class LessonDto implements Comparable<LessonDto>, Serializable {
     @Min(1)
     private Byte grade;
 
-    @NotNull
-    private LessonType type;
-
     @Min(-10)
     @Max(10)
     private Byte bonus;
 
-    private RightType rightType;
+    @NotNull
+    private LessonTemplateDto template;
 
     @Override
     public int compareTo(LessonDto o) {
-        if (this.type.ordinal() <= 1 && o.type.ordinal() > 1) { //if this=SEM||LAB and o=PARTIAL
-            return -1;
-        }
-        if (this.type.ordinal() > 1 && o.type.ordinal() <= 1) {
-            return 1;
-        }
-        //if both are SEM||LAB or both PARTIALS
-        int nrDiff = this.nr - o.nr;
-        if (nrDiff != 0) {
-            return nrDiff;
-        }
-        return this.getType().ordinal() - o.getType().ordinal();
+        return this.template.compareTo(o.template);
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (!(o instanceof LessonDto)) {
+    public boolean equals(Object obj) {
+        if(!(obj instanceof LessonDto)){
             return false;
         }
-        return this.compareTo((LessonDto) o) == 0;
+        LessonDto that = (LessonDto) obj;
+        return this.template.equals(that.template);
     }
 }

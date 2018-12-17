@@ -78,7 +78,7 @@ function updateTotalAttendance(enrlRow) {
     let nrOfLabAttendances = 0, nrOfSemAttendances = 0;
     for (let id in lessons) {
         if (lessons[id].attended) {
-            switch (lessons[id].type) {
+            switch (lessons[id].template.type) {
                 case "LABORATORY":
                     nrOfLabAttendances++;
                     break;

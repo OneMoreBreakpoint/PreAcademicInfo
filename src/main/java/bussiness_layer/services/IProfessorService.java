@@ -2,11 +2,8 @@ package bussiness_layer.services;
 
 import java.util.List;
 
-import bussiness_layer.dto.EnrollmentDto;
-import bussiness_layer.dto.GroupDto;
-import bussiness_layer.dto.LessonDto;
-import bussiness_layer.dto.ProfessorCourseDto;
-import bussiness_layer.dto.ProfessorRightDto;
+import bussiness_layer.dto.*;
+import data_layer.domain.LessonTemplate;
 
 public interface IProfessorService {
     /**
