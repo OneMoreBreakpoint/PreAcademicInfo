@@ -39,8 +39,7 @@ public class Course {
     @NotNull
     private Professor coordinator;
 
-    @OneToMany
-    @JoinColumn(name = "course_id")
+    @OneToMany(mappedBy = "course")
     private List<LessonTemplate> lessonTemplates;
 
 }

@@ -16,6 +16,7 @@
         msgs.seminar = /*[[#{timeline.head.seminar}]]*/ '';
         msgs.course = /*[[#{timeline.head.course}]]*/ '';
         msgs.partial = /*[[#{timeline.head.partial}]]*/ '';
+        msgs.confirmSaveChanges = /*[[#{courseSettings.confirmSaveChanges}]]*/ '';
     </script>
     <script th:src="@{/dependencies/jquery-3.3.1.min.js}"></script>
     <script th:src="@{/js/common.js}"></script>
@@ -32,5 +33,7 @@
         <div th:replace="fragments/professor-courses :: professor-course(${profCourse})"></div>
     </th:block>
 </div>
+<div th:replace="/fragments/response-modal :: response-modal ('modal_success', true, #{modal.response.success})"></div>
+<div th:replace="/fragments/response-modal :: response-modal ('modal_failure', false, #{modal.response.failure})"></div>
 </body>
 </html>

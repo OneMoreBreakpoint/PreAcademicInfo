@@ -30,4 +30,6 @@ public interface IProfessorService {
      */
     List<ProfessorCourseDto> getRelatedCourses(String profUsername);
 
+    void updateCourse(String profUsername, CourseDto courseDto);
+
 }

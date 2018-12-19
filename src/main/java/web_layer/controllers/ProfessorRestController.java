@@ -3,6 +3,7 @@ package web_layer.controllers;
 import java.security.Principal;
 import java.util.ArrayList;
 
+import bussiness_layer.dto.CourseDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,6 +35,12 @@ public class ProfessorRestController {
     @GetMapping("/courses")
     public ResponseEntity<?> getRelatedCourses(Principal crtUser) {
         service.getRelatedCourses(crtUser.getName());
+        return ResponseEntity.ok(null);
+    }
+
+    @PutMapping("/course")
+    public ResponseEntity<?> putCourse(@RequestBody CourseDto course, Principal crtUser){
+        service.updateCourse(crtUser.getName(), course);
         return ResponseEntity.ok(null);
     }
 

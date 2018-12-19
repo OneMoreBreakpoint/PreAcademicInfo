@@ -1,30 +1,25 @@
 package bussiness_layer.services;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 import bussiness_layer.dto.*;
 import bussiness_layer.handlers.ProfessorHandler;
+import bussiness_layer.mappers.EnrollmentMapper;
+import bussiness_layer.mappers.GroupMapper;
+import bussiness_layer.mappers.LessonTemplateMapper;
+import bussiness_layer.mappers.ProfessorRightMapper;
+import bussiness_layer.utils.CourseDtoValidator;
+import bussiness_layer.utils.LessonDtoValidator;
+import data_layer.domain.*;
+import data_layer.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import bussiness_layer.mappers.EnrollmentMapper;
-import bussiness_layer.mappers.GroupMapper;
-import bussiness_layer.mappers.ProfessorRightMapper;
-import bussiness_layer.utils.LessonDtoValidator;
-import data_layer.domain.Enrollment;
-import data_layer.domain.Lesson;
-import data_layer.domain.ProfessorRight;
-import data_layer.repositories.ICourseRepository;
-import data_layer.repositories.IEnrollmentRepository;
-import data_layer.repositories.IGroupRepository;
-import data_layer.repositories.ILessonRepository;
-import data_layer.repositories.IProfessorRightRepository;
 import utils.LessonType;
 import utils.RightType;
 import utils.exceptions.AccessForbiddenException;
 import utils.exceptions.ResourceNotFoundException;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -39,9 +34,11 @@ public class ProfessorService implements IProfessorService {
     @Autowired
     private IGroupRepository groupRepository;
 
-
     @Autowired
     private ILessonRepository lessonRepository;
+
+    @Autowired
+    private ILessonTemplateRepository lessonTemplateRepository;
 
     @Autowired
     private ICourseRepository courseRepository;
@@ -108,6 +105,75 @@ public class ProfessorService implements IProfessorService {
         List<ProfessorRight> professorRights = professorRightRepository.findByProfessor(profUsername);
 
         return professorHandler.getProfessorCourseDtoList(profUsername, professorRights);
+    }
+
+    @Override
+    public void updateCourse(String profUsername, CourseDto courseDto) {
+        Course course = courseRepository.findByCode(courseDto.getCode())
+                .orElseThrow(ResourceNotFoundException::new);
+        if (!course.getCoordinator().getUsername().equals(profUsername)) {
+            throw new AccessForbiddenException();
+        }
+        CourseDtoValidator.validate(courseDto);
+        List<LessonTemplate> lessonTemplates = lessonTemplateRepository.findByCourse(course.getCode());
+        lessonTemplates.forEach(lessonTemplate -> {
+            boolean lessonTemplateMustBeRemoved = courseDto.getLessonTemplates().stream()
+                    .noneMatch(lessonTemplateDto -> lessonTemplateDto.getId() == lessonTemplate.getId());
+            if(lessonTemplateMustBeRemoved){
+                removeLessonTemplate(lessonTemplate);
+            }
+        });
+        courseDto.getLessonTemplates().forEach(lessonTemplateDto -> {
+            if(lessonTemplateDto.getId() == null){
+                addLessonTemplate(course, lessonTemplateDto);
+            }else{
+                updateLessonTemplate(course, lessonTemplateDto);
+            }
+        });
+    }
+
+    private void removeLessonTemplate(LessonTemplate lessonTemplate) {
+        if (lessonTemplate.getType() != LessonType.PARTIAL_EXAM_SEMINAR
+                && lessonTemplate.getType() != LessonType.PARTIAL_EXAM_COURSE
+                && lessonTemplate.getType() != LessonType.PARTIAL_EXAM_LABORATORY){
+            throw new AccessForbiddenException(); //only partials can be removed
+        }
+        lessonRepository.deleteByLessonTemplate(lessonTemplate.getId());
+        lessonTemplateRepository.delete(lessonTemplate);
+        lessonRepository.flush();
+        lessonTemplateRepository.flush();
+    }
+
+    private void addLessonTemplate(Course course, LessonTemplateDto lessonTemplateDto){
+        if (lessonTemplateDto.getType() != LessonType.PARTIAL_EXAM_SEMINAR
+                && lessonTemplateDto.getType() != LessonType.PARTIAL_EXAM_COURSE
+                && lessonTemplateDto.getType() != LessonType.PARTIAL_EXAM_LABORATORY){
+            throw new AccessForbiddenException(); //only partials can be added
+        }
+        LessonTemplate lessonTemplate = LessonTemplateMapper.toEntity(lessonTemplateDto);
+        course.getLessonTemplates().add(lessonTemplate);
+        lessonTemplateRepository.save(lessonTemplate);
+        List<Enrollment> enrollments = enrollmentRepository.findByCourse(course.getCode());
+        enrollments.forEach(enrollment -> {
+            Lesson lesson = Lesson.builder()
+                    .template(lessonTemplate)
+                    .enrollment(enrollment)
+                    .build();
+            enrollment.getLessons().add(lesson);
+            lessonRepository.save(lesson);
+        });
+        lessonRepository.flush();
+        lessonTemplateRepository.flush();
+    }
+
+    private void updateLessonTemplate(Course course, LessonTemplateDto lessonTemplateDto){
+        LessonTemplate lessonTemplate = lessonTemplateRepository.findById(lessonTemplateDto.getId())
+                .orElseThrow(ResourceNotFoundException::new);
+        if(lessonTemplate.getCourse() != course){
+            throw new AccessForbiddenException();
+        }
+        lessonTemplate.setWeight(lessonTemplateDto.getWeight());
+        lessonTemplateRepository.flush();
     }
 
 

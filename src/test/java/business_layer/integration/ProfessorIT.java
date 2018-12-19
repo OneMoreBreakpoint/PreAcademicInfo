@@ -1,8 +1,18 @@
 package business_layer.integration;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import bussiness_layer.dto.*;
+import bussiness_layer.mappers.CourseMapper;
+import bussiness_layer.mappers.LessonTemplateMapper;
+import bussiness_layer.mappers.ProfessorMapper;
+import data_layer.domain.*;
+import factory.CourseFactory;
+import factory.LessonTemplateFactory;
+import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
@@ -11,15 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import business_layer.BaseIntegrationTest;
-import bussiness_layer.dto.EnrollmentDto;
-import bussiness_layer.dto.LessonDto;
-import bussiness_layer.dto.ProfessorCourseDto;
-import bussiness_layer.dto.ProfessorRightDto;
 import bussiness_layer.services.IProfessorService;
-import data_layer.domain.Course;
-import data_layer.domain.Enrollment;
-import data_layer.domain.Group;
-import data_layer.domain.Professor;
 import factory.LessonFactory;
 import factory.ProfessorFactory;
 import utils.LessonType;
@@ -39,6 +41,24 @@ public class ProfessorIT extends BaseIntegrationTest {
 
     @Rule
     public final ExpectedException exception = ExpectedException.none();
+
+    @Before
+    public void emptyDatabase(){
+        lessonRepository.deleteAll();
+        lessonRepository.flush();
+        enrollmentRepository.deleteAll();
+        enrollmentRepository.flush();
+        lessonTemplateRepository.deleteAll();
+        lessonTemplateRepository.flush();
+        professorRightRepository.deleteAll();
+        professorRightRepository.flush();
+        courseRepository.deleteAll();
+        courseRepository.flush();
+        userRepository.deleteAll();
+        userRepository.flush();
+        groupRepository.deleteAll();
+        groupRepository.flush();
+    }
 
     @Test
     @Transactional
@@ -186,6 +206,171 @@ public class ProfessorIT extends BaseIntegrationTest {
 
         //Then
         assertEquals(professorCourseDtos.size(), 2);
+    }
+
+    @Test
+    @Transactional
+    public void givenLessonTemplateDtosHaveBeenRemoved_whenUpdateCourse_thenLessonAndLessonTemplatesAreRemoved(){
+        //Given
+        Enrollment enrollment = createEnrollment(TestConstants.PROF_USERNAME, TestConstants.COURSE_CODE, TestConstants.GROUP_CODE);
+        addLessonTemplatesToCourse(enrollment.getCourse(), 6, LessonType.SEMINAR, null);
+        addLessonTemplatesToCourse(enrollment.getCourse(), 6, LessonType.LABORATORY, 0.1);
+        addLessonTemplatesToCourse(enrollment.getCourse(), 1, LessonType.LABORATORY, 0.4);
+        addLessonTemplatesToCourse(enrollment.getCourse(), 2, LessonType.PARTIAL_EXAM_COURSE, 0.15);
+        addLessonsToEnrollment(enrollment, 6, LessonType.SEMINAR);
+        addLessonsToEnrollment(enrollment, 7, LessonType.LABORATORY);
+        addLessonsToEnrollment(enrollment, 2, LessonType.PARTIAL_EXAM_COURSE);
+
+        Course course = courseRepository.findByCode(TestConstants.COURSE_CODE).get();
+        course.setCoordinator((Professor)userRepository.findByUsername(TestConstants.PROF_USERNAME).get());
+
+        CourseDto courseDto = CourseMapper.toDto(course);
+        courseDto.getLessonTemplates().removeIf(lessonTemplateDto -> lessonTemplateDto.getType() == LessonType.PARTIAL_EXAM_COURSE);
+
+        long nrOfPartialLessonsBefore = lessonRepository.findAll().stream()
+                .filter(lesson -> lesson.getTemplate().getType() == LessonType.PARTIAL_EXAM_COURSE)
+                .count();
+        long nrOfPartialTemplatesBefore = lessonTemplateRepository.findAll().stream()
+                .filter(lessonTemplate -> lessonTemplate.getType() == LessonType.PARTIAL_EXAM_COURSE)
+                .count();
+        
+        //When
+        professorService.updateCourse(TestConstants.PROF_USERNAME, courseDto);
+
+        //Then
+        long nrOfPartialLessonsAfter = lessonRepository.findAll().stream()
+                .filter(lesson -> lesson.getTemplate().getType() == LessonType.PARTIAL_EXAM_COURSE)
+                .count();
+        long nrOfPartialTemplatesAfter = lessonTemplateRepository.findAll().stream()
+                .filter(lessonTemplate -> lessonTemplate.getType() == LessonType.PARTIAL_EXAM_COURSE)
+                .count();
+
+        assertEquals(2, nrOfPartialLessonsBefore);
+        assertEquals(0, nrOfPartialLessonsAfter);
+        assertEquals(2, nrOfPartialTemplatesBefore);
+        assertEquals(0, nrOfPartialTemplatesAfter);
+    }
+
+    @Test
+    @Transactional
+    public void givenLessonTemplateDtosHaveBeenAdded_whenUpdateCourse_thenLessonsAndLessonTemplatesAreAdded(){
+        Enrollment enrollment = createEnrollment(TestConstants.PROF_USERNAME, TestConstants.COURSE_CODE, TestConstants.GROUP_CODE);
+        addLessonTemplatesToCourse(enrollment.getCourse(), 6, LessonType.SEMINAR, null);
+        addLessonTemplatesToCourse(enrollment.getCourse(), 7, LessonType.LABORATORY, 0.1);
+        addLessonsToEnrollment(enrollment, 6, LessonType.SEMINAR);
+        addLessonsToEnrollment(enrollment, 7, LessonType.LABORATORY);
+
+        Course course = courseRepository.findByCode(TestConstants.COURSE_CODE).get();
+        course.setCoordinator((Professor)userRepository.findByUsername(TestConstants.PROF_USERNAME).get());
+
+        CourseDto courseDto = CourseMapper.toDto(course);
+        LessonTemplateDto partial = LessonTemplateFactory.generateLessonTemplateDtoBuilder()
+                .type(LessonType.PARTIAL_EXAM_COURSE)
+                .weight(0.3)
+                .build();
+        courseDto.getLessonTemplates().add(partial);
+        long nrOfPartialLessonsBefore = lessonRepository.findAll().stream()
+                .filter(lesson -> lesson.getTemplate().getType() == LessonType.PARTIAL_EXAM_COURSE)
+                .count();
+        long nrOfPartialTemplatesBefore = lessonTemplateRepository.findAll().stream()
+                .filter(lessonTemplate -> lessonTemplate.getType() == LessonType.PARTIAL_EXAM_COURSE)
+                .count();
+
+        //When
+        professorService.updateCourse(TestConstants.PROF_USERNAME, courseDto);
+
+        //Then
+        long nrOfPartialLessonsAfter = lessonRepository.findAll().stream()
+                .filter(lesson -> lesson.getTemplate().getType() == LessonType.PARTIAL_EXAM_COURSE)
+                .count();
+        long nrOfPartialTemplatesAfter = lessonTemplateRepository.findAll().stream()
+                .filter(lessonTemplate -> lessonTemplate.getType() == LessonType.PARTIAL_EXAM_COURSE)
+                .count();
+        assertEquals(0, nrOfPartialLessonsBefore);
+        assertEquals(1, nrOfPartialLessonsAfter);
+        assertEquals(0, nrOfPartialTemplatesBefore);
+        assertEquals(1, nrOfPartialTemplatesAfter);
+    }
+
+    @Test
+    @Transactional
+    public void givenLessonTemplateDtosHaveBeenUpdated_whenUpdateCourse_thenLessonTemplatesAreUpdated(){
+        //When
+        Enrollment enrollment = createEnrollment(TestConstants.PROF_USERNAME, TestConstants.COURSE_CODE, TestConstants.GROUP_CODE);
+        addLessonTemplatesToCourse(enrollment.getCourse(), 6, LessonType.SEMINAR, null);
+        addLessonTemplatesToCourse(enrollment.getCourse(), 7, LessonType.LABORATORY, 0.1);
+        addLessonTemplatesToCourse(enrollment.getCourse(), 2, LessonType.PARTIAL_EXAM_COURSE, 0.15);
+        addLessonsToEnrollment(enrollment, 6, LessonType.SEMINAR);
+        addLessonsToEnrollment(enrollment, 7, LessonType.LABORATORY);
+        addLessonsToEnrollment(enrollment, 2, LessonType.PARTIAL_EXAM_COURSE);
+
+        Course course = courseRepository.findByCode(TestConstants.COURSE_CODE).get();
+        course.setCoordinator((Professor)userRepository.findByUsername(TestConstants.PROF_USERNAME).get());
+
+        CourseDto courseDto = CourseMapper.toDto(course);
+        List<Integer> laboratoryIds = courseDto.getLessonTemplates().stream()
+                .filter(lessonTemplateDto -> lessonTemplateDto.getType() == LessonType.LABORATORY)
+                .map(LessonTemplateDto::getId)
+                .collect(Collectors.toList());
+        int idOfUpdated1 = laboratoryIds.get(0), idOfUpdated2 = laboratoryIds.get(1);
+        courseDto.getLessonTemplates().forEach(lessonTemplateDto -> {
+            if(lessonTemplateDto.getId() == idOfUpdated1){
+                lessonTemplateDto.setWeight(0.2);
+            }else if(lessonTemplateDto.getId() == idOfUpdated2){
+                lessonTemplateDto.setWeight(0.0);
+            }
+        });
+
+        //When
+        professorService.updateCourse(TestConstants.PROF_USERNAME, courseDto);
+
+        //Then
+        LessonTemplate lesson1 = lessonTemplateRepository.findById(idOfUpdated1).get();
+        LessonTemplate lesson2 = lessonTemplateRepository.findById(idOfUpdated2).get();
+
+        assertEquals(Double.valueOf(0.2), lesson1.getWeight());
+        assertEquals(Double.valueOf(0.0), lesson2.getWeight());
+
+    }
+
+    @Test
+    @Transactional
+    public void givenProfDoesNotHaveRightsOverLessonTemplate_whenUpdateCourse_thenAccessForbiddenExceptionIsThrown(){
+        //When
+        Enrollment enrollment = createEnrollment(TestConstants.PROF_USERNAME, TestConstants.COURSE_CODE
+                , TestConstants.GROUP_CODE, "1111", "_1111");
+        addLessonTemplatesToCourse(enrollment.getCourse(), 6, LessonType.SEMINAR, null);
+        addLessonTemplatesToCourse(enrollment.getCourse(), 7, LessonType.LABORATORY, 0.1);
+        addLessonTemplatesToCourse(enrollment.getCourse(), 2, LessonType.PARTIAL_EXAM_COURSE, 0.15);
+        addLessonsToEnrollment(enrollment, 6, LessonType.SEMINAR);
+        addLessonsToEnrollment(enrollment, 7, LessonType.LABORATORY);
+        addLessonsToEnrollment(enrollment, 2, LessonType.PARTIAL_EXAM_COURSE);
+
+        Enrollment enrollment2 = createEnrollment(TestConstants.USERNAME, TestConstants.COURSE_CODE2
+                , TestConstants.GROUP_CODE2, "2222", "_2222");
+        addLessonTemplatesToCourse(enrollment2.getCourse(), 6, LessonType.SEMINAR, null);
+        addLessonTemplatesToCourse(enrollment2.getCourse(), 7, LessonType.LABORATORY, 0.1);
+        addLessonTemplatesToCourse(enrollment2.getCourse(), 2, LessonType.PARTIAL_EXAM_COURSE, 0.15);
+        addLessonsToEnrollment(enrollment2, 6, LessonType.SEMINAR);
+        addLessonsToEnrollment(enrollment2, 7, LessonType.LABORATORY);
+        addLessonsToEnrollment(enrollment2, 2, LessonType.PARTIAL_EXAM_COURSE);
+
+        Course course = courseRepository.findByCode(TestConstants.COURSE_CODE).get();
+        course.setCoordinator((Professor)userRepository.findByUsername(TestConstants.PROF_USERNAME).get());
+
+        CourseDto courseDto = CourseMapper.toDto(course);
+        int idOfLessonTemplateToHack = enrollment2.getCourse().getLessonTemplates().stream()
+                .filter(lessonTemplate -> lessonTemplate.getType() == LessonType.LABORATORY)
+                .findAny().get().getId();
+        courseDto.getLessonTemplates().stream()
+                .filter(lessonTemplateDto -> lessonTemplateDto.getType() == LessonType.LABORATORY)
+                .findAny().get().setId(idOfLessonTemplateToHack);
+
+        //Then
+        exception.expect(AccessForbiddenException.class);
+
+        //When
+        professorService.updateCourse(TestConstants.PROF_USERNAME, courseDto);
     }
 
 }

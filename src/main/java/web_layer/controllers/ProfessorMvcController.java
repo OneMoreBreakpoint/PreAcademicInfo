@@ -21,6 +21,11 @@ public class ProfessorMvcController {
     @Autowired
     private IProfessorService service;
 
+    public ProfessorMvcController(IProfessorService service) {
+        this.service = service;
+    }
+
+
     @GetMapping("/dashboard")
     public ModelAndView getDashboardPage(Principal crtUser) {
         List<ProfessorCourseDto> professorCourses = service.getRelatedCourses(crtUser.getName());

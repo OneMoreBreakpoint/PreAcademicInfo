@@ -34,25 +34,37 @@ function assignProfessorCourseHandlers() {
 }
 
 function assignProfessorCourseSettingsModalHandlers(profCourse, settingsModal) {
+    assignNrOfPartialExamsHandlers(profCourse, settingsModal);
+    assignLessonWeightHandlers(profCourse, settingsModal);
+    assignModalBtnsHandlers(profCourse, settingsModal);
+}
+
+function assignNrOfPartialExamsHandlers(profCourse, settingsModal){
     let profCourseId = getNumericIdFromDomId(profCourse.id);
     let spinner_nrOfSeminarPartialExams = $(settingsModal).find("#spinner_nrOfSeminarPartialExams");
     let spinner_nrOfLaboratoryPartialExams = $(settingsModal).find("#spinner_nrOfLaboratoryPartialExams");
     let spinner_nrOfCoursePartialExams = $(settingsModal).find("#spinner_nrOfCoursePartialExams");
-    let inputs_lessonWeight = $(settingsModal).find("input.lesson-weight");
-    let btn_professorCourseDiscard = $(settingsModal).find(".professor-course-discard-btn");
 
     $(spinner_nrOfSeminarPartialExams).off("change");
     $(spinner_nrOfSeminarPartialExams).change((event) => {
         handleNrOfLessonsChanged(event, profCourseId, settingsModal, "PARTIAL_EXAM_SEMINAR");
     });
+
     $(spinner_nrOfLaboratoryPartialExams).off("change");
     $(spinner_nrOfLaboratoryPartialExams).change((event) => {
         handleNrOfLessonsChanged(event, profCourseId, settingsModal, "PARTIAL_EXAM_LABORATORY");
     });
+
     $(spinner_nrOfCoursePartialExams).off("change");
     $(spinner_nrOfCoursePartialExams).change((event) => {
         handleNrOfLessonsChanged(event, profCourseId, settingsModal, "PARTIAL_EXAM_COURSE");
     });
+}
+
+function assignLessonWeightHandlers(profCourse, settingsModal){
+    let profCourseId = getNumericIdFromDomId(profCourse.id);
+    let inputs_lessonWeight = $(settingsModal).find("input.lesson-weight");
+
     $(inputs_lessonWeight).off("change");
     $(inputs_lessonWeight).change((event) => {
         let lessonWeightId = getNumericIdFromDomId(event.target.id);
@@ -64,11 +76,41 @@ function assignProfessorCourseSettingsModalHandlers(profCourse, settingsModal) {
         professorCourses[profCourseId].course.lessonTemplates[lessonWeightId].weight = validValue;
         updateTotalLessonWeight();
     });
+}
+
+function assignModalBtnsHandlers(profCourse, settingsModal){
+    let profCourseId = getNumericIdFromDomId(profCourse.id);
+    let btn_professorCourseDiscard = $(settingsModal).find(".professor-course-discard-btn");
+    let btn_professorCourseSave = $(settingsModal).find(".professor-course-save-btn");
+
     $(btn_professorCourseDiscard).off("click.professorCourse");
     $(btn_professorCourseDiscard).on("click.professorCourse", (event) => {
         professorCourses[profCourseId].course = deepClone(professorCoursesBackup[profCourseId].course);
         renderLessonTemplates();
         updateTotalLessonWeight();
+    });
+
+    $(btn_professorCourseSave).off("click.professorCourse");
+    $(btn_professorCourseSave).on("click.professorCourse", (event) => {
+        if(!confirm(msgs.confirmSaveChanges)){
+            return;
+        }
+        let reqBody = JSON.stringify(getCourse(profCourseId));
+        $.ajax({
+            url: "/app/professor/course",
+            type: "PUT",
+            data: reqBody,
+            contentType: "application/json; charset=utf-8",
+            success: (response, textStatus, xhr) => {
+                if (xhr.status = 200) {
+                    displayModal("#modal_success", true);
+                    professorCoursesBackup[profCourseId].course = deepClone(professorCourses[profCourseId].course);
+                }
+            },
+            error: () => {
+                displayModal("#modal_failure", true);
+            }
+        })
     });
 }
 
@@ -246,4 +288,19 @@ function getNrOfLessonTemplatesOfType(lessonTemplates, lessonTemplateType){
         }
     }
     return nr;
+}
+
+
+function getCourse(profCourseId){
+    let course = deepClone(professorCourses[profCourseId].course);
+    let lessonTemplateList = [], lessonTemplateMap = professorCourses[profCourseId].course.lessonTemplates;
+    for(let key in lessonTemplateMap){
+        let lessonTemplate = lessonTemplateMap[key];
+        if(lessonTemplate.id < 0){
+            lessonTemplate.id = undefined;
+        }
+        lessonTemplateList.push(deepClone(lessonTemplate));
+    }
+    course.lessonTemplates = lessonTemplateList;
+    return course;
 }

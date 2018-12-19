@@ -26,10 +26,13 @@ public class LessonTemplate {
     private byte nr;
 
     @Min(0)
-    @Max(100)
+    @Max(1)
     private Double weight;
 
     @NotNull
     @Enumerated(EnumType.ORDINAL)
     private LessonType type;
+
+    @ManyToOne
+    private Course course;
 }

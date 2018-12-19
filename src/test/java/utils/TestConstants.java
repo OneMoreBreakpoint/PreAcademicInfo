@@ -10,7 +10,9 @@ public class TestConstants {
     public static final String FATHERS_INITIALS = "A.B.";
     public static final String PROF_USERNAME = "prof";
     public static final String COURSE_CODE = "MLR0000";
+    public static final String COURSE_CODE2 = "MLR0001";
     public static final String GROUP_CODE = "231";
+    public static final String GROUP_CODE2 = "232";
     public static final String STUD_USERNAME = "stud";
 
 }
