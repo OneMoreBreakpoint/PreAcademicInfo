@@ -204,18 +204,3 @@ function getValidGrade(actualValue) {
 function getValidBonus(actualValue) {
     return getValidNumber(actualValue, -10, 10);
 }
-
-function getValidNumber(actualValue, minValue, maxValue) {
-    if (typeof(actualValue) === "string") {
-        actualValue = parseInt(actualValue);
-    }
-    if (isNaN(actualValue)) {
-        return undefined;
-    }
-    if (actualValue > maxValue) {
-        return maxValue;
-    } else if (actualValue < minValue) {
-        return minValue;
-    }
-    return actualValue;
-}

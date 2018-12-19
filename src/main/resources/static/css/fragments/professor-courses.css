@@ -42,11 +42,12 @@
 }
 
 .professor-course-settings-modal .modal-footer{
-    justify-content: flex-end !important;
+    display: block;
 }
 
 .professor-course-settings-modal .modal-footer > *{
     margin: 5px;
+    float: right;
 }
 
 .professor-course-settings-modal .modal-body *{
@@ -62,3 +63,6 @@
     margin: 0;
 }
 
+.professor-course-settings-modal .err{
+    display: none;
+}

@@ -14,7 +14,7 @@
         <input type="checkbox" th:checked="${lesson.attended}" disabled class="attendance-field"
                th:if="${lessonType=='SEMINAR' || lessonType=='LABORATORY'}">
         <input type="number" th:value="${lesson.grade}" min="0" max="10" disabled class="grade-field"
-               th:if="${lessonType!='SEMINAR'}">
+               th:if="${lessonType!='SEMINAR' && lesson.template.weight > 0}">
         <input type="number" th:value="${lesson.bonus}" disabled min="-10" max="10" class="bonus-field"
                th:if="${lessonType=='SEMINAR' || lessonType=='LABORATORY'}">
     </th:block>
@@ -40,9 +40,16 @@
             <th th:case="'SEMINAR'" class="lesson-cell"
                 th:text="|#{timeline.head.seminar} ${lesson.template.nr} (#{timeline.head.attendance}/#{timeline.head.bonus})|">
             </th>
-            <th th:case="'LABORATORY'" class="lesson-cell"
-                th:text="|#{timeline.head.laboratory} ${lesson.template.nr} (#{timeline.head.attendance}/#{timeline.head.grade}/#{timeline.head.bonus})|">
-            </th>
+            <th:block th:case="'LABORATORY'">
+                <th:block th:switch="${lesson.template.weight > 0}">
+                    <th th:case="${true}" class="lesson-cell"
+                        th:text="|#{timeline.head.laboratory} ${lesson.template.nr} (#{timeline.head.attendance}/#{timeline.head.grade}/#{timeline.head.bonus})|">
+                    </th>
+                    <th th:case="${false}" class="lesson-cell"
+                        th:text="|#{timeline.head.laboratory} ${lesson.template.nr} (#{timeline.head.attendance}/#{timeline.head.bonus})|">
+                    </th>
+                </th:block>
+            </th:block>
             <th th:case="'PARTIAL_EXAM_SEMINAR'" class="lesson-cell"
                 th:text="|#{timeline.head.partial} #{timeline.head.seminar} ${lesson.template.nr}|">
             </th>
