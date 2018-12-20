@@ -1,7 +1,6 @@
 package data_layer.domain;
 
 import lombok.*;
-import utils.LessonType;
 
 import javax.persistence.*;
 import javax.validation.constraints.Max;

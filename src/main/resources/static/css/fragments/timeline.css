@@ -60,8 +60,9 @@
     box-shadow: -1px 0px 7px var(--color0-dark);
 }
 
-.timeline th:nth-last-child(-n+2),
-.timeline td:nth-last-child(-n+2) {
+.timeline .average-cell,
+.timeline .sem-attendances-cell,
+.timeline .lab-attendances-cell{
     box-shadow: 0px -1px 7px var(--color0-dark);
 }
 
@@ -94,7 +95,8 @@
     font-weight: normal;
 }
 
-.timeline td.attendances-cell.err,
+.timeline td.sem-attendances-cell.err,
+.timeline td.lab-attendances-cell.err,
 .timeline td.average-cell.err {
     background-color: var(--color2-light);
     color: var(--color0-dark);

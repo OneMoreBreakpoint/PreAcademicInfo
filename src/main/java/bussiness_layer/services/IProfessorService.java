@@ -1,10 +1,8 @@
 package bussiness_layer.services;
 
-import java.util.List;
-
 import bussiness_layer.dto.*;
-import data_layer.domain.Course;
-import data_layer.domain.LessonTemplate;
+
+import java.util.List;
 
 public interface IProfessorService {
     /**

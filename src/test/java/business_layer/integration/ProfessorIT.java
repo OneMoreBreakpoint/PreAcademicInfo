@@ -1,17 +1,13 @@
 package business_layer.integration;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
-
+import business_layer.BaseIntegrationTest;
 import bussiness_layer.dto.*;
 import bussiness_layer.mappers.CourseMapper;
-import bussiness_layer.mappers.LessonTemplateMapper;
-import bussiness_layer.mappers.ProfessorMapper;
+import bussiness_layer.services.IProfessorService;
 import data_layer.domain.*;
-import factory.CourseFactory;
+import factory.LessonFactory;
 import factory.LessonTemplateFactory;
+import factory.ProfessorFactory;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Rule;
@@ -19,20 +15,17 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
-
-import business_layer.BaseIntegrationTest;
-import bussiness_layer.services.IProfessorService;
-import factory.LessonFactory;
-import factory.ProfessorFactory;
 import utils.LessonType;
 import utils.RightType;
 import utils.TestConstants;
 import utils.exceptions.AccessForbiddenException;
 import utils.exceptions.ResourceNotFoundException;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static org.junit.Assert.*;
 
 public class ProfessorIT extends BaseIntegrationTest {
 
@@ -43,7 +36,7 @@ public class ProfessorIT extends BaseIntegrationTest {
     public final ExpectedException exception = ExpectedException.none();
 
     @Before
-    public void emptyDatabase(){
+    public void emptyDatabase() {
         lessonRepository.deleteAll();
         lessonRepository.flush();
         enrollmentRepository.deleteAll();
@@ -210,19 +203,19 @@ public class ProfessorIT extends BaseIntegrationTest {
 
     @Test
     @Transactional
-    public void givenLessonTemplateDtosHaveBeenRemoved_whenUpdateCourse_thenLessonAndLessonTemplatesAreRemoved(){
+    public void givenLessonTemplateDtosHaveBeenRemoved_whenUpdateCourse_thenLessonAndLessonTemplatesAreRemoved() {
         //Given
         Enrollment enrollment = createEnrollment(TestConstants.PROF_USERNAME, TestConstants.COURSE_CODE, TestConstants.GROUP_CODE);
         addLessonTemplatesToCourse(enrollment.getCourse(), 6, LessonType.SEMINAR, null);
-        addLessonTemplatesToCourse(enrollment.getCourse(), 6, LessonType.LABORATORY, (byte)10);
-        addLessonTemplatesToCourse(enrollment.getCourse(), 1, LessonType.LABORATORY, (byte)40);
-        addLessonTemplatesToCourse(enrollment.getCourse(), 2, LessonType.PARTIAL_EXAM_COURSE, (byte)15);
+        addLessonTemplatesToCourse(enrollment.getCourse(), 6, LessonType.LABORATORY, (byte) 10);
+        addLessonTemplatesToCourse(enrollment.getCourse(), 1, LessonType.LABORATORY, (byte) 40);
+        addLessonTemplatesToCourse(enrollment.getCourse(), 2, LessonType.PARTIAL_EXAM_COURSE, (byte) 15);
         addLessonsToEnrollment(enrollment, 6, LessonType.SEMINAR);
         addLessonsToEnrollment(enrollment, 7, LessonType.LABORATORY);
         addLessonsToEnrollment(enrollment, 2, LessonType.PARTIAL_EXAM_COURSE);
 
         Course course = courseRepository.findByCode(TestConstants.COURSE_CODE).get();
-        course.setCoordinator((Professor)userRepository.findByUsername(TestConstants.PROF_USERNAME).get());
+        course.setCoordinator((Professor) userRepository.findByUsername(TestConstants.PROF_USERNAME).get());
 
         CourseDto courseDto = CourseMapper.toDto(course);
         courseDto.getLessonTemplates().removeIf(lessonTemplateDto -> lessonTemplateDto.getType() == LessonType.PARTIAL_EXAM_COURSE);
@@ -233,7 +226,7 @@ public class ProfessorIT extends BaseIntegrationTest {
         long nrOfPartialTemplatesBefore = lessonTemplateRepository.findAll().stream()
                 .filter(lessonTemplate -> lessonTemplate.getType() == LessonType.PARTIAL_EXAM_COURSE)
                 .count();
-        
+
         //When
         professorService.updateCourse(TestConstants.PROF_USERNAME, courseDto);
 
@@ -253,20 +246,20 @@ public class ProfessorIT extends BaseIntegrationTest {
 
     @Test
     @Transactional
-    public void givenLessonTemplateDtosHaveBeenAdded_whenUpdateCourse_thenLessonsAndLessonTemplatesAreAdded(){
+    public void givenLessonTemplateDtosHaveBeenAdded_whenUpdateCourse_thenLessonsAndLessonTemplatesAreAdded() {
         Enrollment enrollment = createEnrollment(TestConstants.PROF_USERNAME, TestConstants.COURSE_CODE, TestConstants.GROUP_CODE);
         addLessonTemplatesToCourse(enrollment.getCourse(), 6, LessonType.SEMINAR, null);
-        addLessonTemplatesToCourse(enrollment.getCourse(), 7, LessonType.LABORATORY, (byte)10);
+        addLessonTemplatesToCourse(enrollment.getCourse(), 7, LessonType.LABORATORY, (byte) 10);
         addLessonsToEnrollment(enrollment, 6, LessonType.SEMINAR);
         addLessonsToEnrollment(enrollment, 7, LessonType.LABORATORY);
 
         Course course = courseRepository.findByCode(TestConstants.COURSE_CODE).get();
-        course.setCoordinator((Professor)userRepository.findByUsername(TestConstants.PROF_USERNAME).get());
+        course.setCoordinator((Professor) userRepository.findByUsername(TestConstants.PROF_USERNAME).get());
 
         CourseDto courseDto = CourseMapper.toDto(course);
         LessonTemplateDto partial = LessonTemplateFactory.generateLessonTemplateDtoBuilder()
                 .type(LessonType.PARTIAL_EXAM_COURSE)
-                .weight((byte)30)
+                .weight((byte) 30)
                 .build();
         courseDto.getLessonTemplates().add(partial);
         long nrOfPartialLessonsBefore = lessonRepository.findAll().stream()
@@ -294,18 +287,18 @@ public class ProfessorIT extends BaseIntegrationTest {
 
     @Test
     @Transactional
-    public void givenLessonTemplateDtosHaveBeenUpdated_whenUpdateCourse_thenLessonTemplatesAreUpdated(){
+    public void givenLessonTemplateDtosHaveBeenUpdated_whenUpdateCourse_thenLessonTemplatesAreUpdated() {
         //When
         Enrollment enrollment = createEnrollment(TestConstants.PROF_USERNAME, TestConstants.COURSE_CODE, TestConstants.GROUP_CODE);
         addLessonTemplatesToCourse(enrollment.getCourse(), 6, LessonType.SEMINAR, null);
-        addLessonTemplatesToCourse(enrollment.getCourse(), 7, LessonType.LABORATORY, (byte)10);
-        addLessonTemplatesToCourse(enrollment.getCourse(), 2, LessonType.PARTIAL_EXAM_COURSE, (byte)15);
+        addLessonTemplatesToCourse(enrollment.getCourse(), 7, LessonType.LABORATORY, (byte) 10);
+        addLessonTemplatesToCourse(enrollment.getCourse(), 2, LessonType.PARTIAL_EXAM_COURSE, (byte) 15);
         addLessonsToEnrollment(enrollment, 6, LessonType.SEMINAR);
         addLessonsToEnrollment(enrollment, 7, LessonType.LABORATORY);
         addLessonsToEnrollment(enrollment, 2, LessonType.PARTIAL_EXAM_COURSE);
 
         Course course = courseRepository.findByCode(TestConstants.COURSE_CODE).get();
-        course.setCoordinator((Professor)userRepository.findByUsername(TestConstants.PROF_USERNAME).get());
+        course.setCoordinator((Professor) userRepository.findByUsername(TestConstants.PROF_USERNAME).get());
 
         CourseDto courseDto = CourseMapper.toDto(course);
         List<Integer> laboratoryIds = courseDto.getLessonTemplates().stream()
@@ -314,10 +307,10 @@ public class ProfessorIT extends BaseIntegrationTest {
                 .collect(Collectors.toList());
         int idOfUpdated1 = laboratoryIds.get(0), idOfUpdated2 = laboratoryIds.get(1);
         courseDto.getLessonTemplates().forEach(lessonTemplateDto -> {
-            if(lessonTemplateDto.getId() == idOfUpdated1){
-                lessonTemplateDto.setWeight((byte)20);
-            }else if(lessonTemplateDto.getId() == idOfUpdated2){
-                lessonTemplateDto.setWeight((byte)0);
+            if (lessonTemplateDto.getId() == idOfUpdated1) {
+                lessonTemplateDto.setWeight((byte) 20);
+            } else if (lessonTemplateDto.getId() == idOfUpdated2) {
+                lessonTemplateDto.setWeight((byte) 0);
             }
         });
 
@@ -328,20 +321,20 @@ public class ProfessorIT extends BaseIntegrationTest {
         LessonTemplate lesson1 = lessonTemplateRepository.findById(idOfUpdated1).get();
         LessonTemplate lesson2 = lessonTemplateRepository.findById(idOfUpdated2).get();
 
-        assertEquals((byte)20, (byte)lesson1.getWeight());
-        assertEquals((byte)0, (byte)lesson2.getWeight());
+        assertEquals((byte) 20, (byte) lesson1.getWeight());
+        assertEquals((byte) 0, (byte) lesson2.getWeight());
 
     }
 
     @Test
     @Transactional
-    public void givenProfDoesNotHaveRightsOverLessonTemplate_whenUpdateCourse_thenAccessForbiddenExceptionIsThrown(){
+    public void givenProfDoesNotHaveRightsOverLessonTemplate_whenUpdateCourse_thenAccessForbiddenExceptionIsThrown() {
         //When
         Enrollment enrollment = createEnrollment(TestConstants.PROF_USERNAME, TestConstants.COURSE_CODE
                 , TestConstants.GROUP_CODE, "1111", "_1111");
         addLessonTemplatesToCourse(enrollment.getCourse(), 6, LessonType.SEMINAR, null);
-        addLessonTemplatesToCourse(enrollment.getCourse(), 7, LessonType.LABORATORY, (byte)10);
-        addLessonTemplatesToCourse(enrollment.getCourse(), 2, LessonType.PARTIAL_EXAM_COURSE, (byte)15);
+        addLessonTemplatesToCourse(enrollment.getCourse(), 7, LessonType.LABORATORY, (byte) 10);
+        addLessonTemplatesToCourse(enrollment.getCourse(), 2, LessonType.PARTIAL_EXAM_COURSE, (byte) 15);
         addLessonsToEnrollment(enrollment, 6, LessonType.SEMINAR);
         addLessonsToEnrollment(enrollment, 7, LessonType.LABORATORY);
         addLessonsToEnrollment(enrollment, 2, LessonType.PARTIAL_EXAM_COURSE);
@@ -349,14 +342,14 @@ public class ProfessorIT extends BaseIntegrationTest {
         Enrollment enrollment2 = createEnrollment(TestConstants.USERNAME, TestConstants.COURSE_CODE2
                 , TestConstants.GROUP_CODE2, "2222", "_2222");
         addLessonTemplatesToCourse(enrollment2.getCourse(), 6, LessonType.SEMINAR, null);
-        addLessonTemplatesToCourse(enrollment2.getCourse(), 7, LessonType.LABORATORY, (byte)10);
-        addLessonTemplatesToCourse(enrollment2.getCourse(), 2, LessonType.PARTIAL_EXAM_COURSE, (byte)15);
+        addLessonTemplatesToCourse(enrollment2.getCourse(), 7, LessonType.LABORATORY, (byte) 10);
+        addLessonTemplatesToCourse(enrollment2.getCourse(), 2, LessonType.PARTIAL_EXAM_COURSE, (byte) 15);
         addLessonsToEnrollment(enrollment2, 6, LessonType.SEMINAR);
         addLessonsToEnrollment(enrollment2, 7, LessonType.LABORATORY);
         addLessonsToEnrollment(enrollment2, 2, LessonType.PARTIAL_EXAM_COURSE);
 
         Course course = courseRepository.findByCode(TestConstants.COURSE_CODE).get();
-        course.setCoordinator((Professor)userRepository.findByUsername(TestConstants.PROF_USERNAME).get());
+        course.setCoordinator((Professor) userRepository.findByUsername(TestConstants.PROF_USERNAME).get());
 
         CourseDto courseDto = CourseMapper.toDto(course);
         int idOfLessonTemplateToHack = enrollment2.getCourse().getLessonTemplates().stream()
@@ -375,7 +368,7 @@ public class ProfessorIT extends BaseIntegrationTest {
 
     @Test
     @Transactional
-    public void givenProfessorHasRights_whenGetCourse_thenCourseIsRetrieved(){
+    public void givenProfessorHasRights_whenGetCourse_thenCourseIsRetrieved() {
         //Given
         createEnrollment(TestConstants.PROF_USERNAME, TestConstants.COURSE_CODE, TestConstants.GROUP_CODE);
         createProfessorRights(TestConstants.PROF_USERNAME, TestConstants.COURSE_CODE, TestConstants.GROUP_CODE);
@@ -387,7 +380,7 @@ public class ProfessorIT extends BaseIntegrationTest {
 
     @Test
     @Transactional
-    public void givenProfessorDoesNotHaveRights_whenGetCourse_thenAccessForbiddenExceptionIsThrown(){
+    public void givenProfessorDoesNotHaveRights_whenGetCourse_thenAccessForbiddenExceptionIsThrown() {
         //Given
         createEnrollment(TestConstants.PROF_USERNAME, TestConstants.COURSE_CODE, TestConstants.GROUP_CODE);
         //Then

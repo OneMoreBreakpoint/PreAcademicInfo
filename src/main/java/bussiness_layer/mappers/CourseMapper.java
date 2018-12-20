@@ -2,7 +2,6 @@ package bussiness_layer.mappers;
 
 import bussiness_layer.dto.CourseDto;
 import data_layer.domain.Course;
-import data_layer.domain.LessonTemplate;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass

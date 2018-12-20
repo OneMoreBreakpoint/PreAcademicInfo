@@ -1,10 +1,6 @@
 package business_layer;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-
+import bd_config.H2TestConfiguration;
 import data_layer.domain.*;
 import data_layer.repositories.*;
 import factory.*;
@@ -12,11 +8,13 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import bd_config.H2TestConfiguration;
 import utils.LessonType;
 import utils.RightType;
 import utils.TestConstants;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Utilitary class for tests.
@@ -112,12 +110,12 @@ public abstract class BaseIntegrationTest {
                 .build());
     }
 
-    protected void addLessonsToEnrollment(Enrollment enrollment, int nrOfLessonsToAdd, LessonType lessonType){
+    protected void addLessonsToEnrollment(Enrollment enrollment, int nrOfLessonsToAdd, LessonType lessonType) {
         LessonTemplate lessonTemplate = enrollment.getCourse().getLessonTemplates().stream()
                 .filter(lessonTemplate1 -> lessonTemplate1.getType() == lessonType)
                 .findFirst()
                 .get();
-        while(nrOfLessonsToAdd > 0){
+        while (nrOfLessonsToAdd > 0) {
             Lesson lesson = LessonFactory.generateLessonBuilder()
                     .template(lessonTemplate)
                     .enrollment(enrollment)
@@ -127,8 +125,8 @@ public abstract class BaseIntegrationTest {
         }
     }
 
-    protected void addLessonTemplatesToCourse(Course course, int nrOfLessonTemplatesToAdd, LessonType lessonType, Byte weight){
-        while(nrOfLessonTemplatesToAdd > 0){
+    protected void addLessonTemplatesToCourse(Course course, int nrOfLessonTemplatesToAdd, LessonType lessonType, Byte weight) {
+        while (nrOfLessonTemplatesToAdd > 0) {
             LessonTemplate lessonTemplate = LessonTemplateFactory.generateLessonTemplateBuilder()
                     .type(lessonType)
                     .course(course)

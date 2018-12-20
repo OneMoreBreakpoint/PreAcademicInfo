@@ -1,17 +1,11 @@
 package bussiness_layer.dto;
 
-import java.io.Serializable;
+import lombok.*;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import utils.RightType;
+import java.io.Serializable;
 
 @Getter
 @Setter
@@ -45,7 +39,7 @@ public class LessonDto implements Comparable<LessonDto>, Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        if(!(obj instanceof LessonDto)){
+        if (!(obj instanceof LessonDto)) {
             return false;
         }
         LessonDto that = (LessonDto) obj;

@@ -2,7 +2,6 @@ package factory;
 
 import bussiness_layer.dto.LessonDto;
 import data_layer.domain.Lesson;
-import utils.LessonType;
 
 public class LessonFactory {
     public static Lesson.LessonBuilder generateLessonBuilder() {

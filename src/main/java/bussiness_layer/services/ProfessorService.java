@@ -116,15 +116,15 @@ public class ProfessorService implements IProfessorService {
         lessonTemplates.forEach(lessonTemplate -> {
             boolean lessonTemplateMustBeRemoved = courseDto.getLessonTemplates().stream()
                     .noneMatch(lessonTemplateDto ->
-                        lessonTemplateDto.getId() != null && lessonTemplateDto.getId().equals(lessonTemplate.getId()));
-            if(lessonTemplateMustBeRemoved){
+                            lessonTemplateDto.getId() != null && lessonTemplateDto.getId().equals(lessonTemplate.getId()));
+            if (lessonTemplateMustBeRemoved) {
                 removeLessonTemplate(lessonTemplate);
             }
         });
         courseDto.getLessonTemplates().forEach(lessonTemplateDto -> {
-            if(lessonTemplateDto.getId() == null){
+            if (lessonTemplateDto.getId() == null) {
                 addLessonTemplate(course, lessonTemplateDto);
-            }else{
+            } else {
                 updateLessonTemplate(course, lessonTemplateDto);
             }
         });
@@ -135,7 +135,7 @@ public class ProfessorService implements IProfessorService {
         Course course = courseRepository.findByCode(courseCode)
                 .orElseThrow(ResourceNotFoundException::new);
         List<ProfessorRight> professorRights = professorRightRepository.findByProfessorAndCourse(profUsername, courseCode);
-        if(professorRights.size() == 0){
+        if (professorRights.size() == 0) {
             throw new AccessForbiddenException();
         }
         return CourseMapper.toDto(course);
@@ -144,7 +144,7 @@ public class ProfessorService implements IProfessorService {
     private void removeLessonTemplate(LessonTemplate lessonTemplate) {
         if (lessonTemplate.getType() != LessonType.PARTIAL_EXAM_SEMINAR
                 && lessonTemplate.getType() != LessonType.PARTIAL_EXAM_COURSE
-                && lessonTemplate.getType() != LessonType.PARTIAL_EXAM_LABORATORY){
+                && lessonTemplate.getType() != LessonType.PARTIAL_EXAM_LABORATORY) {
             throw new AccessForbiddenException(); //only partials can be removed
         }
         lessonRepository.deleteByLessonTemplate(lessonTemplate.getId());
@@ -153,10 +153,10 @@ public class ProfessorService implements IProfessorService {
         lessonTemplateRepository.flush();
     }
 
-    private void addLessonTemplate(Course course, LessonTemplateDto lessonTemplateDto){
+    private void addLessonTemplate(Course course, LessonTemplateDto lessonTemplateDto) {
         if (lessonTemplateDto.getType() != LessonType.PARTIAL_EXAM_SEMINAR
                 && lessonTemplateDto.getType() != LessonType.PARTIAL_EXAM_COURSE
-                && lessonTemplateDto.getType() != LessonType.PARTIAL_EXAM_LABORATORY){
+                && lessonTemplateDto.getType() != LessonType.PARTIAL_EXAM_LABORATORY) {
             throw new AccessForbiddenException(); //only partials can be added
         }
         LessonTemplate lessonTemplate = LessonTemplateMapper.toEntity(lessonTemplateDto);
@@ -176,10 +176,10 @@ public class ProfessorService implements IProfessorService {
         lessonTemplateRepository.flush();
     }
 
-    private void updateLessonTemplate(Course course, LessonTemplateDto lessonTemplateDto){
+    private void updateLessonTemplate(Course course, LessonTemplateDto lessonTemplateDto) {
         LessonTemplate lessonTemplate = lessonTemplateRepository.findById(lessonTemplateDto.getId())
                 .orElseThrow(ResourceNotFoundException::new);
-        if(lessonTemplate.getCourse() != course){
+        if (lessonTemplate.getCourse() != course) {
             throw new AccessForbiddenException();
         }
         lessonTemplate.setWeight(lessonTemplateDto.getWeight());

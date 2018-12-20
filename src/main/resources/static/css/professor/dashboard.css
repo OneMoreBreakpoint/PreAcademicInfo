@@ -1,8 +1,8 @@
-#professor-courses{
+#professor-courses {
     margin: auto;
     width: 70%;
 }
 
-#professor-courses > *{
+#professor-courses > * {
     margin: 50px;
 }

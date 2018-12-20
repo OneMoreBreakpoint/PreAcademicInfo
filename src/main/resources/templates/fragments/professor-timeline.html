@@ -68,7 +68,10 @@
 </td>
 
 
-<td th:fragment="attendances-cell (enrollment)" class="attendances-cell">
+<td th:fragment="sem-attendances-cell (enrollment)" class="sem-attendances-cell">
+</td>
+
+<td th:fragment="lab-attendances-cell (enrollment)" class="lab-attendances-cell">
 </td>
 
 
@@ -107,7 +110,10 @@
         </th:block>
     </th:block>
     <th class="bonus-cell" th:text="#{timeline.head.bonus}"></th>
-    <th class="attendances-cell" th:text="#{timeline.head.totalAttendances}"></th>
+    <th class="attendances-cell sem-attendances-cell" th:text="#{timeline.head.totalSemAttendances}"
+        th:if="${viewHelper.shouldRenderTotalSemAttendanceCell(enrollmentTemplate)}"></th>
+    <th class="attendances-cell lab-attendances-cell" th:text="#{timeline.head.totalLabAttendances}"
+        th:if="${viewHelper.shouldRenderTotalLabAttendanceCell(enrollmentTemplate)}"></th>
     <th class="average-cell" th:text="#{timeline.head.averageGrade}"
         th:if="${viewHelper.shouldRenderAverageCell(enrollmentTemplate)}"></th>
 </tr>
@@ -122,7 +128,12 @@
         <td th:replace="this :: lesson-cell(${lesson})"></td>
     </th:block>
     <td th:replace="this :: bonus-cell (${enrollment})"></td>
-    <td th:replace="this :: attendances-cell (${enrollment})"></td>
+    <th:block th:if="${viewHelper.shouldRenderTotalSemAttendanceCell(enrollment)}">
+        <td th:replace="this :: sem-attendances-cell (${enrollment})"></td>
+    </th:block>
+    <th:block th:if="${viewHelper.shouldRenderTotalLabAttendanceCell(enrollment)}">
+        <td th:replace="this :: lab-attendances-cell (${enrollment})"></td>
+    </th:block>
     <th:block th:if="${viewHelper.shouldRenderAverageCell(enrollment)}">
         <td th:replace="this :: average-cell (${enrollment})"></td>
     </th:block>

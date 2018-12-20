@@ -1,9 +1,7 @@
 package bussiness_layer.mappers;
 
 import bussiness_layer.dto.LessonDto;
-import bussiness_layer.dto.LessonTemplateDto;
 import data_layer.domain.Lesson;
-import data_layer.domain.LessonTemplate;
 import lombok.experimental.UtilityClass;
 
 import java.util.List;

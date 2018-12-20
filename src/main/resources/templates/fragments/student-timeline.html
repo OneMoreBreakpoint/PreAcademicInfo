@@ -24,9 +24,11 @@
 </td>
 
 
-<td th:fragment="attendances-cell (enrollment)" class="attendances-cell">
+<td th:fragment="sem-attendances-cell (enrollment)" class="sem-attendances-cell">
 </td>
 
+<td th:fragment="lab-attendances-cell (enrollment)" class="lab-attendances-cell">
+</td>
 
 <td th:fragment="average-cell (enrollment)" class="average-cell">
 </td>
@@ -62,7 +64,8 @@
         </th:block>
     </th:block>
     <th class="bonus-cell" th:text="#{timeline.head.bonus}"></th>
-    <th class="attendances-cell" th:text="#{timeline.head.totalAttendances}"></th>
+    <th class="sem-attendances-cell" th:text="#{timeline.head.totalSemAttendances}"></th>
+    <th class="lab-attendances-cell" th:text="#{timeline.head.totalLabAttendances}"></th>
     <th class="average-cell" th:text="#{timeline.head.averageGrade}"></th>
 </tr>
 </thead>
@@ -75,7 +78,8 @@
         <td th:replace="this :: lesson-cell(${goodLesson})"></td>
     </th:block>
     <td th:replace="this :: bonus-cell (${enrollment})"></td>
-    <td th:replace="this :: attendances-cell (${enrollment})"></td>
+    <td th:replace="this :: sem-attendances-cell (${enrollment})"></td>
+    <td th:replace="this :: lab-attendances-cell (${enrollment})"></td>
     <td th:replace="this :: average-cell (${enrollment})"></td>
 </tr>
 

@@ -23,6 +23,16 @@ public class ViewHelper {
                 );
     }
 
+    public static boolean shouldRenderTotalSemAttendanceCell(EnrollmentDto enrollmentTemplate) {
+        return enrollmentTemplate.getLessons().stream()
+                .anyMatch(lessonDto -> lessonDto.getTemplate().getType() == LessonType.SEMINAR);
+    }
+
+    public static boolean shouldRenderTotalLabAttendanceCell(EnrollmentDto enrollmentTemplate) {
+        return enrollmentTemplate.getLessons().stream()
+                .anyMatch(lessonDto -> lessonDto.getTemplate().getType() == LessonType.LABORATORY);
+    }
+
     public static LessonDto getRealLessonFromTemplate(List<LessonDto> realLessons, LessonDto templateLesson) {
         List<LessonDto> result = realLessons.stream()
                 .filter(lesson -> lesson.equals(templateLesson))

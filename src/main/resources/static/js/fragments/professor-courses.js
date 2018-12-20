@@ -115,7 +115,7 @@ function assignModalBtnsHandlers(profCourse, settingsModal) {
     });
 }
 
-function refreshCourseState(courseId){
+function refreshCourseState(courseId) {
     let settingsBtns = $(`#professor_course-${courseId} .professor-course-settings-btn`);
     $(settingsBtns).off("click");
 
@@ -167,13 +167,13 @@ function validateWeights() {
     }
 }
 
-function validateSeminarPartialAdd(professorCourse){
+function validateSeminarPartialAdd(professorCourse) {
     let span_cannotAddSeminarPartial = $(`#professor_course-${professorCourse.course.id} .cannot-add-seminar-partial-err`);
     let lessonTemplates = professorCourse.course.lessonTemplates;
-    for(let key in lessonTemplates){
-        if(lessonTemplates[key].type === "PARTIAL_EXAM_SEMINAR"){
-            for(let jkey in lessonTemplates){
-                if(lessonTemplates[jkey].type === "SEMINAR"){
+    for (let key in lessonTemplates) {
+        if (lessonTemplates[key].type === "PARTIAL_EXAM_SEMINAR") {
+            for (let jkey in lessonTemplates) {
+                if (lessonTemplates[jkey].type === "SEMINAR") {
                     $(span_cannotAddSeminarPartial).css({'display': 'none'});
                     return true;
                 }

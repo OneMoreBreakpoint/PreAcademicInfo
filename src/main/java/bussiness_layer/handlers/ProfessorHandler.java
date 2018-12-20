@@ -5,7 +5,6 @@ import bussiness_layer.mappers.ProfessorCourseMapper;
 import data_layer.domain.Course;
 import data_layer.domain.Group;
 import data_layer.domain.ProfessorRight;
-import data_layer.repositories.ILessonRepository;
 import data_layer.repositories.IProfessorRightRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

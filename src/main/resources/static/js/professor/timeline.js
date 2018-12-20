@@ -132,29 +132,13 @@ function assignActionHandlers() {
     });
 }
 
-function updateTotalAttendanceView(enrlRow, totalLabAttendance, totalSemAttendance) {
-    let totalAttendanceCell = $(enrlRow).children("td.attendances-cell").first();
-    let precisionLab = (totalLabAttendance < 100 ? 2 : 0), precisionSem = (totalSemAttendance < 100 ? 2 : 0);
-    let hasSeminarRights = profHasRight("SEMINAR", "READ");
-    let hasLabRights = profHasRight("LABORATORY", "READ");
-    let hasCoordinatorRights = profHasRight("PARTIAL_EXAM_COURSE", "WRITE");
-    let totalAttendanceViewText;
-    if ((hasSeminarRights && hasLabRights) || hasCoordinatorRights) {
-        totalAttendanceViewText = `${totalSemAttendance.toFixed(precisionSem)}% / ${totalLabAttendance.toFixed(precisionLab)}%`;
-    } else if (hasSeminarRights && !hasLabRights) {
-        totalAttendanceViewText = `${totalSemAttendance.toFixed(precisionSem)}%`;
-    } else if (!hasSeminarRights && hasLabRights) {
-        totalAttendanceViewText = `${totalLabAttendance.toFixed(precisionLab)}%`;
-    }
-    $(totalAttendanceCell).text(totalAttendanceViewText);
-    if (!hasMinimumAttendance(totalSemAttendance, totalLabAttendance)) {
-        $(totalAttendanceCell).addClass('err');
-    } else {
-        $(totalAttendanceCell).removeClass('err');
-    }
-}
-
 function hasMinimumAttendance(seminarAttendance, laboratoryAttendance) {
+    if(seminarAttendance === undefined){
+        seminarAttendance = 100;
+    }
+    if(laboratoryAttendance === undefined){
+        laboratoryAttendance = 100;
+    }
     const MIN_SEM_ATT = 75, MIN_LAB_ATT = 90;
     let hasSeminarRights = profHasRight("SEMINAR", "READ");
     let hasLabRights = profHasRight("LABORATORY", "READ");
