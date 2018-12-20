@@ -24,8 +24,8 @@ public class LessonTemplateDto implements Comparable<LessonTemplateDto>, Seriali
     private byte nr;
 
     @Min(0)
-    @Max(1)
-    private Double weight;
+    @Max(100)
+    private Byte weight;
 
     @NotNull
     private LessonType type;

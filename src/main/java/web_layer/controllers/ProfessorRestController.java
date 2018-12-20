@@ -6,11 +6,7 @@ import java.util.ArrayList;
 import bussiness_layer.dto.CourseDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import bussiness_layer.dto.LessonDto;
 import bussiness_layer.services.IProfessorService;
@@ -42,6 +38,11 @@ public class ProfessorRestController {
     public ResponseEntity<?> putCourse(@RequestBody CourseDto course, Principal crtUser){
         service.updateCourse(crtUser.getName(), course);
         return ResponseEntity.ok(null);
+    }
+
+    @GetMapping("/course/{courseCode}")
+    public CourseDto getCourse(@PathVariable String courseCode,  Principal crtUser){
+        return service.getCourse(crtUser.getName(), courseCode);
     }
 
 }

@@ -12,9 +12,20 @@ import java.util.List;
 public class CourseDtoValidator {
     public static void validate(CourseDto courseDto){
         List<LessonTemplateDto> lessonTemplates = courseDto.getLessonTemplates();
+        validateLessonTemplatesAfterType(lessonTemplates);
         validateLessonTemplatesAfterNrOfType(lessonTemplates);
         validateLessonTemplatesAfterParticularWeight(lessonTemplates);
         validateLessonTemplatesAfterTotalWeight(lessonTemplates);
+    }
+
+    private static void validateLessonTemplatesAfterType(List<LessonTemplateDto> lessonTemplateDtos){
+        boolean hasSeminars = lessonTemplateDtos.stream()
+                .anyMatch(lessonTemplateDto -> lessonTemplateDto.getType() == LessonType.SEMINAR);
+        boolean hasSeminarPartials = lessonTemplateDtos.stream()
+                .anyMatch(lessonTemplateDto -> lessonTemplateDto.getType() == LessonType.PARTIAL_EXAM_SEMINAR);
+        if(!hasSeminars && hasSeminarPartials){
+            throw new UnprocessableEntityException();
+        }
     }
 
     private static void validateLessonTemplatesAfterNrOfType(List<LessonTemplateDto> lessonTemplates){
@@ -60,19 +71,19 @@ public class CourseDtoValidator {
                         || lessonTemplate.getType() == LessonType.PARTIAL_EXAM_LABORATORY
                         || lessonTemplate.getType() == LessonType.PARTIAL_EXAM_COURSE)
                 .forEach(lessonTemplate -> {
-                    if(lessonTemplate.getWeight() == 0.0){
+                    if(lessonTemplate.getWeight() == 0){
                         throw new UnprocessableEntityException();
                     }
                 });
     }
 
     private static void validateLessonTemplatesAfterTotalWeight(List<LessonTemplateDto> lessonTemplates){
-        double totalWeight = lessonTemplates.stream()
+        byte totalWeight = lessonTemplates.stream()
                 .filter(lessonTemplate -> lessonTemplate.getType() != LessonType.SEMINAR)
                 .map(LessonTemplateDto::getWeight)
-                .reduce((x,y) -> x+y)
+                .reduce((x,y) -> (byte)(x+y))
                 .orElseThrow(UnprocessableEntityException::new);
-        if(totalWeight != 1.0){
+        if(totalWeight != 100){
             throw new UnprocessableEntityException();
         }
     }

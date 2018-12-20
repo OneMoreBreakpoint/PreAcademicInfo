@@ -63,7 +63,7 @@
                 <th:block th:unless="${lessonTemplate.type.toString() == 'SEMINAR'}">
                     <input type="number" min="0" max="100" step="1" class="lesson-weight"
                            th:id="|lessonWeight-${lessonTemplate.id}|"
-                           th:value="${#numbers.formatDecimal(100 * lessonTemplate.weight, 0, 0)}">
+                           th:value="${lessonTemplate.weight}">
                     <span>%</span>
                 </th:block>
             </div>
@@ -74,6 +74,8 @@
             <input type="button" class="professor-course-discard-btn modal-close" th:value="#{action.discardChanges}">
             <div th:text="#{courseSettings.sumOfWeightsIsLessThan100}" class="sum-of-weights-lt-100-err err"></div>
             <div th:text="#{courseSettings.sumOfWeightsIsGreaterThan100}" class="sum-of-weights-gt-100-err err"></div>
+            <div th:text="#{courseSettings.partialsMustHaveNon0Weight}" class="partials-must-have-non0-weight-err err"></div>
+            <div th:text="#{courseSettings.cannotAddSeminarPartial}" class="cannot-add-seminar-partial-err err"></div>
         </div>
     </div>
 </div>

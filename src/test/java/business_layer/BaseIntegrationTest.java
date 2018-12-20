@@ -127,7 +127,7 @@ public abstract class BaseIntegrationTest {
         }
     }
 
-    protected void addLessonTemplatesToCourse(Course course, int nrOfLessonTemplatesToAdd, LessonType lessonType, Double weight){
+    protected void addLessonTemplatesToCourse(Course course, int nrOfLessonTemplatesToAdd, LessonType lessonType, Byte weight){
         while(nrOfLessonTemplatesToAdd > 0){
             LessonTemplate lessonTemplate = LessonTemplateFactory.generateLessonTemplateBuilder()
                     .type(lessonType)

@@ -3,6 +3,7 @@ package bussiness_layer.services;
 import java.util.List;
 
 import bussiness_layer.dto.*;
+import data_layer.domain.Course;
 import data_layer.domain.LessonTemplate;
 
 public interface IProfessorService {
@@ -31,5 +32,7 @@ public interface IProfessorService {
     List<ProfessorCourseDto> getRelatedCourses(String profUsername);
 
     void updateCourse(String profUsername, CourseDto courseDto);
+
+    CourseDto getCourse(String profUsername, String courseCode);
 
 }

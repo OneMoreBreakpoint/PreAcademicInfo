@@ -2,10 +2,7 @@ package bussiness_layer.services;
 
 import bussiness_layer.dto.*;
 import bussiness_layer.handlers.ProfessorHandler;
-import bussiness_layer.mappers.EnrollmentMapper;
-import bussiness_layer.mappers.GroupMapper;
-import bussiness_layer.mappers.LessonTemplateMapper;
-import bussiness_layer.mappers.ProfessorRightMapper;
+import bussiness_layer.mappers.*;
 import bussiness_layer.utils.CourseDtoValidator;
 import bussiness_layer.utils.LessonDtoValidator;
 import data_layer.domain.*;
@@ -118,7 +115,8 @@ public class ProfessorService implements IProfessorService {
         List<LessonTemplate> lessonTemplates = lessonTemplateRepository.findByCourse(course.getCode());
         lessonTemplates.forEach(lessonTemplate -> {
             boolean lessonTemplateMustBeRemoved = courseDto.getLessonTemplates().stream()
-                    .noneMatch(lessonTemplateDto -> lessonTemplateDto.getId() == lessonTemplate.getId());
+                    .noneMatch(lessonTemplateDto ->
+                        lessonTemplateDto.getId() != null && lessonTemplateDto.getId().equals(lessonTemplate.getId()));
             if(lessonTemplateMustBeRemoved){
                 removeLessonTemplate(lessonTemplate);
             }
@@ -130,6 +128,17 @@ public class ProfessorService implements IProfessorService {
                 updateLessonTemplate(course, lessonTemplateDto);
             }
         });
+    }
+
+    @Override
+    public CourseDto getCourse(String profUsername, String courseCode) {
+        Course course = courseRepository.findByCode(courseCode)
+                .orElseThrow(ResourceNotFoundException::new);
+        List<ProfessorRight> professorRights = professorRightRepository.findByProfessorAndCourse(profUsername, courseCode);
+        if(professorRights.size() == 0){
+            throw new AccessForbiddenException();
+        }
+        return CourseMapper.toDto(course);
     }
 
     private void removeLessonTemplate(LessonTemplate lessonTemplate) {
@@ -152,6 +161,7 @@ public class ProfessorService implements IProfessorService {
         }
         LessonTemplate lessonTemplate = LessonTemplateMapper.toEntity(lessonTemplateDto);
         course.getLessonTemplates().add(lessonTemplate);
+        lessonTemplate.setCourse(course);
         lessonTemplateRepository.save(lessonTemplate);
         List<Enrollment> enrollments = enrollmentRepository.findByCourse(course.getCode());
         enrollments.forEach(enrollment -> {

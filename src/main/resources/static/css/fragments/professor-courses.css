@@ -65,4 +65,5 @@
 
 .professor-course-settings-modal .err{
     display: none;
+    clear: right;
 }

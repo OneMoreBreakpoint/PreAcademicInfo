@@ -26,8 +26,8 @@ public class LessonTemplate {
     private byte nr;
 
     @Min(0)
-    @Max(1)
-    private Double weight;
+    @Max(100)
+    private Byte weight;
 
     @NotNull
     @Enumerated(EnumType.ORDINAL)
