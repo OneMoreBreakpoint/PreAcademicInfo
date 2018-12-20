@@ -1,5 +1,6 @@
 package bussiness_layer.dto;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -17,4 +18,12 @@ public class ProfessorDto extends UserDto implements Serializable {
     @Size(max = 50)
     private String webPage;
     private String pathToProfilePhoto;
+
+    @Builder
+    public ProfessorDto(String username, String password, String firstName, String lastName, String email, String role,
+                        String webPage, String pathToProfilePhoto) {
+        super(username, password, firstName, lastName, email, role);
+        this.webPage = webPage;
+        this.pathToProfilePhoto = pathToProfilePhoto;
+    }
 }

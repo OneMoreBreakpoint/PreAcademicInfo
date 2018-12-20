@@ -27,9 +27,9 @@ public class StudentDto extends UserDto implements Serializable {
     private GroupDto group;
 
     @Builder
-    public StudentDto(String username, String password, String firstName, String lastName, String email,
-                      Integer registrationNr, String fathersInitials, String pathToProfilePhoto, boolean notifiedByEmail, GroupDto group) {
-        super(username, password, firstName, lastName, email);
+    public StudentDto(String username, String password, String firstName, String lastName, String email, Integer registrationNr,
+                      String fathersInitials, String pathToProfilePhoto, boolean notifiedByEmail, GroupDto group, String role) {
+        super(username, password, firstName, lastName, email, role);
         this.registrationNr = registrationNr;
         this.fathersInitials = fathersInitials;
         this.pathToProfilePhoto = pathToProfilePhoto;

@@ -133,10 +133,10 @@ function assignActionHandlers() {
 }
 
 function hasMinimumAttendance(seminarAttendance, laboratoryAttendance) {
-    if(seminarAttendance === undefined){
+    if (seminarAttendance === undefined) {
         seminarAttendance = 100;
     }
-    if(laboratoryAttendance === undefined){
+    if (laboratoryAttendance === undefined) {
         laboratoryAttendance = 100;
     }
     const MIN_SEM_ATT = 75, MIN_LAB_ATT = 90;

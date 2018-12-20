@@ -62,7 +62,7 @@
 
 .timeline .average-cell,
 .timeline .sem-attendances-cell,
-.timeline .lab-attendances-cell{
+.timeline .lab-attendances-cell {
     box-shadow: 0px -1px 7px var(--color0-dark);
 }
 

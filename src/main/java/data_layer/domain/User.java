@@ -45,7 +45,7 @@ public abstract class User {
         this.email = email;
     }
 
-    public String getUserRole() {
+    public String getRole() {
         return this.getClass().getSimpleName().toUpperCase();
     }
 }

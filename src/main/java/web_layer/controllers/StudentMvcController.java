@@ -18,6 +18,11 @@ public class StudentMvcController {
     @Autowired
     private IStudentService service;
 
+    @GetMapping("/")
+    public String getIndexPage() {
+        return "redirect:/student/timeline";
+    }
+
     @GetMapping("/timeline")
     public ModelAndView getTimelinePage(Principal crtUser) {
         List<EnrollmentDto> enrollments = service.getEnrollments(crtUser.getName());

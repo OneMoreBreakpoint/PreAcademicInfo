@@ -36,7 +36,7 @@ public class AuthenticationService implements AuthenticationManager, UserDetails
             throw new BadCredentialsException(ExceptionMessages.INVALID_USERNAME_OR_PASSWORD);
         }
         List<SimpleGrantedAuthority> grantedAuthorities = new ArrayList<>();
-        List<String> userRoles = Arrays.asList(user.get().getUserRole());
+        List<String> userRoles = Arrays.asList(user.get().getRole());
         userRoles.forEach(userRole -> {
             grantedAuthorities.add(new SimpleGrantedAuthority(userRole));
         });
@@ -50,7 +50,7 @@ public class AuthenticationService implements AuthenticationManager, UserDetails
         org.springframework.security.core.userdetails.User.UserBuilder builder;
         builder = org.springframework.security.core.userdetails.User.withUsername(user.getUsername());
         builder.password(user.getEncryptedPassword());
-        builder.roles(user.getUserRole());
+        builder.roles(user.getRole());
         return builder.build();
     }
 }

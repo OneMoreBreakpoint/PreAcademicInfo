@@ -27,6 +27,10 @@ public class ProfessorMvcController {
         this.service = service;
     }
 
+    @GetMapping("/")
+    public String getIndexPage() {
+        return "redirect:/professor/dashboard";
+    }
 
     @GetMapping("/dashboard")
     public ModelAndView getDashboardPage(Principal crtUser) {

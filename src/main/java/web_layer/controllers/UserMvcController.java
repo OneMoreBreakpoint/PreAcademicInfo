@@ -1,7 +1,6 @@
 package web_layer.controllers;
 
 
-import bussiness_layer.dto.StudentDto;
 import bussiness_layer.dto.UserDto;
 import bussiness_layer.services.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,10 +28,6 @@ public class UserMvcController {
     @GetMapping("/")
     public String getHomePage(Principal crtUser) {
         UserDto user = userService.getUserByUsername(crtUser.getName());
-        if (user instanceof StudentDto) {
-            return "redirect:/student/timeline";
-        } else {
-            return "redirect:/professor/dashboard";
-        }
+        return "redirect:/" + user.getRole().toLowerCase() + "/";
     }
 }
