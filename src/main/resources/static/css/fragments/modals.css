@@ -14,13 +14,14 @@
 .modal-window {
     position: relative;
     background-color: var(--color0-light);
-    min-width: 150px;
+    min-width: 350px;
     min-height: 120px;
     max-width: 80vw;
     max-height: 80vh;
     border-radius: 5px;
     box-shadow: 0px 0px 40px;
     padding: 20px;
+    overflow: auto;
 }
 
 .modal-window > * {

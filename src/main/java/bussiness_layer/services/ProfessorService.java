@@ -3,8 +3,8 @@ package bussiness_layer.services;
 import bussiness_layer.dto.*;
 import bussiness_layer.handlers.ProfessorHandler;
 import bussiness_layer.mappers.*;
-import bussiness_layer.utils.CourseDtoValidator;
 import bussiness_layer.utils.LessonDtoValidator;
+import bussiness_layer.utils.LessonTemplateDtoValidator;
 import data_layer.domain.*;
 import data_layer.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -111,19 +111,24 @@ public class ProfessorService implements IProfessorService {
         if (!course.getCoordinator().getUsername().equals(profUsername)) {
             throw new AccessForbiddenException();
         }
-        CourseDtoValidator.validate(courseDto);
+        LessonTemplateDtoValidator.validate(courseDto.getLessonTemplates());
         List<LessonTemplate> lessonTemplates = lessonTemplateRepository.findByCourse(course.getCode());
         lessonTemplates.forEach(lessonTemplate -> {
             boolean lessonTemplateMustBeRemoved = courseDto.getLessonTemplates().stream()
                     .noneMatch(lessonTemplateDto ->
                             lessonTemplateDto.getId() != null && lessonTemplateDto.getId().equals(lessonTemplate.getId()));
             if (lessonTemplateMustBeRemoved) {
+                if (!lessonTemplate.isOfTypePartial()) {
+                    throw new AccessForbiddenException(); //only partials can be removed
+                }
+                removeAssociatedLessons(lessonTemplate);
                 removeLessonTemplate(lessonTemplate);
             }
         });
         courseDto.getLessonTemplates().forEach(lessonTemplateDto -> {
             if (lessonTemplateDto.getId() == null) {
-                addLessonTemplate(course, lessonTemplateDto);
+                LessonTemplate lessonTemplate = addLessonTemplate(course, lessonTemplateDto);
+                addAssociatedLessons(lessonTemplate);
             } else {
                 updateLessonTemplate(course, lessonTemplateDto);
             }
@@ -142,28 +147,29 @@ public class ProfessorService implements IProfessorService {
     }
 
     private void removeLessonTemplate(LessonTemplate lessonTemplate) {
-        if (lessonTemplate.getType() != LessonType.PARTIAL_EXAM_SEMINAR
-                && lessonTemplate.getType() != LessonType.PARTIAL_EXAM_COURSE
-                && lessonTemplate.getType() != LessonType.PARTIAL_EXAM_LABORATORY) {
-            throw new AccessForbiddenException(); //only partials can be removed
-        }
-        lessonRepository.deleteByLessonTemplate(lessonTemplate.getId());
         lessonTemplateRepository.delete(lessonTemplate);
-        lessonRepository.flush();
         lessonTemplateRepository.flush();
     }
 
-    private void addLessonTemplate(Course course, LessonTemplateDto lessonTemplateDto) {
-        if (lessonTemplateDto.getType() != LessonType.PARTIAL_EXAM_SEMINAR
-                && lessonTemplateDto.getType() != LessonType.PARTIAL_EXAM_COURSE
-                && lessonTemplateDto.getType() != LessonType.PARTIAL_EXAM_LABORATORY) {
+    private void removeAssociatedLessons(LessonTemplate lessonTemplate){
+        lessonRepository.deleteByLessonTemplate(lessonTemplate.getId());
+        lessonRepository.flush();
+    }
+
+    private LessonTemplate addLessonTemplate(Course course, LessonTemplateDto lessonTemplateDto) {
+        LessonTemplate lessonTemplate = LessonTemplateMapper.toEntity(lessonTemplateDto);
+        if (!lessonTemplate.isOfTypePartial()) {
             throw new AccessForbiddenException(); //only partials can be added
         }
-        LessonTemplate lessonTemplate = LessonTemplateMapper.toEntity(lessonTemplateDto);
         course.getLessonTemplates().add(lessonTemplate);
         lessonTemplate.setCourse(course);
-        lessonTemplateRepository.save(lessonTemplate);
-        List<Enrollment> enrollments = enrollmentRepository.findByCourse(course.getCode());
+        LessonTemplate addedLessonTemplate = lessonTemplateRepository.save(lessonTemplate);
+        lessonTemplateRepository.flush();
+        return addedLessonTemplate;
+    }
+
+    private void addAssociatedLessons(LessonTemplate lessonTemplate){
+        List<Enrollment> enrollments = enrollmentRepository.findByCourse(lessonTemplate.getCourse().getCode());
         enrollments.forEach(enrollment -> {
             Lesson lesson = Lesson.builder()
                     .template(lessonTemplate)
@@ -173,7 +179,6 @@ public class ProfessorService implements IProfessorService {
             lessonRepository.save(lesson);
         });
         lessonRepository.flush();
-        lessonTemplateRepository.flush();
     }
 
     private void updateLessonTemplate(Course course, LessonTemplateDto lessonTemplateDto) {

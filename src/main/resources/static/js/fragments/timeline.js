@@ -111,16 +111,11 @@ function updateTotalAttendance(enrlRow) {
 function updateTotalAttendanceView(enrlRow, totalLabAttendance, totalSemAttendance) {
     let semAttendanceCell = $(enrlRow).children("td.sem-attendances-cell").first();
     let labAttendanceCell = $(enrlRow).children("td.lab-attendances-cell").first();
-    if (totalSemAttendance !== undefined) {
-        $(semAttendanceCell).text(`${totalSemAttendance.toFixed(2)}%`);
-    } else {
-        $(semAttendanceCell).text('');
-    }
-    if (totalLabAttendance !== undefined) {
-        $(labAttendanceCell).text(`${totalLabAttendance.toFixed(2)}%`);
-    } else {
-        $(labAttendanceCell).text('');
-    }
+    let text_semAttendanceCell = (totalSemAttendance !== undefined) ? `${totalSemAttendance.toFixed(2)}%` : '';
+    let text_labAttendanceCell = (totalLabAttendance !== undefined) ? `${totalLabAttendance.toFixed(2)}%` : '';
+    $(semAttendanceCell).text(text_semAttendanceCell);
+    $(labAttendanceCell).text(text_labAttendanceCell);
+
     if (!hasMinimumAttendance(totalSemAttendance, 100)) {
         $(semAttendanceCell).addClass('err');
     } else {
@@ -136,15 +131,16 @@ function updateTotalAttendanceView(enrlRow, totalLabAttendance, totalSemAttendan
 
 function updateAverageGrade(enrlRow) {
     let enrlId = getNumericIdFromDomId(enrlRow.id);
-    let n = 0, sum = 0;
+    let weightSum = 0, sum = 0;
     let lessons = enrollments[enrlId].lessons;
     for (let id in lessons) {
-        if (lessons[id].grade != undefined) {
-            sum += lessons[id].grade;
-            n++;
+        if(lessons[id].template.type !== "SEMINAR"){
+            let grade = (lessons[id].grade != undefined) ? lessons[id].grade : 0;
+            sum += (grade * lessons[id].template.weight);
+            weightSum += lessons[id].template.weight;
         }
     }
-    let average = (n > 0 ? sum / n : 0.0);
+    let average = (weightSum > 0 ? sum / weightSum : 0.00);
     enrollments[enrlId].averageGrade = average;
     updateAverageGradeView(enrlRow, average);
 }

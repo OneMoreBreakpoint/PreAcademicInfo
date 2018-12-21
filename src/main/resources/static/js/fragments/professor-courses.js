@@ -1,7 +1,6 @@
 convertProfessorCoursesListToProfessorCoursesMap();
 lastLessonTemplateId = 0;
 professorCoursesBackup = deepClone(professorCourses);
-console.log(professorCourses);
 
 $(document).ready(function () {
     assignProfessorCourseHandlers();

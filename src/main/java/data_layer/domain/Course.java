@@ -21,7 +21,7 @@ public class Course {
 
     @NotNull
     @Size(max = 7)
-    //TODO(Norberth) make this unique
+    @Column(unique = true)
     private String code;
 
     @NotNull
