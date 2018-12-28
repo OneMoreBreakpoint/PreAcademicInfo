@@ -219,3 +219,7 @@ function getValidNumber(actualValue, minValue, maxValue) {
     }
     return actualValue;
 }
+
+function student_details() {
+    console.log("hmm");
+}
