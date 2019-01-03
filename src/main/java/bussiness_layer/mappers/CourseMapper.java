@@ -1,7 +1,11 @@
 package bussiness_layer.mappers;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import bussiness_layer.dto.CourseDto;
 import data_layer.domain.Course;
+import data_layer.domain.ProfessorRight;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
@@ -25,5 +29,12 @@ public class CourseMapper {
                 .coordinator(ProfessorMapper.toDto(entity.getCoordinator()))
                 .lessonTemplates(LessonTemplateMapper.toDtoList(entity.getLessonTemplates()))
                 .build();
+    }
+
+    public static List<Course> toCoursesList(List<ProfessorRight> professorRights) {
+        return professorRights.stream()
+                .map(ProfessorRight::getCourse)
+                .distinct()
+                .collect(Collectors.toList());
     }
 }
