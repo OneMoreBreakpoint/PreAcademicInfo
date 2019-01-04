@@ -22,7 +22,7 @@ public class StudentRestController {
 
     @PutMapping("/")
     public ResponseEntity<?> put(@RequestBody StudentDto studentDto, Principal crtUSer){
-        System.out.println("aici " + studentDto.getUsername() + studentDto.getPassword());
+        System.out.println(studentDto.getPathToProfilePhoto());
         service.updateStudent(studentDto);
         return ResponseEntity.ok(null);
     }

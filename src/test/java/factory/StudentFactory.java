@@ -30,7 +30,8 @@ public class StudentFactory {
                 .lastName(LASTNAME)
                 .email(EMAIL)
                 .group(GroupFactory.generateGroupDto())
-                .fathersInitials(FATHERS_INITIALS);
+                .fathersInitials(FATHERS_INITIALS)
+                .pathToProfilePhoto(IMAGE);
     }
 
     public static StudentDto generateStudentDto() {

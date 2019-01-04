@@ -37,7 +37,6 @@ public class ProfessorRestController {
 
     @PutMapping("/")
     public ResponseEntity<?> put(@RequestBody ProfessorDto professorDto, Principal crtUSer){
-        System.out.println("aici " + professorDto.getUsername() + professorDto.getPassword());
         service.updateProfessor(professorDto);
         return ResponseEntity.ok(null);
     }

@@ -139,17 +139,13 @@ input[type=button].ok {
     background-color: var(--color3);
 }
 
-
-
-
-/*body{*/
-    /*background: -webkit-linear-gradient(left, #3931af, #00c6ff);*/
-/*}*/
 .emp-profile{
     padding: 3%;
 }
 
 .profile-img{
+    max-width: 400px;
+    max-height: 400px;
     text-align: center;
 }
 .profile-img img{
@@ -159,12 +155,11 @@ input[type=button].ok {
 .profile-img .file {
     position: relative;
     overflow: hidden;
-    margin-top: -20%;
+    margin-top: -12%;
     width: 70%;
     border: none;
     border-radius: 0;
     font-size: 15px;
-    background: #212529b8;
 }
 .profile-img .file input {
     position: absolute;
@@ -178,38 +173,6 @@ input[type=button].ok {
 .profile-head h6{
     color: #0062cc;
 }
-.proile-rating{
-    font-size: 12px;
-    color: #818182;
-    margin-top: 5%;
-}
-.proile-rating span{
-    color: #495057;
-    font-size: 15px;
-    font-weight: 600;
-}
-.profile-work{
-    padding: 14%;
-    margin-top: -15%;
-}
-.profile-work p{
-    font-size: 12px;
-    color: #818182;
-    font-weight: 600;
-    margin-top: 10%;
-}
-.profile-work a{
-    text-decoration: none;
-    color: #495057;
-    font-weight: 600;
-    font-size: 14px;
-}
-.profile-work ul{
-    list-style: none;
-}
-
-
-
 .material-switch > input[type="checkbox"] {
     display: none;
 }

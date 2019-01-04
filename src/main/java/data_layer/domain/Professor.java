@@ -3,6 +3,7 @@ package data_layer.domain;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.Size;
 
@@ -18,6 +19,7 @@ public class Professor extends User {
     @Size(max = 50)
     private String webPage;
 
+    @Lob
     private String pathToProfilePhoto;
 
     @OneToMany(mappedBy = "professor")

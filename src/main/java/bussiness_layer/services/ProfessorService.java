@@ -120,10 +120,12 @@ public class ProfessorService implements IProfessorService {
     public void updateProfessor(ProfessorDto professorDto)
     {
         Professor professor = proffesorRepository.findByUsername(professorDto.getUsername());
+        if (professor == null)
+            throw  new ResourceNotFoundException();
         professor.setWebPage(professorDto.getWebPage());
         if (professorDto.getPassword() != null)
             professor.setEncryptedPassword(BCrypt.hashpw(professorDto.getPassword(), BCrypt.gensalt()));
-        System.out.println(professor.toString());
+        professor.setPathToProfilePhoto(professorDto.getPathToProfilePhoto());
         proffesorRepository.flush();
     }
 

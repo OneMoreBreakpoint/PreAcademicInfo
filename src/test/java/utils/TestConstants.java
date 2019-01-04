@@ -12,5 +12,6 @@ public class TestConstants {
     public static final String COURSE_CODE = "MLR0000";
     public static final String GROUP_CODE = "231";
     public static final String STUD_USERNAME = "stud";
-
+    public static final String WEB_PAGE = "css.ubbcluj.ro/dana";
+    public static final String IMAGE = "FEWBFJ2U92hvbje2i3233ed32nj";
 }

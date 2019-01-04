@@ -25,6 +25,7 @@ public class Student extends User {
     @ManyToOne
     private Group group;
 
+    @Lob
     private String pathToProfilePhoto;
 
     @OneToMany(mappedBy = "student")

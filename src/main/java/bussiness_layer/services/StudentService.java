@@ -41,10 +41,12 @@ public class StudentService implements IStudentService {
     public void updateStudent(StudentDto studentDto)
     {
         Student student = studentRepository.findByUsername(studentDto.getUsername());
+        if (student == null)
+            throw  new ResourceNotFoundException();
         student.setNotifiedByEmail(studentDto.isNotifiedByEmail());
         if (studentDto.getPassword() != null)
             student.setEncryptedPassword(BCrypt.hashpw(studentDto.getPassword(), BCrypt.gensalt()));
-        System.out.println(student.toString());
+        student.setPathToProfilePhoto(studentDto.getPathToProfilePhoto());
         studentRepository.flush();
     }
 

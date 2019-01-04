@@ -11,8 +11,17 @@ function create_user_details() {
     create_user_settings(user);
 }
 
-function create_profile_photo() {
+function delete_photo() {
+    console.log("aici");
+    user.pathToProfilePhoto = null;
+    document.getElementById('profile-img-input').src = "../images/profile.jpg";
+    save();
+}
 
+function create_profile_photo() {
+    var preview = document.getElementById('profile-img-input');
+    if (user.pathToProfilePhoto != undefined)
+        preview.src = user.pathToProfilePhoto;
 }
 
 function create_personal_details(user_data) {
@@ -153,6 +162,7 @@ function change_password() {
 }
 
 function save() {
+    console.log(user);
     url = (user.userRole == TYPE_STUDENT) ? UPDATE_STUDENT_URL : UPDATE_PROFESSOR_URL;
     let reqBody = JSON.stringify(user);
     $.ajax({

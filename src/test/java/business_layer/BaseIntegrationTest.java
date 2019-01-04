@@ -89,6 +89,20 @@ public abstract class BaseIntegrationTest {
         return enrollment;
     }
 
+    protected Professor createProfessor(String profUsername){
+        Professor professor = userRepository.save(ProfessorFactory.generateProfessorBuilder()
+                .username(profUsername)
+                .build());
+        return professor;
+    }
+
+    protected Student createStudent(String studUsername){
+        Student student = userRepository.save(StudentFactory.generateStudentBuilder()
+                .username(studUsername)
+                .build());
+        return student;
+    }
+
     protected List<ProfessorRight> createProfessorRights(String profUsername, String courseCode, String groupCode) {
         Professor professor = (Professor) userRepository.findByUsername(profUsername).get();
         Course course = courseRepository.findByCode(courseCode).get();
