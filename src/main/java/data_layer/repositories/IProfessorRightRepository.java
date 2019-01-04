@@ -1,15 +1,14 @@
 package data_layer.repositories;
 
-import java.util.List;
-import java.util.Optional;
-
+import data_layer.domain.ProfessorRight;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
-
-import data_layer.domain.ProfessorRight;
 import utils.LessonType;
 import utils.RightType;
+
+import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface IProfessorRightRepository extends JpaRepository<ProfessorRight, Integer> {

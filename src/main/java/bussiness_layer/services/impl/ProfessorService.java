@@ -1,27 +1,28 @@
-package bussiness_layer.services;
+package bussiness_layer.services.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import bussiness_layer.handlers.ProfessorHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import bussiness_layer.dto.EnrollmentDto;
 import bussiness_layer.dto.GroupDto;
 import bussiness_layer.dto.LessonDto;
 import bussiness_layer.dto.ProfessorCourseDto;
 import bussiness_layer.dto.ProfessorRightDto;
-import bussiness_layer.mappers.EnrollmentMapper;
+import bussiness_layer.mappers.CourseMapper;
 import bussiness_layer.mappers.GroupMapper;
+import bussiness_layer.mappers.ProfessorCourseMapper;
 import bussiness_layer.mappers.ProfessorRightMapper;
+import bussiness_layer.services.IProfessorService;
 import bussiness_layer.utils.LessonDtoValidator;
-import data_layer.domain.Enrollment;
+import data_layer.domain.Course;
+import data_layer.domain.Group;
 import data_layer.domain.Lesson;
 import data_layer.domain.ProfessorRight;
 import data_layer.repositories.ICourseRepository;
-import data_layer.repositories.IEnrollmentRepository;
 import data_layer.repositories.IGroupRepository;
 import data_layer.repositories.ILessonRepository;
 import data_layer.repositories.IProfessorRightRepository;
@@ -35,42 +36,16 @@ import utils.exceptions.ResourceNotFoundException;
 public class ProfessorService implements IProfessorService {
 
     @Autowired
-    private IEnrollmentRepository enrollmentRepository;
-
-    @Autowired
     private IProfessorRightRepository professorRightRepository;
 
     @Autowired
     private IGroupRepository groupRepository;
-
 
     @Autowired
     private ILessonRepository lessonRepository;
 
     @Autowired
     private ICourseRepository courseRepository;
-
-    @Autowired
-    private ProfessorHandler professorHandler;
-
-    @Override
-    public List<EnrollmentDto> getEnrollments(String profUsername, String courseCode, String groupCode) {
-        groupRepository.findByCode(groupCode).orElseThrow(ResourceNotFoundException::new);
-        courseRepository.findByCode(courseCode).orElseThrow(ResourceNotFoundException::new);
-        List<ProfessorRight> rights = professorRightRepository.findByProfessorAndCourseAndGroup(profUsername, courseCode, groupCode);
-        if (rights.size() == 0) {
-            throw new AccessForbiddenException();
-        }
-        List<Enrollment> enrollments = enrollmentRepository.findByCourseAndGroup(courseCode, groupCode);
-        if (enrollments.size() == 0) {
-            throw new ResourceNotFoundException();
-        }
-
-        List<EnrollmentDto> enrollmentDTOS = EnrollmentMapper.toDtoList(enrollments);
-        stripEnrollmentsOfUnauthorizedLessons(enrollmentDTOS, rights);
-        return enrollmentDTOS;
-    }
-
 
     @Override
     public List<ProfessorRightDto> getProfessorRights(String profUsername, String courseCode, String groupCode) {
@@ -95,10 +70,10 @@ public class ProfessorService implements IProfessorService {
             String groupCode = lesson.getEnrollment().getStudent().getGroup().getCode();
             //check if crt prof has right to modify this lesson
             professorRightRepository.findByProfessorAndCourseAndGroupAndLessonTypeAndRightType(
-                    profUsername, courseCode, groupCode, lesson.getType(), RightType.WRITE)
+                    profUsername, courseCode, groupCode, lesson.getTemplate().getType(), RightType.WRITE)
                     .orElseThrow(AccessForbiddenException::new);
             //update only the fields that matter
-            if (lesson.getType() == LessonType.SEMINAR || lesson.getType() == LessonType.LABORATORY) {
+            if (lesson.getTemplate().getType() == LessonType.SEMINAR || lesson.getTemplate().getType() == LessonType.LABORATORY) {
                 lesson.setBonus(lessonDto.getBonus());
             }
             lesson.setAttended(lessonDto.isAttended());
@@ -111,28 +86,20 @@ public class ProfessorService implements IProfessorService {
     public List<ProfessorCourseDto> getRelatedCourses(String profUsername) {
         List<ProfessorRight> professorRights = professorRightRepository.findByProfessor(profUsername);
 
-        return professorHandler.getProfessorCourseDtoList(profUsername, professorRights);
-    }
+        List<Course> courses = CourseMapper.toCoursesList(professorRights);
 
-    private void stripEnrollmentsOfUnauthorizedLessons(List<EnrollmentDto> enrollmentDtos, List<ProfessorRight> rights) {
-        enrollmentDtos.forEach(enrollmentDto -> {
-            List<LessonDto> filteredLessons = enrollmentDto.getLessons().stream()
-                    .filter(lessonDto -> {
-                        boolean crtProfCanReadLesson = rights.stream()
-                                .anyMatch(right -> right.getLessonType() == lessonDto.getType() && right.getRightType() == RightType.READ);
-                        boolean crtProfCanWriteLesson = rights.stream()
-                                .anyMatch(right -> right.getLessonType() == lessonDto.getType() && right.getRightType() == RightType.WRITE);
-                        if (crtProfCanReadLesson) {
-                            lessonDto.setRightType(RightType.READ);
-                        }
-                        if (crtProfCanWriteLesson) {
-                            lessonDto.setRightType(RightType.WRITE); //set to higher right
-                        }
-                        return crtProfCanReadLesson;
-                    })
+        List<ProfessorCourseDto> professorCourseDtos = new ArrayList<>();
+
+        courses.forEach(course -> {
+            List<Group> groups = professorRightRepository.findByProfessorAndCourse(profUsername, course.getCode()).stream()
+                    .map(ProfessorRight::getGroup)
+                    .distinct()
                     .collect(Collectors.toList());
-            enrollmentDto.setLessons(filteredLessons);
+            boolean profIsCoordinator = course.getCoordinator().getUsername().equals(profUsername);
+            professorCourseDtos.add(ProfessorCourseMapper.toDto(course, groups, profIsCoordinator));
         });
+
+        return professorCourseDtos;
     }
 
 }

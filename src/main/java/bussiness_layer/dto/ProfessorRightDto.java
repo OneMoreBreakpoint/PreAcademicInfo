@@ -1,16 +1,11 @@
 package bussiness_layer.dto;
 
-import java.io.Serializable;
-
-import javax.validation.constraints.NotNull;
-
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import utils.LessonType;
 import utils.RightType;
+
+import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 
 @Getter
 @Setter

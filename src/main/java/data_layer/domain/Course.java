@@ -1,21 +1,11 @@
 package data_layer.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
+import lombok.*;
+
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import java.util.List;
 
 @Entity(name = "Courses")
 @Getter
@@ -31,25 +21,18 @@ public class Course {
 
     @NotNull
     @Size(max = 7)
-    //TODO(Norberth) make this unique
+    @Column(unique = true)
     private String code;
 
     @NotNull
     private String name;
 
-    @NotNull
-    @Max(14)
-    @Min(0)
-    private Byte nrOfSeminars;
-
-    @NotNull
-    @Max(14)
-    @Min(7)
-    private Byte nrOfLaboratories;
-
     @ManyToOne
     @JoinColumn(name = "coordinator_id")
     @NotNull
     private Professor coordinator;
+
+    @OneToMany(mappedBy = "course")
+    private List<LessonTemplate> lessonTemplates;
 
 }

@@ -3,6 +3,8 @@ package business_layer.integration;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.transaction.TransactionScoped;
+
 import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
@@ -11,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import business_layer.BaseIntegrationTest;
-import bussiness_layer.dto.EnrollmentDto;
 import bussiness_layer.dto.LessonDto;
 import bussiness_layer.dto.ProfessorCourseDto;
 import bussiness_layer.dto.ProfessorRightDto;
@@ -42,33 +43,6 @@ public class ProfessorIT extends BaseIntegrationTest {
 
     @Test
     @Transactional
-    public void givenProfessorHasRights_whenGetEnrollments_thenEnrollmentsRetrieved() {
-        //Given
-        createEnrollment(TestConstants.PROF_USERNAME, TestConstants.COURSE_CODE, TestConstants.GROUP_CODE);
-        createProfessorRights(TestConstants.PROF_USERNAME, TestConstants.COURSE_CODE, TestConstants.GROUP_CODE);
-        //When
-        List<EnrollmentDto> enrollmentDtoList = professorService.getEnrollments(
-                TestConstants.PROF_USERNAME, TestConstants.COURSE_CODE, TestConstants.GROUP_CODE);
-        //Then
-        assertNotNull(enrollmentDtoList);
-        assertEquals(1, enrollmentDtoList.size());
-    }
-
-    @Test
-    @Transactional
-    public void givenCourseDoesNotExist_whenGetEnrollments_thenResourceNotFoundExceptionThrown() {
-        //Given
-        createEnrollment(TestConstants.PROF_USERNAME, TestConstants.COURSE_CODE, TestConstants.GROUP_CODE);
-        createProfessorRights(TestConstants.PROF_USERNAME, TestConstants.COURSE_CODE, TestConstants.GROUP_CODE);
-        //Then
-        exception.expect(ResourceNotFoundException.class);
-        //When
-        List<EnrollmentDto> enrollmentDtoList = professorService.getEnrollments(
-                TestConstants.PROF_USERNAME, "__", TestConstants.GROUP_CODE);
-    }
-
-    @Test
-    @Transactional
     public void givenProfessorTeachesAtCourse_whenGetProfessorRights_thenProfessorRightsRetrieved() {
         //Given
         createEnrollment(TestConstants.PROF_USERNAME, TestConstants.COURSE_CODE, TestConstants.GROUP_CODE);
@@ -82,7 +56,6 @@ public class ProfessorIT extends BaseIntegrationTest {
     }
 
     @Test
-    @Transactional
     public void givenProfessorDoesNotTeachAtCourse_whenGetProfessorRight_thenNoProfessorRightsRetrieved() {
         //Given
         createEnrollment(TestConstants.PROF_USERNAME, TestConstants.COURSE_CODE, TestConstants.GROUP_CODE);
@@ -101,7 +74,7 @@ public class ProfessorIT extends BaseIntegrationTest {
         //Given
         Enrollment enrollment = createEnrollment(TestConstants.PROF_USERNAME, TestConstants.COURSE_CODE, TestConstants.GROUP_CODE);
         createProfessorRights(TestConstants.PROF_USERNAME, TestConstants.COURSE_CODE, TestConstants.GROUP_CODE);
-        enrollment.getLessons().get(0).setType(LessonType.LABORATORY); //prof has LAB rights only so he can only write LABS
+        enrollment.getLessons().get(0).getTemplate().setType(LessonType.LABORATORY); //prof has LAB rights only so he can only write LABS
         int lessonId = enrollment.getLessons().get(0).getId();
         boolean attended = true;
         byte bonus = 2, grade = 10;
@@ -120,7 +93,6 @@ public class ProfessorIT extends BaseIntegrationTest {
     }
 
     @Test
-    @Transactional
     public void givenProfessorDoesNotHaveRights_whenUpdateLessons_thenAccessForbiddenExceptionThrown() {
         //Given
         Enrollment enrollment = createEnrollment(TestConstants.PROF_USERNAME, TestConstants.COURSE_CODE, TestConstants.GROUP_CODE);
@@ -141,7 +113,6 @@ public class ProfessorIT extends BaseIntegrationTest {
     }
 
     @Test
-    @Transactional
     public void givenLessonsDoesNotExist_whenUpdateLesson_thenResourceNotFoundExceptionThrown() {
         //Given
         LessonDto inexistentLessonDto = LessonFactory.generateLessonDtoBuilder()
@@ -166,12 +137,14 @@ public class ProfessorIT extends BaseIntegrationTest {
 
     }
 
-    @Ignore
     @Test
+    @Transactional
     public void givenProfessorWithTwoCoursesTaught_whenGetRelatedCourses_thenProfessorCourseDtoListIsReturned() {
         //Given
-        createEnrollment(TestConstants.PROF_USERNAME, TestConstants.COURSE_CODE, TestConstants.GROUP_CODE);
-        createEnrollment(TestConstants.PROF_USERNAME + "abc", TestConstants.COURSE_CODE + 1, TestConstants.GROUP_CODE + 1);
+        createEnrollment(TestConstants.PROF_USERNAME,TestConstants.COURSE_CODE,TestConstants.GROUP_CODE,
+                TestConstants.PROF_COORDINATOR,TestConstants.STUD_USERNAME);
+        createEnrollment(TestConstants.PROF_USERNAME2,TestConstants.COURSE_CODE2,TestConstants.GROUP_CODE2,
+                TestConstants.PROF_COORDINATOR,TestConstants.STUD_USERNAME2);
 
         Group group = groupRepository.findByCode(TestConstants.GROUP_CODE).get();
         Course course = courseRepository.findAll().get(courseRepository.findAll().size() - 1);

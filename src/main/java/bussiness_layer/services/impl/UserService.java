@@ -1,8 +1,9 @@
-package bussiness_layer.services;
+package bussiness_layer.services.impl;
 
 import bussiness_layer.dto.UserDto;
 import bussiness_layer.mappers.ProfessorMapper;
 import bussiness_layer.mappers.StudentMapper;
+import bussiness_layer.services.IUserService;
 import data_layer.domain.Professor;
 import data_layer.domain.Student;
 import data_layer.domain.User;

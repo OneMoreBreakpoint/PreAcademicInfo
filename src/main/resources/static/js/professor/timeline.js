@@ -132,29 +132,13 @@ function assignActionHandlers() {
     });
 }
 
-function updateTotalAttendanceView(enrlRow, totalLabAttendance, totalSemAttendance) {
-    let totalAttendanceCell = $(enrlRow).children("td.attendances-cell").first();
-    let precisionLab = (totalLabAttendance < 100 ? 2 : 0), precisionSem = (totalSemAttendance < 100 ? 2 : 0);
-    let hasSeminarRights = profHasRight("SEMINAR", "READ");
-    let hasLabRights = profHasRight("LABORATORY", "READ");
-    let hasCoordinatorRights = profHasRight("PARTIAL_EXAM_COURSE", "WRITE");
-    let totalAttendanceViewText;
-    if ((hasSeminarRights && hasLabRights) || hasCoordinatorRights) {
-        totalAttendanceViewText = `${totalSemAttendance.toFixed(precisionSem)}% / ${totalLabAttendance.toFixed(precisionLab)}%`;
-    } else if (hasSeminarRights && !hasLabRights) {
-        totalAttendanceViewText = `${totalSemAttendance.toFixed(precisionSem)}%`;
-    } else if (!hasSeminarRights && hasLabRights) {
-        totalAttendanceViewText = `${totalLabAttendance.toFixed(precisionLab)}%`;
-    }
-    $(totalAttendanceCell).text(totalAttendanceViewText);
-    if (!hasMinimumAttendance(totalSemAttendance, totalLabAttendance)) {
-        $(totalAttendanceCell).addClass('err');
-    } else {
-        $(totalAttendanceCell).removeClass('err');
-    }
-}
-
 function hasMinimumAttendance(seminarAttendance, laboratoryAttendance) {
+    if (seminarAttendance === undefined) {
+        seminarAttendance = 100;
+    }
+    if (laboratoryAttendance === undefined) {
+        laboratoryAttendance = 100;
+    }
     const MIN_SEM_ATT = 75, MIN_LAB_ATT = 90;
     let hasSeminarRights = profHasRight("SEMINAR", "READ");
     let hasLabRights = profHasRight("LABORATORY", "READ");
@@ -190,7 +174,7 @@ function getLessonList() {
 function stripReadOnlyLessons(lessons) {
     let result = [];
     for (let i = 0; i < lessons.length; i++) {
-        if (lessons[i].rightType === "WRITE") {
+        if (lessons[i].template.rightType === "WRITE") {
             result.push(lessons[i]);
         }
     }
@@ -203,19 +187,4 @@ function getValidGrade(actualValue) {
 
 function getValidBonus(actualValue) {
     return getValidNumber(actualValue, -10, 10);
-}
-
-function getValidNumber(actualValue, minValue, maxValue) {
-    if (typeof(actualValue) === "string") {
-        actualValue = parseInt(actualValue);
-    }
-    if (isNaN(actualValue)) {
-        return undefined;
-    }
-    if (actualValue > maxValue) {
-        return maxValue;
-    } else if (actualValue < minValue) {
-        return minValue;
-    }
-    return actualValue;
 }

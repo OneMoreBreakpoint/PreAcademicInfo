@@ -23,9 +23,9 @@ public class EnrollmentMapper {
     public static EnrollmentDto toDto(Enrollment entity) {
         EnrollmentDto dto = EnrollmentDto.builder()
                 .id(entity.getId())
+                .lessons(LessonMapper.toDtoList(entity.getLessons()))
                 .course(CourseMapper.toDto(entity.getCourse()))
                 .student(StudentMapper.toDto(entity.getStudent()))
-                .lessons(LessonMapper.toDtoList(entity.getLessons()))
                 .build();
         return dto;
     }

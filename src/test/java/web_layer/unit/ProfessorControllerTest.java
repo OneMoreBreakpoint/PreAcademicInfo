@@ -1,14 +1,18 @@
 package web_layer.unit;
 
-import bussiness_layer.services.IProfessorService;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+
+import bussiness_layer.services.ICourseService;
+import bussiness_layer.services.IProfessorService;
+import lombok.extern.slf4j.Slf4j;
 import web_layer.BaseControllerTest;
 import web_layer.controllers.ProfessorRestController;
 
+@Slf4j
 public class ProfessorControllerTest extends BaseControllerTest {
 
     @InjectMocks
@@ -17,9 +21,12 @@ public class ProfessorControllerTest extends BaseControllerTest {
     @Mock
     private IProfessorService professorService;
 
+    @Mock
+    private ICourseService courseService;
+
     @Before
     public void init() {
-        professorRestController = new ProfessorRestController(professorService);
+        professorRestController = new ProfessorRestController(professorService,courseService);
         this.mockMvc = MockMvcBuilders.standaloneSetup(professorRestController)
                 .build();
     }
@@ -29,5 +36,7 @@ public class ProfessorControllerTest extends BaseControllerTest {
 //        doNothing().when(professorService).updateLessons(any(), any());
 //        mockMvc.perform(put("/app/professor/lessons").contentType(MediaType.APPLICATION_JSON_UTF8))
 //                .andExpect(status().isOk());
+    log.info("test in ProfessorControllerTest");
     }
+
 }

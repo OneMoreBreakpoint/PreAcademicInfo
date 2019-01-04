@@ -6,11 +6,14 @@ import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+
+import lombok.extern.slf4j.Slf4j;
 import web_layer.BaseControllerTest;
 import web_layer.controllers.UserMvcController;
 
 import static junit.framework.TestCase.assertTrue;
 
+@Slf4j
 public class UserControllerTest extends BaseControllerTest {
 
     @Mock
@@ -30,6 +33,7 @@ public class UserControllerTest extends BaseControllerTest {
     @Test
     public void test() {
         assertTrue(true);
+        log.info("test in UserControllerTest");
     }
 
 }

@@ -2,24 +2,35 @@ package bussiness_layer.services;
 
 import java.util.List;
 
-import bussiness_layer.dto.EnrollmentDto;
 import bussiness_layer.dto.GroupDto;
 import bussiness_layer.dto.LessonDto;
 import bussiness_layer.dto.ProfessorCourseDto;
 import bussiness_layer.dto.ProfessorRightDto;
 
 public interface IProfessorService {
-    /**
-     * Retrieves enrollments of students from given group taking given course on which prof has rights
-     *
-     * @return enrollment dtos stripped of lessons that shouldn't be read by given prof according to his rights
-     */
-    List<EnrollmentDto> getEnrollments(String profUsername, String courseCode, String groupCode);
 
+    /**
+     * Return a list of professor rights in dto format.
+     * @param profUsername
+     * @param courseCode
+     * @param groupCode
+     * @return
+     */
     List<ProfessorRightDto> getProfessorRights(String profUsername, String courseCode, String groupCode);
 
+    /**
+     * Return for a given professor and course all correlated groups in dto format.
+     * @param profUsername
+     * @param courseCode
+     * @return
+     */
     List<GroupDto> getGroups(String profUsername, String courseCode);
 
+    /**
+     * Update lessons data via a list of lessonDtos
+     * @param profUsername - professor that initiates the update operation
+     * @param lessonDtos - lessons data
+     */
     void updateLessons(String profUsername, List<LessonDto> lessonDtos);
 
     /**
