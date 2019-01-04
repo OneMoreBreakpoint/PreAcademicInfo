@@ -221,5 +221,6 @@ function getValidNumber(actualValue, minValue, maxValue) {
 }
 
 function student_details() {
-    console.log("hmm");
+    console.log(student);
+    //populate modal
 }

@@ -2,9 +2,12 @@
 <html xmlns:th="http://www.thymeleaf.org"
       th:with="lang=${#locale.language}" th:lang="${lang}">
 <head>
+    <script th:inline="javascript">
+        let student = /*[[${student}]]*/ '';
+        console.log(student);
+    </script>
 </head>
 <body>
-
 <td th:fragment="photo-cell (url)" class="photo-cell" onclick="student_details()" data-toggle="modal" data-target="#student-details-modal">
     <th:block th:switch="${url}">
         <i th:case="null" class="photo-cell fas fa-user-circle"></i>
@@ -120,82 +123,5 @@
         <td th:replace="this :: average-cell (${enrollment})"></td>
     </th:block>
 </tr>
-
-
-<!--student details-->
-<div class="modal fade" id="student-details-modal" role="dialog">
-    <div class="modal-dialog">
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Details</h4>
-            </div>
-            <div class="modal-body" id="modal-student-content">
-                <div class="emp-profile form-group" id="validator">
-                    <div class="row">
-                        <div class="col-lg-4">
-                            <div class="profile-img">
-                                <img src="/images/profile.jpg" alt="Image preview...">
-                                <div class="file btn btn-lg btn-primary">
-                                    Change Photo
-                                    <input type="file" name="file" onchange="previewFile()">
-                                </div>
-                                <!--<input type="file" onchange="previewFile()"><br>-->
-                                <!--<img src="" height="200" alt="Image preview...">-->
-                                <!--Javascript:-->
-
-
-                            </div>
-                        </div>
-                        <div class="col-lg-8">
-                            <div id="profile-div" class="profile-head">
-                                <div class="row" id="personal-details">
-                                    <div class="col-sm-12"><h4><b>Personal Details</b></h4></div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <label style="color: #8c8c8c">First Name: </label>
-                                    </div>
-                                    <div class="col-md-8">
-                                        <p id="first-name">Adriana</p>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <label style="color: #8c8c8c">Last Name: </label>
-                                    </div>
-                                    <div class="col-md-8">
-                                        <p id="last-name">Guran</p>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <label style="color: #8c8c8c">Grupa: </label>
-                                    </div>
-                                    <div class="col-md-8">
-                                        <p id="grupa">guran</p>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <label style="color: #8c8c8c">Email: </label>
-                                    </div>
-                                    <div class="col-md-8">
-                                        <p id="email">guran</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
 </body>
-
 </html>
