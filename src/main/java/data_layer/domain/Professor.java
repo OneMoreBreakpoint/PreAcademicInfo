@@ -20,17 +20,17 @@ public class Professor extends User {
     private String webPage;
 
     @Lob
-    private String pathToProfilePhoto;
+    private String profilePhoto;
 
     @OneToMany(mappedBy = "professor")
     private List<ProfessorRight> rights;
 
     @Builder
     public Professor(String username, String encryptedPassword, String firstName, String lastName, String email,
-                     String webPage, String pathToProfilePhoto, List<ProfessorRight> rights) {
+                     String webPage, String profilePhoto, List<ProfessorRight> rights) {
         super(username, encryptedPassword, firstName, lastName, email);
         this.webPage = webPage;
-        this.pathToProfilePhoto = pathToProfilePhoto;
+        this.profilePhoto = profilePhoto;
         this.rights = rights;
     }
 }

@@ -26,7 +26,7 @@ public class Student extends User {
     private Group group;
 
     @Lob
-    private String pathToProfilePhoto;
+    private String profilePhoto;
 
     @OneToMany(mappedBy = "student")
     private List<Enrollment> enrollments;
@@ -35,12 +35,12 @@ public class Student extends User {
 
     @Builder
     public Student(String username, String encryptedPassword, String firstName, String lastName, String email, Integer registrationNr,
-                   String fathersInitials, Group group, String pathToProfilePhoto, List<Enrollment> enrollments, boolean notifiedByEmail) {
+                   String fathersInitials, Group group, String profilePhoto, List<Enrollment> enrollments, boolean notifiedByEmail) {
         super(username, encryptedPassword, firstName, lastName, email);
         this.registrationNr = registrationNr;
         this.fathersInitials = fathersInitials;
         this.group = group;
-        this.pathToProfilePhoto = pathToProfilePhoto;
+        this.profilePhoto = profilePhoto;
         this.enrollments = enrollments;
         this.notifiedByEmail = notifiedByEmail;
     }

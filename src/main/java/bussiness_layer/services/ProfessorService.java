@@ -23,10 +23,9 @@ import data_layer.domain.Lesson;
 import data_layer.domain.Professor;
 import data_layer.domain.ProfessorRight;
 import data_layer.repositories.*;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.security.crypto.bcrypt.BCrypt;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+
 import data_layer.repositories.ICourseRepository;
 import data_layer.repositories.IEnrollmentRepository;
 import data_layer.repositories.IGroupRepository;
@@ -125,7 +124,7 @@ public class ProfessorService implements IProfessorService {
         professor.setWebPage(professorDto.getWebPage());
         if (professorDto.getPassword() != null)
             professor.setEncryptedPassword(BCrypt.hashpw(professorDto.getPassword(), BCrypt.gensalt()));
-        professor.setPathToProfilePhoto(professorDto.getPathToProfilePhoto());
+        professor.setProfilePhoto(professorDto.getProfilePhoto());
         proffesorRepository.flush();
     }
 

@@ -17,7 +17,6 @@
     <link rel="stylesheet" th:href="@{/css/fragments/modals.css}"/>
     <script th:inline="javascript">
         let user = /*[[${user}]]*/ '';
-        console.log(user);
     </script>
     <script defer src="https://use.fontawesome.com/releases/v5.5.0/js/all.js"
             integrity="sha384-GqVMZRt5Gn7tB9D9q7ONtcp4gtHIUEW/yG7h98J7IpE3kpi+srfFyyB/04OV6pG0"
@@ -73,17 +72,12 @@
 
         reader.onloadend = function (event) {
             let image = event.target.result;
-            console.log(typeof image);
-            console.log(image.length);
             preview.src = image;
-            user.pathToProfilePhoto = image;
-            console.log(user);
+            user.profilePhoto = image;
             save();
         };
 
         if (file) {
-            console.log(file);
-            console.log(file.size)
             if (file.size > 1048576)
             {
                 alert("The dimension file has to be less than 1 MB.");

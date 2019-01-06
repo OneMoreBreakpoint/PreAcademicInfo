@@ -42,8 +42,3 @@ function getNumericIdFromDomId(domId) {
 function deepClone(jsObj) {
     return JSON.parse(JSON.stringify(jsObj));
 }
-
-function load_page(page_name) {
-    console.log(page_name);
-    console.log()
-}

@@ -31,7 +31,7 @@ public class StudentFactory {
                 .email(EMAIL)
                 .group(GroupFactory.generateGroupDto())
                 .fathersInitials(FATHERS_INITIALS)
-                .pathToProfilePhoto(IMAGE);
+                .profilePhoto(IMAGE);
     }
 
     public static StudentDto generateStudentDto() {

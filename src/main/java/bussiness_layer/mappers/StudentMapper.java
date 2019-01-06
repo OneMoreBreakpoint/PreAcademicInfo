@@ -14,7 +14,7 @@ public class StudentMapper {
         entity.setLastName(dto.getLastName());
         entity.setEmail(dto.getEmail());
         entity.setFathersInitials(dto.getFathersInitials());
-        entity.setPathToProfilePhoto(dto.getPathToProfilePhoto());
+        entity.setProfilePhoto(dto.getProfilePhoto());
         entity.setNotifiedByEmail(dto.isNotifiedByEmail());
         entity.setGroup(GroupMapper.toEntity(dto.getGroup()));
         return entity;
@@ -28,7 +28,7 @@ public class StudentMapper {
         dto.setEmail(entity.getEmail());
         dto.setRegistrationNr(entity.getRegistrationNr());
         dto.setFathersInitials(entity.getFathersInitials());
-        dto.setPathToProfilePhoto(entity.getPathToProfilePhoto());
+        dto.setProfilePhoto(entity.getProfilePhoto());
         dto.setNotifiedByEmail(entity.isNotifiedByEmail());
         dto.setGroup(GroupMapper.toDto(entity.getGroup()));
         dto.setUserRole(entity.getUserRole());

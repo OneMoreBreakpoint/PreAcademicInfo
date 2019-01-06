@@ -45,12 +45,6 @@ public class UserService implements IUserService {
         if (user == null) {
             throw new UsernameNotFoundException(ExceptionMessages.INVALID_USERNAME);
         }
-        System.out.println(user);
         return null;
-//        if (user instanceof Student) {
-//            return new StudentDto(username,password,firstName,lastName,email,registrationNr,fathersInitials,pathToProfilePhoto,notifiedByEmail,group);
-//        } else {
-//            return new ProfessorDto();
-//        }
     }
 }

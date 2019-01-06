@@ -14,7 +14,7 @@ public class ProfessorMapper {
         entity.setLastName(dto.getLastName());
         entity.setEmail(dto.getEmail());
         entity.setWebPage(dto.getWebPage());
-        entity.setPathToProfilePhoto(dto.getPathToProfilePhoto());
+        entity.setProfilePhoto(dto.getProfilePhoto());
         return entity;
     }
 
@@ -25,7 +25,7 @@ public class ProfessorMapper {
         dto.setLastName(entity.getLastName());
         dto.setEmail(entity.getEmail());
         dto.setWebPage(entity.getWebPage());
-        dto.setPathToProfilePhoto(entity.getPathToProfilePhoto());
+        dto.setProfilePhoto(entity.getProfilePhoto());
         dto.setUserRole(entity.getUserRole());
         return dto;
     }

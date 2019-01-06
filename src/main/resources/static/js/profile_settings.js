@@ -1,10 +1,9 @@
 const TYPE_STUDENT = "STUDENT";
-const TYPR_PROFESOR = "PROFESOR";
+const TYPR_PROFESOR = "PROFESSOR";
 const UPDATE_STUDENT_URL = "/app/student/";
 const UPDATE_PROFESSOR_URL = "/app/professor/";
 
 function create_user_details() {
-    console.log(user);
     create_profile_photo();
     create_personal_details(user);
     create_password_settings();
@@ -12,16 +11,15 @@ function create_user_details() {
 }
 
 function delete_photo() {
-    console.log("aici");
-    user.pathToProfilePhoto = null;
+    user.profilePhoto = null;
     document.getElementById('profile-img-input').src = "../images/profile.jpg";
     save();
 }
 
 function create_profile_photo() {
     var preview = document.getElementById('profile-img-input');
-    if (user.pathToProfilePhoto != undefined)
-        preview.src = user.pathToProfilePhoto;
+    if (user.profilePhoto != undefined)
+        preview.src = user.profilePhoto;
 }
 
 function create_personal_details(user_data) {
@@ -119,7 +117,7 @@ function create_password_settings() {
 function create_user_settings(user_details) {
     if (user_details.userRole === TYPR_PROFESOR)
     {
-        $("#profile-settings").attr("display", "none");
+        $("#profile-settings").css("display", "none");
         return;
     }
 
@@ -162,7 +160,6 @@ function change_password() {
 }
 
 function save() {
-    console.log(user);
     url = (user.userRole == TYPE_STUDENT) ? UPDATE_STUDENT_URL : UPDATE_PROFESSOR_URL;
     let reqBody = JSON.stringify(user);
     $.ajax({

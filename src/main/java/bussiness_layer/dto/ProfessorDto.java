@@ -18,13 +18,13 @@ public class ProfessorDto extends UserDto implements Serializable {
 
     @Size(max = 50)
     private String webPage;
-    private String pathToProfilePhoto;
+    private String profilePhoto;
 
     @Builder
     public ProfessorDto(String username, String password, String firstName, String lastName, String email,
-                        String userRole, String webPage, String pathToProfilePhoto) {
+                        String userRole, String webPage, String profilePhoto) {
         super(username, password, firstName, lastName, email, userRole);
         this.webPage = webPage;
-        this.pathToProfilePhoto = pathToProfilePhoto;
+        this.profilePhoto = profilePhoto;
     }
 }

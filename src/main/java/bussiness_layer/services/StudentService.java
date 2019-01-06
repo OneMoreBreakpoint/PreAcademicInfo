@@ -1,11 +1,9 @@
 package bussiness_layer.services;
 
 import bussiness_layer.dto.EnrollmentDto;
-import bussiness_layer.dto.ProfessorDto;
 import bussiness_layer.dto.StudentDto;
 import bussiness_layer.mappers.EnrollmentMapper;
 import data_layer.domain.Enrollment;
-import data_layer.domain.Professor;
 import data_layer.domain.Student;
 import data_layer.repositories.IEnrollmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +44,7 @@ public class StudentService implements IStudentService {
         student.setNotifiedByEmail(studentDto.isNotifiedByEmail());
         if (studentDto.getPassword() != null)
             student.setEncryptedPassword(BCrypt.hashpw(studentDto.getPassword(), BCrypt.gensalt()));
-        student.setPathToProfilePhoto(studentDto.getPathToProfilePhoto());
+        student.setProfilePhoto(studentDto.getProfilePhoto());
         studentRepository.flush();
     }
 

@@ -25,7 +25,7 @@ public class ProfessorFactory {
                 .lastName(LASTNAME)
                 .email(EMAIL)
                 .webPage(WEB_PAGE)
-                .pathToProfilePhoto(IMAGE);
+                .profilePhoto(IMAGE);
     }
 
     public static Professor generateProfessor() {

@@ -35,9 +35,6 @@ public class UserDto {
 
     private String userRole;
 
-//    private String newPassword;
-
-
     public UserDto(String username, String password, String firstName, String lastName, String email, String userRole) {
         this.username = username;
         this.password = password;
