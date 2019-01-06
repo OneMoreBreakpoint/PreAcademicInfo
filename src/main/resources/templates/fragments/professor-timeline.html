@@ -8,7 +8,76 @@
     </script>
 </head>
 <body>
-<td th:fragment="photo-cell (url)" class="photo-cell" onclick="student_details()" data-toggle="modal" data-target="#student-details-modal">
+<!--//user modal-->
+<div th:fragment="student-details-modal(student)" class="modal fade" th:id="'student_details'+${student.username}" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Details</h4>
+            </div>
+            <div class="modal-body" id="modal-student-content">
+                <div class="emp-profile form-group" id="validator">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="profile-img">
+                                <th:block th:switch="${student.pathToProfilePhoto}">
+                                    <i th:case="null" class="photo-cell fas fa-user-circle"></i>
+                                    <img th:case="*" th:src="${student.pathToProfilePhoto}" alt="Image preview...">
+                                </th:block>
+                            </div>
+                        </div>
+                        <div class="col-sm-8">
+                            <div id="profile-div" class="profile-head">
+                                <div class="row" id="personal-details">
+                                    <div class="col-sm-12"><h4><b>Personal Details</b></h4></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <label style="color: #8c8c8c">First Name: </label>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <p id="first-name" th:text="${student.firstName}"/>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <label style="color: #8c8c8c">Last Name: </label>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <p id="last-name" th:text="${student.lastName}"/>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <label style="color: #8c8c8c">Grupa: </label>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <p id="grupa" th:text="${student.group.code}"/>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <label style="color: #8c8c8c">Email: </label>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <p id="email" th:text="${student.email}"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--th:attr="data-target='#customerModel'+${customer.uuid }"-->
+<td th:fragment="photo-cell (url, data_target)" class="photo-cell" data-toggle="modal" th:attr="data-target='#'+${data_target}">
     <th:block th:switch="${url}">
         <i th:case="null" class="photo-cell fas fa-user-circle"></i>
         <img th:case="*" th:src="${url}" width="20" height="20" class="photo-cell">
@@ -112,7 +181,7 @@
 
 <tr th:fragment="t-data-row (enrollment, viewHelper)" th:object="${enrollment}"
     th:id="|enrollmentRow-${enrollment.id}|" class="enrollment-row">
-    <td th:replace="this :: photo-cell (*{student.pathToProfilePhoto})"></td>
+    <td th:replace="this :: photo-cell (*{student.pathToProfilePhoto}, 'student_details'+*{student.username})"></td>
     <td th:replace="this :: name-cell (*{student})"></td>
     <th:block th:each="lesson : *{lessons}">
         <td th:replace="this :: lesson-cell(${lesson})"></td>
@@ -122,6 +191,7 @@
     <th:block th:if="${viewHelper.shouldRenderAverageCell(enrollment)}">
         <td th:replace="this :: average-cell (${enrollment})"></td>
     </th:block>
+    <div th:replace="this:: student-details-modal(${enrollment.student})"></div>
 </tr>
 </body>
 </html>
