@@ -4,14 +4,13 @@
 <head>
 </head>
 <body>
-<!--//user modal-->
+
 <div th:fragment="student-details-modal(student)" class="modal fade" th:id="'student_details'+${student.username}" role="dialog">
     <div class="modal-dialog modal-lg">
-        <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Details</h4>
+                <h4 class="modal-title" th:text="#{timeline.modal.detailsHeader}"></h4>
             </div>
             <div class="modal-body" id="modal-student-content">
                 <div class="emp-profile form-group" id="validator">
@@ -27,11 +26,11 @@
                         <div class="col-sm-8">
                             <div id="profile-div" class="profile-head">
                                 <div class="row" id="personal-details">
-                                    <div class="col-sm-12"><h4><b>Personal Details</b></h4></div>
+                                    <div class="col-sm-12"><h4 th:text="#{timeline.modal.personalDetails}"></h4></div>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-4">
-                                        <label style="color: #8c8c8c">First Name: </label>
+                                        <label style="color: #8c8c8c" th:text="|#{user.firstName}:|"></label>
                                     </div>
                                     <div class="col-md-8">
                                         <p id="first-name" th:text="${student.firstName}"/>
@@ -39,7 +38,7 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-md-4">
-                                        <label style="color: #8c8c8c">Last Name: </label>
+                                        <label style="color: #8c8c8c" th:text="|#{user.lastName}:|"></label>
                                     </div>
                                     <div class="col-md-8">
                                         <p id="last-name" th:text="${student.lastName}"/>
@@ -47,18 +46,18 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-md-4">
-                                        <label style="color: #8c8c8c">Grupa: </label>
+                                        <label style="color: #8c8c8c" th:text="|#{user.group}:|"></label>
                                     </div>
                                     <div class="col-md-8">
                                         <th:block th:switch="${student.group.code}">
-                                            <p id="grupa" th:case="0" th:text="Extensions"></p>
+                                            <p id="grupa" th:case="0" th:text="#{timeline.filter.extensionGroup}"></p>
                                             <p id="grupa" th:case="*" th:text="${student.group.code}"></p>
                                         </th:block>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-4">
-                                        <label style="color: #8c8c8c">Email: </label>
+                                        <label style="color: #8c8c8c" th:text="|#{user.email}:|"></label>
                                     </div>
                                     <div class="col-md-8">
                                         <p id="email" th:text="${student.email}"/>
@@ -70,12 +69,12 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" th:text="#{action.close}">Close</button>
             </div>
         </div>
     </div>
 </div>
-<!--th:attr="data-target='#customerModel'+${customer.uuid }"-->
+
 <td th:fragment="photo-cell (url, data_target)" class="photo-cell" data-toggle="modal" th:attr="data-target='#'+${data_target}">
     <th:block th:switch="${url}">
         <i th:case="null" class="photo-cell fas fa-user-circle"></i>

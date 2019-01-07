@@ -23,7 +23,7 @@ public interface IProfessorService {
 
     void updateLessons(String profUsername, List<LessonDto> lessonDtos);
 
-    void updateProfessor(ProfessorDto professorDto);
+    void updateProfessor(ProfessorDto professorDto, String profUsername);
 
     /**
      * Return a list with all courses taught by a specific professor and the groups linked with, in dto format

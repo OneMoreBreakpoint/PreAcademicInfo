@@ -14,5 +14,5 @@ public interface IStudentService {
      */
     List<EnrollmentDto> getEnrollments(String studUsername);
 
-    void updateStudent(StudentDto studentDto);
+    void updateStudent(StudentDto studentDto, String studUsername);
 }

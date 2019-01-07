@@ -6,7 +6,9 @@ import org.springframework.stereotype.Repository;
 import data_layer.domain.Professor;
 import data_layer.domain.Student;
 
+import java.util.Optional;
+
 @Repository
 public interface IStudentRepository extends JpaRepository<Student, Integer> {
-    Student findByUsername(String username);
+    Optional<Student> findByUsername(String username);
 }

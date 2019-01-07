@@ -57,7 +57,7 @@ public class ProfessorService implements IProfessorService {
     private ICourseRepository courseRepository;
 
     @Autowired
-    private IProffesorRepository proffesorRepository;
+    private IProfessorRepository professorRepository;
     @Autowired
     private ProfessorHandler professorHandler;
 
@@ -116,16 +116,14 @@ public class ProfessorService implements IProfessorService {
     }
 
     @Override
-    public void updateProfessor(ProfessorDto professorDto)
+    public void updateProfessor(ProfessorDto professorDto, String profUsername)
     {
-        Professor professor = proffesorRepository.findByUsername(professorDto.getUsername());
-        if (professor == null)
-            throw  new ResourceNotFoundException();
+        Professor professor = professorRepository.findByUsername(profUsername)
+                .orElseThrow(ResourceNotFoundException::new);
         professor.setWebPage(professorDto.getWebPage());
-        if (professorDto.getPassword() != null)
-            professor.setEncryptedPassword(BCrypt.hashpw(professorDto.getPassword(), BCrypt.gensalt()));
+        professor.setEncryptedPassword(BCrypt.hashpw(professorDto.getPassword(), BCrypt.gensalt()));
         professor.setProfilePhoto(professorDto.getProfilePhoto());
-        proffesorRepository.flush();
+        professorRepository.flush();
     }
 
     @Override

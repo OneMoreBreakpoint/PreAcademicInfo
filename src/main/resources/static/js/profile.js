@@ -3,6 +3,11 @@ const TYPR_PROFESOR = "PROFESSOR";
 const UPDATE_STUDENT_URL = "/app/student/";
 const UPDATE_PROFESSOR_URL = "/app/professor/";
 
+$(document).ready(function(){
+    create_user_details();
+});
+
+
 function create_user_details() {
     create_profile_photo();
     create_personal_details(user);
@@ -18,27 +23,28 @@ function delete_photo() {
 
 function create_profile_photo() {
     var preview = document.getElementById('profile-img-input');
-    if (user.profilePhoto != undefined)
+    if (user.profilePhoto != undefined) {
         preview.src = user.profilePhoto;
+    }
 }
 
 function create_personal_details(user_data) {
     (user_data.userRole === TYPE_STUDENT) ? create_student_details(user_data) : create_profesor_details(user_data);
-    $("#personal-details").after(create_row("Email: ", user_data.email));
-    $("#personal-details").after(create_row("User Name: ", user_data.username));
-    $("#personal-details").after(create_row("Last Name: ", user_data.lastName));
-    $("#personal-details").after(create_row("First Name: ", user_data.firstName));
+    $("#personal-details").after(create_row(`${i18n.email}:`, user_data.email));
+    $("#personal-details").after(create_row(`${i18n.username}:`, user_data.username));
+    $("#personal-details").after(create_row(`${i18n.lastName}:`, user_data.lastName));
+    $("#personal-details").after(create_row(`${i18n.firstName}:`, user_data.firstName));
 }
 
 function create_student_details(user_details) {
-    $("#personal-details").after(create_row("Group: ", user_details["group"]["code"]));
-    $("#personal-details").after(create_row("Registration Number: ", user_details.registrationNr));
+    $("#personal-details").after(create_row(`${i18n.group}`, user_details["group"]["code"]));
+    $("#personal-details").after(create_row(`${i18n.registrationNr}`, user_details.registrationNr));
 }
 
 function create_profesor_details(user_details) {
     $("#personal-details").after(
         "<div class='row'>"+
-            "<div class='col-md-4'><label style='color: #8c8c8c; display: inline'>Web Page: </label></div>" +
+            `<div class='col-md-4'><label style='color: #8c8c8c; display: inline'>${i18n.webpage}: </label></div>`  +
             "<div class='col-md-8'>" +
                 "<input max='50' min='1' style='width: 40%; display: inline;' type='url' id='web-page' name='web-page' class='form-control' onchange='update_web_page()' type='url' data-bv-uri-message='The website address is not valid'>" +
                 '<small id = "error-msg" class="help-block" data-bv-validator="uri" data-bv-for="web-page" data-bv-result="INVALID" style="display: none;color: #a94442">The website address is not valid</small>'+
@@ -104,13 +110,14 @@ function create_row(name, value) {
 
 function create_password_settings() {
     $("#password-settings").after(
-        "<label style='color: #8c8c8c'>Current Password: </label>" +
+        `<label style='color: #8c8c8c'>${i18n.currentPassword}: </label>` +
         "<input style='width: 40%' disabled type='password' id='current-password' class='form-control'>" +
-        "<label style='color: #8c8c8c'>New Password: </label>" +
+        `<label style='color: #8c8c8c'>${i18n.newPassword}: </label>` +
         "<input style='width: 40%' disabled type='password' id='new-password' class='form-control'>" +
-        "<label style='color: #8c8c8c'>Repeat password: </label>" +
+        `<label style='color: #8c8c8c'>${i18n.repeatPassword}: </label>` +
         "<input style='width: 40%' disabled type='password' id='repeat-password' class='form-control' name='passwd'>" +
-        '<small id = "error-passwd-msg" class="help-block" data-bv-validator="uri" data-bv-for="passwd" data-bv-result="INVALID" style="display: none;color: #a94442">The password is not valid</small>'
+        '<small id = "error-passwd-msg" class="help-block" data-bv-validator="uri" data-bv-for="passwd" ' +
+        'data-bv-result="INVALID" style="display: none;color: #a94442">The password is not valid</small>'
     );
 }
 
@@ -126,11 +133,12 @@ function create_user_settings(user_details) {
         "<div class='material-switch'>" +
         "<input id='notify-by-email' name='notify-by-email' type='checkbox' style='padding: 0px' onchange='update_user_settings()'>" +
         "<label for='notify-by-email' class='label-default' style='padding: 0px'></label>" +
-        "&nbsp;&nbsp;Automatically notify me through email when I receive a grade." +
+        `&nbsp;&nbsp;${i18n.notifyThroughEmail}.` +
         "</div>" +
         "</li>");
-    if (user_details.notifiedByEmail)
+    if (user_details.notifiedByEmail){
         $("#notify-by-email").prop("checked", "true");
+    }
 }
 
 function update_user_settings(){
@@ -198,4 +206,24 @@ function cancel() {
     disable_edit();
 }
 
+function previewFile(){
+    var preview = document.getElementById('profile-img-input'); //selects the query named img
+    var file    = document.querySelector('input[type=file]').files[0]; //sames as here
+    var reader  = new FileReader();
 
+    reader.onloadend = function (event) {
+        let image = event.target.result;
+        preview.src = image;
+        user.profilePhoto = image;
+        save();
+    };
+
+    if (file) {
+        if (file.size > 1048576)
+        {
+            alert("The dimension file has to be less than 1 MB.");
+            return;
+        }
+        reader.readAsDataURL(file); //reads the data as a URL
+    }
+}

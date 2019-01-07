@@ -38,12 +38,10 @@ public class UserMvcController {
         }
     }
 
-    @GetMapping("/profile_settings")
-    public ModelAndView getProfileSettingsPage(Principal crtUser) {
-        System.out.println(crtUser.getName());
-        ModelAndView mv = new ModelAndView("/profile_settings");
+    @GetMapping("/profile")
+    public ModelAndView getProfilePage(Principal crtUser) {
         UserDto user = userService.getUserByUsername(crtUser.getName());
-        mv.addObject("user", user);
-        return mv;
+        return new ModelAndView("/profile")
+                .addObject("user", user);
     }
 }

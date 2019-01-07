@@ -4,8 +4,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import data_layer.domain.Professor;
 
+import java.util.Optional;
+
 public interface IProfessorRepository extends JpaRepository<Professor, Integer> {
 
-    Professor findByUsername(String username);
+    Optional<Professor> findByUsername(String username);
 
 }

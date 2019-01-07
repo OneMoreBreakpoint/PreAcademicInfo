@@ -57,26 +57,32 @@ public class StudentIT extends BaseIntegrationTest {
     @Test
     @Transactional
     public void givenStudentDto_whenUpdateStudent_thenStudentIsUpdated() {
+        //Given
         Student student = createStudent(TestConstants.STUD_USERNAME);
-        String image = "njer908v498gvn4jrv54";
+        String image = TestConstants.IMAGE2;
         StudentDto studentDto = StudentFactory.generateStudentDtoBuilder()
                 .username(student.getUsername())
                 .profilePhoto(image)
                 .build();
-        studentService.updateStudent(studentDto);
+        //When
+        studentService.updateStudent(studentDto, studentDto.getUsername());
+        //Then
         assertEquals(image, studentDto.getProfilePhoto());
     }
 
     @Test
     @Transactional
     public void givenStudentDoesNotExist_whenUpdateStudent_thenResourceNotFoundExceptionThrown() {
+        //Given
         Student student = createStudent(TestConstants.STUD_USERNAME);
-        String image = "njer908v498gvn4jrv54";
+        String image = TestConstants.IMAGE2;
         StudentDto studentDto = StudentFactory.generateStudentDtoBuilder()
                 .username("Anonim")
                 .profilePhoto(image)
                 .build();
+        //Then
         exception.expect(ResourceNotFoundException.class);
-        studentService.updateStudent(studentDto);
+        //When
+        studentService.updateStudent(studentDto, studentDto.getUsername());
     }
 }

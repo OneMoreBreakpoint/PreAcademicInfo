@@ -20,8 +20,8 @@ public class StudentRestController {
     private IStudentService service;
 
     @PutMapping("/")
-    public ResponseEntity<?> put(@RequestBody StudentDto studentDto, Principal crtUSer){
-        service.updateStudent(studentDto);
+    public ResponseEntity<?> put(@RequestBody StudentDto studentDto, Principal crtUser){
+        service.updateStudent(studentDto, crtUser.getName());
         return ResponseEntity.ok(null);
     }
 }
