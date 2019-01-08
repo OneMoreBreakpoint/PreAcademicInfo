@@ -9,7 +9,7 @@ import javax.validation.constraints.Size;
 
 @Data
 @Entity(name = "Users")
-@Table(uniqueConstraints = @UniqueConstraint(columnNames = "username"))
+@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"username"})})
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @NoArgsConstructor
 public abstract class User {
@@ -45,7 +45,7 @@ public abstract class User {
         this.email = email;
     }
 
-    public String getUserRole() {
+    public String getRole() {
         return this.getClass().getSimpleName().toUpperCase();
     }
 }

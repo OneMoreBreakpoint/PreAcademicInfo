@@ -1,8 +1,7 @@
 package data_layer.repositories;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-
 import data_layer.domain.Professor;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 

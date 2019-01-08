@@ -1,14 +1,9 @@
 package bussiness_layer.dto;
 
-import java.util.List;
+import lombok.*;
 
 import javax.validation.constraints.NotNull;
-
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import java.util.List;
 
 @Getter
 @Setter
@@ -23,4 +18,5 @@ public class ProfessorCourseDto {
     @NotNull
     List<GroupDto> groups;
 
+    boolean coordinator;
 }

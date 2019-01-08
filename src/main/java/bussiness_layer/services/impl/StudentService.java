@@ -1,14 +1,14 @@
-package bussiness_layer.services;
+package bussiness_layer.services.impl;
 
 import bussiness_layer.dto.EnrollmentDto;
 import bussiness_layer.dto.StudentDto;
 import bussiness_layer.mappers.EnrollmentMapper;
+import bussiness_layer.services.IStudentService;
 import data_layer.domain.Enrollment;
 import data_layer.domain.Student;
 import data_layer.repositories.IEnrollmentRepository;
 import data_layer.repositories.IStudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import utils.exceptions.ResourceNotFoundException;
@@ -39,7 +39,6 @@ public class StudentService implements IStudentService {
         Student student = studentRepository.findByUsername(studUsername)
                 .orElseThrow(ResourceNotFoundException::new);
         student.setNotifiedByEmail(studentDto.isNotifiedByEmail());
-        student.setEncryptedPassword(BCrypt.hashpw(studentDto.getPassword(), BCrypt.gensalt()));
         student.setProfilePhoto(studentDto.getProfilePhoto());
         studentRepository.flush();
     }

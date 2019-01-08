@@ -1,6 +1,7 @@
 package web_layer.unit;
 
 import bussiness_layer.services.IUserService;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -11,6 +12,7 @@ import web_layer.controllers.UserMvcController;
 
 import static junit.framework.TestCase.assertTrue;
 
+@Slf4j
 public class UserControllerTest extends BaseControllerTest {
 
     @Mock
@@ -30,6 +32,7 @@ public class UserControllerTest extends BaseControllerTest {
     @Test
     public void test() {
         assertTrue(true);
+        log.info("test in UserControllerTest");
     }
 
 }

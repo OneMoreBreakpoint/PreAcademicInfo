@@ -10,26 +10,24 @@ import java.util.stream.Collectors;
 @UtilityClass
 public class LessonMapper {
 
-    public static Lesson toEntity(LessonDto lessonDTO) {
-        Lesson entity = new Lesson();
-        entity.setId(lessonDTO.getId());
-        entity.setNr(lessonDTO.getNr());
-        entity.setGrade(lessonDTO.getGrade());
-        entity.setType(lessonDTO.getType());
-        entity.setBonus(lessonDTO.getBonus());
-        entity.setAttended(lessonDTO.isAttended());
-        return entity;
+    public static Lesson toEntity(LessonDto dto) {
+        return Lesson.builder()
+                .id(dto.getId())
+                .template(LessonTemplateMapper.toEntity(dto.getTemplate()))
+                .grade(dto.getGrade())
+                .bonus(dto.getBonus())
+                .attended(dto.isAttended())
+                .build();
     }
 
-    public static LessonDto toDto(Lesson lesson) {
-        LessonDto lessonDTO = new LessonDto();
-        lessonDTO.setId(lesson.getId());
-        lessonDTO.setNr(lesson.getNr());
-        lessonDTO.setGrade(lesson.getGrade());
-        lessonDTO.setType(lesson.getType());
-        lessonDTO.setBonus(lesson.getBonus());
-        lessonDTO.setAttended(lesson.isAttended());
-        return lessonDTO;
+    public static LessonDto toDto(Lesson entity) {
+        return LessonDto.builder()
+                .id(entity.getId())
+                .template(LessonTemplateMapper.toDto(entity.getTemplate()))
+                .grade(entity.getGrade())
+                .bonus(entity.getBonus())
+                .attended(entity.isAttended())
+                .build();
     }
 
     public static List<LessonDto> toDtoList(List<Lesson> lessons) {

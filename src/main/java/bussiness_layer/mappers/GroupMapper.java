@@ -1,11 +1,11 @@
 package bussiness_layer.mappers;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 import bussiness_layer.dto.GroupDto;
 import data_layer.domain.Group;
 import lombok.experimental.UtilityClass;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @UtilityClass
 public class GroupMapper {

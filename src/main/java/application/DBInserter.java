@@ -10,6 +10,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class DBInserter {
@@ -1298,44 +1299,173 @@ public class DBInserter {
     private static void initCourses() {
         lftc.setCode("MLR5023");
         lftc.setName("Limbaje Formale si Tehnici de Compilare");
-        lftc.setNrOfSeminars((byte) 14);
-        lftc.setNrOfLaboratories((byte) 14);
+        lftc.setLessonTemplates(Arrays.asList(
+                LessonTemplate.builder().course(lftc).type(LessonType.SEMINAR).nr((byte) 1).build(),
+                LessonTemplate.builder().course(lftc).type(LessonType.SEMINAR).nr((byte) 2).build(),
+                LessonTemplate.builder().course(lftc).type(LessonType.SEMINAR).nr((byte) 3).build(),
+                LessonTemplate.builder().course(lftc).type(LessonType.SEMINAR).nr((byte) 4).build(),
+                LessonTemplate.builder().course(lftc).type(LessonType.SEMINAR).nr((byte) 5).build(),
+                LessonTemplate.builder().course(lftc).type(LessonType.SEMINAR).nr((byte) 6).build(),
+                LessonTemplate.builder().course(lftc).type(LessonType.SEMINAR).nr((byte) 7).build(),
+                LessonTemplate.builder().course(lftc).type(LessonType.SEMINAR).nr((byte) 8).build(),
+                LessonTemplate.builder().course(lftc).type(LessonType.SEMINAR).nr((byte) 9).build(),
+                LessonTemplate.builder().course(lftc).type(LessonType.SEMINAR).nr((byte) 10).build(),
+                LessonTemplate.builder().course(lftc).type(LessonType.SEMINAR).nr((byte) 11).build(),
+                LessonTemplate.builder().course(lftc).type(LessonType.SEMINAR).nr((byte) 12).build(),
+                LessonTemplate.builder().course(lftc).type(LessonType.SEMINAR).nr((byte) 13).build(),
+                LessonTemplate.builder().course(lftc).type(LessonType.SEMINAR).nr((byte) 14).build(),
+                LessonTemplate.builder().course(lftc).type(LessonType.LABORATORY).nr((byte) 1).weight((byte) 0).build(),
+                LessonTemplate.builder().course(lftc).type(LessonType.LABORATORY).nr((byte) 2).weight((byte) 7).build(),
+                LessonTemplate.builder().course(lftc).type(LessonType.LABORATORY).nr((byte) 3).weight((byte) 0).build(),
+                LessonTemplate.builder().course(lftc).type(LessonType.LABORATORY).nr((byte) 4).weight((byte) 7).build(),
+                LessonTemplate.builder().course(lftc).type(LessonType.LABORATORY).nr((byte) 5).weight((byte) 0).build(),
+                LessonTemplate.builder().course(lftc).type(LessonType.LABORATORY).nr((byte) 6).weight((byte) 7).build(),
+                LessonTemplate.builder().course(lftc).type(LessonType.LABORATORY).nr((byte) 7).weight((byte) 7).build(),
+                LessonTemplate.builder().course(lftc).type(LessonType.LABORATORY).nr((byte) 8).weight((byte) 0).build(),
+                LessonTemplate.builder().course(lftc).type(LessonType.LABORATORY).nr((byte) 9).weight((byte) 7).build(),
+                LessonTemplate.builder().course(lftc).type(LessonType.LABORATORY).nr((byte) 10).weight((byte) 7).build(),
+                LessonTemplate.builder().course(lftc).type(LessonType.LABORATORY).nr((byte) 11).weight((byte) 7).build(),
+                LessonTemplate.builder().course(lftc).type(LessonType.LABORATORY).nr((byte) 12).weight((byte) 0).build(),
+                LessonTemplate.builder().course(lftc).type(LessonType.LABORATORY).nr((byte) 13).weight((byte) 9).build(),
+                LessonTemplate.builder().course(lftc).type(LessonType.LABORATORY).nr((byte) 14).weight((byte) 0).build(),
+                LessonTemplate.builder().course(lftc).type(LessonType.PARTIAL_EXAM_SEMINAR).nr((byte) 1).weight((byte) 14).build(),
+                LessonTemplate.builder().course(lftc).type(LessonType.PARTIAL_EXAM_COURSE).nr((byte) 1).weight((byte) 14).build(),
+                LessonTemplate.builder().course(lftc).type(LessonType.PARTIAL_EXAM_COURSE).nr((byte) 2).weight((byte) 14).build()
+        ));
         lftc.setCoordinator(guran);
 
         flct.setCode("MLE5023");
         flct.setName("Formal Languages and Compilation Techniques");
-        flct.setNrOfSeminars((byte) 14);
-        flct.setNrOfLaboratories((byte) 14);
+        flct.setLessonTemplates(Arrays.asList(
+                LessonTemplate.builder().course(flct).type(LessonType.SEMINAR).nr((byte) 1).build(),
+                LessonTemplate.builder().course(flct).type(LessonType.SEMINAR).nr((byte) 2).build(),
+                LessonTemplate.builder().course(flct).type(LessonType.SEMINAR).nr((byte) 3).build(),
+                LessonTemplate.builder().course(flct).type(LessonType.SEMINAR).nr((byte) 4).build(),
+                LessonTemplate.builder().course(flct).type(LessonType.SEMINAR).nr((byte) 5).build(),
+                LessonTemplate.builder().course(flct).type(LessonType.SEMINAR).nr((byte) 6).build(),
+                LessonTemplate.builder().course(flct).type(LessonType.SEMINAR).nr((byte) 7).build(),
+                LessonTemplate.builder().course(flct).type(LessonType.SEMINAR).nr((byte) 8).build(),
+                LessonTemplate.builder().course(flct).type(LessonType.SEMINAR).nr((byte) 9).build(),
+                LessonTemplate.builder().course(flct).type(LessonType.SEMINAR).nr((byte) 10).build(),
+                LessonTemplate.builder().course(flct).type(LessonType.SEMINAR).nr((byte) 11).build(),
+                LessonTemplate.builder().course(flct).type(LessonType.SEMINAR).nr((byte) 12).build(),
+                LessonTemplate.builder().course(flct).type(LessonType.SEMINAR).nr((byte) 13).build(),
+                LessonTemplate.builder().course(flct).type(LessonType.SEMINAR).nr((byte) 14).build(),
+                LessonTemplate.builder().course(flct).type(LessonType.LABORATORY).nr((byte) 1).weight((byte) 0).build(),
+                LessonTemplate.builder().course(flct).type(LessonType.LABORATORY).nr((byte) 2).weight((byte) 7).build(),
+                LessonTemplate.builder().course(flct).type(LessonType.LABORATORY).nr((byte) 3).weight((byte) 0).build(),
+                LessonTemplate.builder().course(flct).type(LessonType.LABORATORY).nr((byte) 4).weight((byte) 7).build(),
+                LessonTemplate.builder().course(flct).type(LessonType.LABORATORY).nr((byte) 5).weight((byte) 0).build(),
+                LessonTemplate.builder().course(flct).type(LessonType.LABORATORY).nr((byte) 6).weight((byte) 7).build(),
+                LessonTemplate.builder().course(flct).type(LessonType.LABORATORY).nr((byte) 7).weight((byte) 7).build(),
+                LessonTemplate.builder().course(flct).type(LessonType.LABORATORY).nr((byte) 8).weight((byte) 0).build(),
+                LessonTemplate.builder().course(flct).type(LessonType.LABORATORY).nr((byte) 9).weight((byte) 7).build(),
+                LessonTemplate.builder().course(flct).type(LessonType.LABORATORY).nr((byte) 10).weight((byte) 7).build(),
+                LessonTemplate.builder().course(flct).type(LessonType.LABORATORY).nr((byte) 11).weight((byte) 7).build(),
+                LessonTemplate.builder().course(flct).type(LessonType.LABORATORY).nr((byte) 12).weight((byte) 0).build(),
+                LessonTemplate.builder().course(flct).type(LessonType.LABORATORY).nr((byte) 13).weight((byte) 9).build(),
+                LessonTemplate.builder().course(flct).type(LessonType.LABORATORY).nr((byte) 14).weight((byte) 0).build(),
+                LessonTemplate.builder().course(flct).type(LessonType.PARTIAL_EXAM_SEMINAR).nr((byte) 14).weight((byte) 14).build(),
+                LessonTemplate.builder().course(flct).type(LessonType.PARTIAL_EXAM_COURSE).nr((byte) 14).weight((byte) 14).build(),
+                LessonTemplate.builder().course(flct).type(LessonType.PARTIAL_EXAM_COURSE).nr((byte) 14).weight((byte) 14).build()
+        ));
         flct.setCoordinator(motogna);
 
         pdm.setCode("MLR5078");
         pdm.setName("Programare pentru dispozitive mobile");
-        pdm.setNrOfSeminars((byte) 0);
-        pdm.setNrOfLaboratories((byte) 7);
+        pdm.setLessonTemplates(Arrays.asList(
+                LessonTemplate.builder().course(pdm).type(LessonType.LABORATORY).nr((byte) 1).weight((byte) 0).build(),
+                LessonTemplate.builder().course(pdm).type(LessonType.LABORATORY).nr((byte) 2).weight((byte) 0).build(),
+                LessonTemplate.builder().course(pdm).type(LessonType.LABORATORY).nr((byte) 3).weight((byte) 0).build(),
+                LessonTemplate.builder().course(pdm).type(LessonType.LABORATORY).nr((byte) 4).weight((byte) 0).build(),
+                LessonTemplate.builder().course(pdm).type(LessonType.LABORATORY).nr((byte) 5).weight((byte) 0).build(),
+                LessonTemplate.builder().course(pdm).type(LessonType.LABORATORY).nr((byte) 6).weight((byte) 0).build(),
+                LessonTemplate.builder().course(pdm).type(LessonType.LABORATORY).nr((byte) 7).weight((byte) 100).build()
+        ));
         pdm.setCoordinator(lazar);
 
         mdp.setCode("MLE5078");
         mdp.setName("Mobile devices programming");
-        mdp.setNrOfSeminars((byte) 0);
-        mdp.setNrOfLaboratories((byte) 7);
+        mdp.setLessonTemplates(Arrays.asList(
+                LessonTemplate.builder().course(mdp).type(LessonType.LABORATORY).nr((byte) 1).weight((byte) 0).build(),
+                LessonTemplate.builder().course(mdp).type(LessonType.LABORATORY).nr((byte) 2).weight((byte) 0).build(),
+                LessonTemplate.builder().course(mdp).type(LessonType.LABORATORY).nr((byte) 3).weight((byte) 0).build(),
+                LessonTemplate.builder().course(mdp).type(LessonType.LABORATORY).nr((byte) 4).weight((byte) 0).build(),
+                LessonTemplate.builder().course(mdp).type(LessonType.LABORATORY).nr((byte) 5).weight((byte) 0).build(),
+                LessonTemplate.builder().course(mdp).type(LessonType.LABORATORY).nr((byte) 6).weight((byte) 0).build(),
+                LessonTemplate.builder().course(mdp).type(LessonType.LABORATORY).nr((byte) 7).weight((byte) 100).build()
+        ));
         mdp.setCoordinator(lazar);
 
         pdav.setCode("MLE8117");
         pdav.setName("Audio-Video Data Processing");
-        pdav.setNrOfSeminars((byte) 14);
-        pdav.setNrOfLaboratories((byte) 7);
+        pdav.setLessonTemplates(Arrays.asList(
+                LessonTemplate.builder().course(pdav).type(LessonType.SEMINAR).nr((byte) 1).build(),
+                LessonTemplate.builder().course(pdav).type(LessonType.SEMINAR).nr((byte) 2).build(),
+                LessonTemplate.builder().course(pdav).type(LessonType.SEMINAR).nr((byte) 3).build(),
+                LessonTemplate.builder().course(pdav).type(LessonType.SEMINAR).nr((byte) 4).build(),
+                LessonTemplate.builder().course(pdav).type(LessonType.SEMINAR).nr((byte) 5).build(),
+                LessonTemplate.builder().course(pdav).type(LessonType.SEMINAR).nr((byte) 6).build(),
+                LessonTemplate.builder().course(pdav).type(LessonType.SEMINAR).nr((byte) 7).build(),
+                LessonTemplate.builder().course(pdav).type(LessonType.SEMINAR).nr((byte) 8).build(),
+                LessonTemplate.builder().course(pdav).type(LessonType.SEMINAR).nr((byte) 9).build(),
+                LessonTemplate.builder().course(pdav).type(LessonType.SEMINAR).nr((byte) 10).build(),
+                LessonTemplate.builder().course(pdav).type(LessonType.SEMINAR).nr((byte) 11).build(),
+                LessonTemplate.builder().course(pdav).type(LessonType.SEMINAR).nr((byte) 12).build(),
+                LessonTemplate.builder().course(pdav).type(LessonType.SEMINAR).nr((byte) 13).build(),
+                LessonTemplate.builder().course(pdav).type(LessonType.SEMINAR).nr((byte) 14).build(),
+                LessonTemplate.builder().course(pdav).type(LessonType.LABORATORY).nr((byte) 1).weight((byte) 0).build(),
+                LessonTemplate.builder().course(pdav).type(LessonType.LABORATORY).nr((byte) 2).weight((byte) 20).build(),
+                LessonTemplate.builder().course(pdav).type(LessonType.LABORATORY).nr((byte) 3).weight((byte) 20).build(),
+                LessonTemplate.builder().course(pdav).type(LessonType.LABORATORY).nr((byte) 4).weight((byte) 20).build(),
+                LessonTemplate.builder().course(pdav).type(LessonType.LABORATORY).nr((byte) 5).weight((byte) 20).build(),
+                LessonTemplate.builder().course(pdav).type(LessonType.LABORATORY).nr((byte) 6).weight((byte) 0).build(),
+                LessonTemplate.builder().course(pdav).type(LessonType.LABORATORY).nr((byte) 7).weight((byte) 20).build()
+        ));
         pdav.setCoordinator(forest);
 
         ss.setCode("MLR8114");
         ss.setName("Securitate Software");
-        ss.setNrOfSeminars((byte) 0);
-        ss.setNrOfLaboratories((byte) 14);
+        ss.setLessonTemplates(Arrays.asList(
+                LessonTemplate.builder().course(ss).type(LessonType.LABORATORY).nr((byte) 1).weight((byte) 0).build(),
+                LessonTemplate.builder().course(ss).type(LessonType.LABORATORY).nr((byte) 2).weight((byte) 0).build(),
+                LessonTemplate.builder().course(ss).type(LessonType.LABORATORY).nr((byte) 3).weight((byte) 20).build(),
+                LessonTemplate.builder().course(ss).type(LessonType.LABORATORY).nr((byte) 4).weight((byte) 0).build(),
+                LessonTemplate.builder().course(ss).type(LessonType.LABORATORY).nr((byte) 5).weight((byte) 0).build(),
+                LessonTemplate.builder().course(ss).type(LessonType.LABORATORY).nr((byte) 6).weight((byte) 0).build(),
+                LessonTemplate.builder().course(ss).type(LessonType.LABORATORY).nr((byte) 7).weight((byte) 0).build(),
+                LessonTemplate.builder().course(ss).type(LessonType.LABORATORY).nr((byte) 8).weight((byte) 0).build(),
+                LessonTemplate.builder().course(ss).type(LessonType.LABORATORY).nr((byte) 9).weight((byte) 0).build(),
+                LessonTemplate.builder().course(ss).type(LessonType.LABORATORY).nr((byte) 10).weight((byte) 20).build(),
+                LessonTemplate.builder().course(ss).type(LessonType.LABORATORY).nr((byte) 11).weight((byte) 0).build(),
+                LessonTemplate.builder().course(ss).type(LessonType.LABORATORY).nr((byte) 12).weight((byte) 0).build(),
+                LessonTemplate.builder().course(ss).type(LessonType.LABORATORY).nr((byte) 13).weight((byte) 0).build(),
+                LessonTemplate.builder().course(ss).type(LessonType.LABORATORY).nr((byte) 14).weight((byte) 0).build(),
+                LessonTemplate.builder().course(ss).type(LessonType.PARTIAL_EXAM_LABORATORY).nr((byte) 1).weight((byte) 15).build(),
+                LessonTemplate.builder().course(ss).type(LessonType.PARTIAL_EXAM_LABORATORY).nr((byte) 2).weight((byte) 15).build(),
+                LessonTemplate.builder().course(ss).type(LessonType.PARTIAL_EXAM_LABORATORY).nr((byte) 3).weight((byte) 15).build(),
+                LessonTemplate.builder().course(ss).type(LessonType.PARTIAL_EXAM_LABORATORY).nr((byte) 4).weight((byte) 15).build()
+        ));
         ss.setCoordinator(suciu);
 
         retele.setCode("MLR5002");
         retele.setName("Retele de calculatoare");
-        retele.setNrOfSeminars((byte) 0);
-        retele.setNrOfLaboratories((byte) 7);
+        retele.setLessonTemplates(Arrays.asList(
+                LessonTemplate.builder().course(retele).type(LessonType.LABORATORY).nr((byte) 1).weight((byte) 0).build(),
+                LessonTemplate.builder().course(retele).type(LessonType.LABORATORY).nr((byte) 2).weight((byte) 7).build(),
+                LessonTemplate.builder().course(retele).type(LessonType.LABORATORY).nr((byte) 3).weight((byte) 7).build(),
+                LessonTemplate.builder().course(retele).type(LessonType.LABORATORY).nr((byte) 4).weight((byte) 7).build(),
+                LessonTemplate.builder().course(retele).type(LessonType.LABORATORY).nr((byte) 5).weight((byte) 7).build(),
+                LessonTemplate.builder().course(retele).type(LessonType.LABORATORY).nr((byte) 6).weight((byte) 7).build(),
+                LessonTemplate.builder().course(retele).type(LessonType.LABORATORY).nr((byte) 7).weight((byte) 7).build(),
+                LessonTemplate.builder().course(retele).type(LessonType.LABORATORY).nr((byte) 8).weight((byte) 7).build(),
+                LessonTemplate.builder().course(retele).type(LessonType.LABORATORY).nr((byte) 9).weight((byte) 7).build(),
+                LessonTemplate.builder().course(retele).type(LessonType.LABORATORY).nr((byte) 10).weight((byte) 7).build(),
+                LessonTemplate.builder().course(retele).type(LessonType.LABORATORY).nr((byte) 11).weight((byte) 7).build(),
+                LessonTemplate.builder().course(retele).type(LessonType.LABORATORY).nr((byte) 12).weight((byte) 0).build(),
+                LessonTemplate.builder().course(retele).type(LessonType.LABORATORY).nr((byte) 13).weight((byte) 15).build(),
+                LessonTemplate.builder().course(retele).type(LessonType.LABORATORY).nr((byte) 14).weight((byte) 15).build()
+        ));
         retele.setCoordinator(forest);
     }
 
@@ -1351,45 +1481,12 @@ public class DBInserter {
             group.getStudents().forEach(student -> {
                 student.getEnrollments().forEach(enrollment -> {
                     List<Lesson> lessons = new ArrayList<>();
-                    int nrOfSeminars = enrollment.getCourse().getNrOfSeminars();
-                    int nrOfLaboratories = enrollment.getCourse().getNrOfLaboratories();
-                    for (int i = 1; i <= nrOfLaboratories; i++) {
-                        Lesson l = new Lesson();
-                        l.setType(LessonType.LABORATORY);
-                        l.setNr((byte) i);
-                        l.setEnrollment(enrollment);
-                        lessons.add(l);
-                    }
-                    for (int i = 1; i <= nrOfSeminars; i++) {
-                        Lesson l = new Lesson();
-                        l.setType(LessonType.SEMINAR);
-                        l.setNr((byte) i);
-                        l.setEnrollment(enrollment);
-                        lessons.add(l);
-                    }
-                    String courseCode = enrollment.getCourse().getCode();
-                    if (courseCode.equals("MLR8114")) { // SS
-                        for (int i = 1; i <= 4; i++) {
-                            Lesson exam = new Lesson();
-                            exam.setType(LessonType.PARTIAL_EXAM_LABORATORY);
-                            exam.setNr((byte) i);
-                            exam.setEnrollment(enrollment);
-                            lessons.add(exam);
-                        }
-                    } else if (courseCode.equals("MLR5023") || courseCode.equals("MLE5023")) { // LFTC, FLCT
-                        for (int i = 1; i <= 2; i++) {
-                            Lesson exam = new Lesson();
-                            exam.setType(LessonType.PARTIAL_EXAM_COURSE);
-                            exam.setNr((byte) i);
-                            exam.setEnrollment(enrollment);
-                            lessons.add(exam);
-                        }
-                        Lesson exam = new Lesson();
-                        exam.setType(LessonType.PARTIAL_EXAM_SEMINAR);
-                        exam.setNr((byte) 1);
-                        exam.setEnrollment(enrollment);
-                        lessons.add(exam);
-                    }
+                    enrollment.getCourse().getLessonTemplates().forEach(lessonTemplate -> {
+                        lessons.add(Lesson.builder()
+                                .template(lessonTemplate)
+                                .enrollment(enrollment)
+                                .build());
+                    });
                     enrollment.setLessons(lessons);
                 });
             });
@@ -1426,6 +1523,7 @@ public class DBInserter {
                         entityManager.persist(enrollment.getCourse());
                         entityManager.persist(enrollment);
                         enrollment.getLessons().forEach(lesson -> {
+                            entityManager.persist(lesson.getTemplate());
                             entityManager.persist(lesson);
                         });
                     });
@@ -1472,5 +1570,6 @@ public class DBInserter {
         EntityManagerFactory emFactory = Persistence.createEntityManagerFactory("db-insert");
         entityManager = emFactory.createEntityManager();
         persist();
+        entityManager.close();
     }
 }

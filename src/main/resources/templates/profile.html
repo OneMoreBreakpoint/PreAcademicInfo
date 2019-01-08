@@ -13,8 +13,8 @@
     <script th:src="@{/js/common.js}"></script>
     <script th:src="@{/js/profile.js}"></script>
     <script th:src="@{/js/fragments/lang-picker.js}"></script>
-    <script th:src="@{/js/fragments/modals.js}"></script>
     <link rel="stylesheet" th:href="@{/css/fragments/modals.css}"/>
+    <link rel="stylesheet" th:href="@{/css/profile.css}"/>
     <script th:inline="javascript">
         let user = /*[[${user}]]*/ '';
         let i18n = {};
@@ -34,6 +34,8 @@
         i18n.removePhoto = /*[[#{user.removePhoto}]]*/ '';
         i18n.profileSettings = /*[[#{user.profileSettings}]]*/ '';
         i18n.notifyThroughEmail = /*[[#{user.notifyThroughEmail}]]*/ '';
+        i18n.invalidPassword = /*[[#{user.invalidPassword}]]*/ '';
+        i18n.invalidWebPage = /*[[#{user.invalidWebPage}]]*/ '';
     </script>
     <script defer src="https://use.fontawesome.com/releases/v5.5.0/js/all.js"
             integrity="sha384-GqVMZRt5Gn7tB9D9q7ONtcp4gtHIUEW/yG7h98J7IpE3kpi+srfFyyB/04OV6pG0"
@@ -48,7 +50,7 @@
             <div class="profile-img">
                 <img id="profile-img-input" src="../../static/images/profile.jpg" th:src="@{/images/profile.jpg}"
                      alt="Image preview..."/>
-                <div class="file btn btn-primary" style="margin-bottom: 40px;">
+                <div class="file btn btn-primary" id="btn_uploadPhoto">
                     <span th:text="#{user.changePhoto}"></span>
                     <input type="file" name="file" onchange="previewFile()"/>
                 </div>
@@ -61,7 +63,7 @@
                     <div class="col-sm-12"><h4 th:text="#{user.personalDetails}"></h4></div>
                 </div>
 
-                <div class="row" id="password-settings" style="padding-top: 10px">
+                <div class="row" id="password-settings">
                     <div class="col-sm-4"><h4 th:text="#{user.changePassword}"></h4></div>
                     <div class="col-md-8">
                         <button type="button" onclick="change_password()" class="btn btn-danger" id="change_passwd-btn"
@@ -76,14 +78,15 @@
                     </div>
                 </div>
 
-                <div class="row" id="profile-settings" style="padding-top: 20px">
+                <div class="row" id="profile-settings">
                     <div class="col-sm-4"><h4 th:text="#{user.profileSettings}"></h4></div>
                 </div>
             </div>
         </div>
     </div>
-    <div th:replace="/fragments/modals :: response-modal ('modal_success', true, #{modal.response.success})"></div>
-    <div th:replace="/fragments/modals :: response-modal ('modal_failure', false, #{modal.response.failure})"></div>
+    <div th:replace="/fragments/response-modal :: response-modal ('modal_success', true, #{modal.response.success})"></div>
+    <div th:replace="/fragments/response-modal :: response-modal ('modal_failure', false, #{modal.response.failure})"></div>
+    <div th:replace="/fragments/response-modal :: response-modal ('modal_invalid_pwd', false, #{user.invalidPassword})"></div>
 </div>
 </body>
 </html>

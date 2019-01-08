@@ -2,6 +2,7 @@ package factory;
 
 import bussiness_layer.dto.StudentDto;
 import data_layer.domain.Student;
+import org.mindrot.jbcrypt.BCrypt;
 import utils.TestConstants;
 
 import static utils.TestConstants.*;
@@ -11,7 +12,7 @@ public class StudentFactory {
     public static Student.StudentBuilder generateStudentBuilder() {
         return Student.builder()
                 .username(USERNAME)
-                .encryptedPassword(PASSWORD)
+                .encryptedPassword(BCrypt.hashpw(PASSWORD, BCrypt.gensalt()))
                 .firstName(FIRSTNAME)
                 .lastName(LASTNAME)
                 .email(EMAIL)

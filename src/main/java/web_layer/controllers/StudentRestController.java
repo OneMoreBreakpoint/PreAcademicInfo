@@ -1,7 +1,7 @@
 package web_layer.controllers;
 
-import java.security.Principal;
-
+import bussiness_layer.dto.StudentDto;
+import bussiness_layer.services.IStudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -9,8 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import bussiness_layer.dto.StudentDto;
-import bussiness_layer.services.IStudentService;
+import java.security.Principal;
 
 @RestController
 @RequestMapping("/app/student")
@@ -20,7 +19,7 @@ public class StudentRestController {
     private IStudentService service;
 
     @PutMapping("/")
-    public ResponseEntity<?> put(@RequestBody StudentDto studentDto, Principal crtUser){
+    public ResponseEntity<?> put(@RequestBody StudentDto studentDto, Principal crtUser) {
         service.updateStudent(studentDto, crtUser.getName());
         return ResponseEntity.ok(null);
     }

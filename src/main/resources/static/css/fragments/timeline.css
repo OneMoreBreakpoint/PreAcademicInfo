@@ -7,6 +7,11 @@
     font-size: 14px;
 }
 
+.timeline table {
+    border-spacing: 1px !important;
+    border-collapse: separate;
+}
+
 .timeline thead {
     font-size: 14px;
     white-space: normal;
@@ -60,8 +65,9 @@
     box-shadow: -1px 0px 7px var(--color0-dark);
 }
 
-.timeline th:nth-last-child(-n+2),
-.timeline td:nth-last-child(-n+2) {
+.timeline .average-cell,
+.timeline .sem-attendances-cell,
+.timeline .lab-attendances-cell {
     box-shadow: 0px -1px 7px var(--color0-dark);
 }
 
@@ -81,6 +87,17 @@
     width: 80%;
 }
 
+.timeline svg.photo-cell:hover,
+.timeline img.photo-cell:hover,
+.timeline td.name-cell:hover {
+    cursor: pointer;
+}
+
+.timeline tr:hover td.name-cell,
+.timeline tr:hover td.photo-cell {
+    background-color: white;
+}
+
 .timeline tr:nth-child(odd) svg.photo-cell {
     color: var(--color4);
 }
@@ -94,7 +111,8 @@
     font-weight: normal;
 }
 
-.timeline td.attendances-cell.err,
+.timeline td.sem-attendances-cell.err,
+.timeline td.lab-attendances-cell.err,
 .timeline td.average-cell.err {
     background-color: var(--color2-light);
     color: var(--color0-dark);
@@ -124,4 +142,16 @@
 .timeline input[disabled] {
     background-color: inherit;
     border-style: none
+}
+
+.profile-head {
+    color: var(--color4-dark);
+}
+
+body > *:not(.header) {
+    margin: 15px;
+}
+
+.fade {
+    margin: 0px !important;
 }

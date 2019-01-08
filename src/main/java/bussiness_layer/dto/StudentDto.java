@@ -1,13 +1,12 @@
 package bussiness_layer.dto;
 
-import java.io.Serializable;
-
-import javax.validation.constraints.Size;
-
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import javax.validation.constraints.Size;
+import java.io.Serializable;
 
 @Getter
 @Setter
@@ -29,8 +28,8 @@ public class StudentDto extends UserDto implements Serializable {
 
     @Builder
     public StudentDto(String username, String password, String firstName, String lastName, String email,
-                      Integer registrationNr, String fathersInitials, String profilePhoto, boolean notifiedByEmail, GroupDto group, String user_role) {
-        super(username, password, firstName, lastName, email, user_role);
+                      Integer registrationNr, String fathersInitials, String profilePhoto, boolean notifiedByEmail, GroupDto group, String role) {
+        super(username, password, firstName, lastName, email, role);
         this.registrationNr = registrationNr;
         this.fathersInitials = fathersInitials;
         this.profilePhoto = profilePhoto;

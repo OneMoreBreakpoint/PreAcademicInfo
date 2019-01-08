@@ -1,17 +1,12 @@
 package bussiness_layer.dto;
 
-import java.io.Serializable;
 
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
+import lombok.*;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import java.io.Serializable;
+import java.util.List;
 
 @Getter
 @Setter
@@ -31,17 +26,9 @@ public class CourseDto implements Serializable {
     @NotNull
     private String name;
 
-    @NotNull
-    @Max(14)
-    @Min(0)
-    private Byte nrOfSeminars;
-
-    @NotNull
-    @Max(14)
-    @Min(7)
-    private Byte nrOfLaboratories;
-
     //TODO: @not null
     private ProfessorDto coordinator;
+
+    private List<LessonTemplateDto> lessonTemplates;
 
 }

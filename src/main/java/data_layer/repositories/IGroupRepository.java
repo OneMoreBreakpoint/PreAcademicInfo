@@ -1,14 +1,13 @@
 package data_layer.repositories;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-
+import data_layer.domain.Group;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import data_layer.domain.Group;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 @Repository
 public interface IGroupRepository extends JpaRepository<Group, Short> {

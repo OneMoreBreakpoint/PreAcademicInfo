@@ -27,22 +27,33 @@ function convertEnrollmentListToEnrollmentMap() {
 
 function stickRightColumns() {
     let column_average = $("th.average-cell, td.average-cell");
-    let column_attendance = $("th.attendances-cell, td.attendances-cell");
+    let column_semAttendance = $("th.sem-attendances-cell, td.sem-attendances-cell");
+    let column_labAttendance = $("th.lab-attendances-cell, td.lab-attendances-cell");
     let column_bonus = $("th.bonus-cell, td.bonus-cell");
     //it is possible that average column should not be shown
-    let columnAverageWidth = ($(column_average).length > 0 ? $(column_average).outerWidth() : 0);
+    let columnAverageWidth = getColumnWidth(column_average);
+    let columnLabAttendanceWidth = getColumnWidth(column_labAttendance);
+    let columnSemAttendanceWidth = getColumnWidth(column_semAttendance);
     $(column_average).css({
         "position": "sticky",
         "right": 0
     });
-    $(column_attendance).css({
+    $(column_labAttendance).css({
         "position": "sticky",
         "right": `${columnAverageWidth}px`
     });
+    $(column_semAttendance).css({
+        "position": "sticky",
+        "right": `${columnAverageWidth + columnLabAttendanceWidth}px`
+    });
     $(column_bonus).css({
         "position": "sticky",
-        "right": `${columnAverageWidth + $(column_attendance).outerWidth()}px`
+        "right": `${columnAverageWidth + columnLabAttendanceWidth + columnSemAttendanceWidth}px`
     });
+}
+
+function getColumnWidth(column) {
+    return $(column).length > 0 ? $(column).outerWidth() : 0;
 }
 
 function updateAll() {
@@ -78,7 +89,7 @@ function updateTotalAttendance(enrlRow) {
     let nrOfLabAttendances = 0, nrOfSemAttendances = 0;
     for (let id in lessons) {
         if (lessons[id].attended) {
-            switch (lessons[id].type) {
+            switch (lessons[id].template.type) {
                 case "LABORATORY":
                     nrOfLabAttendances++;
                     break;
@@ -88,25 +99,48 @@ function updateTotalAttendance(enrlRow) {
             }
         }
     }
-    let nrOfLaboratories = getNrOfLaboratories(), nrOfSeminars = getNrOfSeminars();
-    let totalLabAttendance = (nrOfLaboratories > 0 ? (nrOfLabAttendances / nrOfLaboratories) * 100 : 100);
-    let totalSemAttendance = (nrOfSeminars > 0 ? (nrOfSemAttendances / nrOfSeminars) * 100 : 100);
+    let nrOfLaboratories = getNrOfLessonsOfType(enrollments[enrlId], "LABORATORY"),
+        nrOfSeminars = getNrOfLessonsOfType(enrollments[enrlId], "SEMINAR");
+    let totalLabAttendance = (nrOfLaboratories > 0 ? (nrOfLabAttendances / nrOfLaboratories) * 100 : undefined);
+    let totalSemAttendance = (nrOfSeminars > 0 ? (nrOfSemAttendances / nrOfSeminars) * 100 : undefined);
     enrollments[enrlId].seminarAttendance = totalSemAttendance;
     enrollments[enrlId].laboratoryAttendance = totalLabAttendance;
     updateTotalAttendanceView(enrlRow, totalLabAttendance, totalSemAttendance);
 }
 
+function updateTotalAttendanceView(enrlRow, totalLabAttendance, totalSemAttendance) {
+    let semAttendanceCell = $(enrlRow).children("td.sem-attendances-cell").first();
+    let labAttendanceCell = $(enrlRow).children("td.lab-attendances-cell").first();
+    let text_semAttendanceCell = (totalSemAttendance !== undefined) ? `${totalSemAttendance.toFixed(2)}%` : '';
+    let text_labAttendanceCell = (totalLabAttendance !== undefined) ? `${totalLabAttendance.toFixed(2)}%` : '';
+    $(semAttendanceCell).text(text_semAttendanceCell);
+    $(labAttendanceCell).text(text_labAttendanceCell);
+
+    if (!hasMinimumAttendance(totalSemAttendance, 100)) {
+        $(semAttendanceCell).addClass('err');
+    } else {
+        $(semAttendanceCell).removeClass('err');
+    }
+    if (!hasMinimumAttendance(100, totalLabAttendance)) {
+        $(labAttendanceCell).addClass('err');
+    } else {
+        $(labAttendanceCell).removeClass('err');
+    }
+}
+
+
 function updateAverageGrade(enrlRow) {
     let enrlId = getNumericIdFromDomId(enrlRow.id);
-    let n = 0, sum = 0;
+    let weightSum = 0, sum = 0;
     let lessons = enrollments[enrlId].lessons;
     for (let id in lessons) {
-        if (lessons[id].grade != undefined) {
-            sum += lessons[id].grade;
-            n++;
+        if (lessons[id].template.type !== "SEMINAR") {
+            let grade = (lessons[id].grade != undefined) ? lessons[id].grade : 0;
+            sum += (grade * lessons[id].template.weight);
+            weightSum += lessons[id].template.weight;
         }
     }
-    let average = (n > 0 ? sum / n : 0.0);
+    let average = (weightSum > 0 ? sum / weightSum : 0.00);
     enrollments[enrlId].averageGrade = average;
     updateAverageGradeView(enrlRow, average);
 }
@@ -121,16 +155,10 @@ function updateAverageGradeView(enrlRow, average) {
     }
 }
 
-function getNrOfLaboratories() {
-    for (let key in enrollments) {
-        return enrollments[key].course.nrOfLaboratories;
-    }
-}
-
-function getNrOfSeminars() {
-    for (let key in enrollments) {
-        return enrollments[key].course.nrOfSeminars;
-    }
+function getNrOfLessonsOfType(enrollment, lessonType) {
+    return enrollment.course.lessonTemplates.filter((lessonTemplate) => {
+        return lessonTemplate.type === lessonType;
+    }).length;
 }
 
 function hasMinimumGrade(grade) {

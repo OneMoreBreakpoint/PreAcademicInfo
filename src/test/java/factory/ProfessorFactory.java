@@ -1,7 +1,6 @@
 package factory;
 
 import bussiness_layer.dto.ProfessorDto;
-import bussiness_layer.dto.StudentDto;
 import data_layer.domain.Professor;
 import utils.TestConstants;
 

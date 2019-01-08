@@ -8,25 +8,24 @@ import lombok.experimental.UtilityClass;
 public class ProfessorMapper {
 
     public static Professor toEntity(ProfessorDto dto) {
-        Professor entity = new Professor();
-        entity.setUsername(dto.getUsername());
-        entity.setFirstName(dto.getFirstName());
-        entity.setLastName(dto.getLastName());
-        entity.setEmail(dto.getEmail());
-        entity.setWebPage(dto.getWebPage());
-        entity.setProfilePhoto(dto.getProfilePhoto());
-        return entity;
+        return Professor.builder()
+                .username(dto.getUsername())
+                .firstName(dto.getFirstName())
+                .email(dto.getEmail())
+                .webPage(dto.getWebPage())
+                .profilePhoto(dto.getProfilePhoto())
+                .build();
     }
 
     public static ProfessorDto toDto(Professor entity) {
-        ProfessorDto dto = new ProfessorDto();
-        dto.setUsername(entity.getUsername());
-        dto.setFirstName(entity.getFirstName());
-        dto.setLastName(entity.getLastName());
-        dto.setEmail(entity.getEmail());
-        dto.setWebPage(entity.getWebPage());
-        dto.setProfilePhoto(entity.getProfilePhoto());
-        dto.setUserRole(entity.getUserRole());
-        return dto;
+        return ProfessorDto.builder()
+                .username(entity.getUsername())
+                .firstName(entity.getFirstName())
+                .lastName(entity.getLastName())
+                .email(entity.getEmail())
+                .webPage(entity.getWebPage())
+                .profilePhoto(entity.getProfilePhoto())
+                .role(entity.getRole())
+                .build();
     }
 }

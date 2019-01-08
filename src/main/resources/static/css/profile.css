@@ -1,0 +1,56 @@
+#btn_uploadPhoto {
+    margin-bottom: 40px !important;
+}
+
+.profile-head {
+    padding-top: 10px !important;
+}
+
+.profile-head input {
+    width: 40% !important;
+}
+
+#profile-settings {
+    padding-top: 20px !important;
+}
+
+#password-settings {
+    padding-top: 20px !important;
+}
+
+#profile-settings label {
+    color: var(--color4-dark) !important;
+}
+
+#validator h4 {
+    font-weight: bold !important;
+}
+
+#lbl_webPage {
+    color: var(--color4-dark) !important;
+    display: inline !important;
+}
+
+#web-page {
+    width: 40% !important;
+    display: inline;
+}
+
+#error-msg {
+    display: none;
+    color: var(--color2-dark);
+}
+
+#error-passwd-msg {
+    display: none;
+    color: var(--color2-dark);
+}
+
+#profile-settings li {
+    display: block;
+    padding-top: 10px;
+}
+
+div.material-switch input {
+    padding: 0px;
+}

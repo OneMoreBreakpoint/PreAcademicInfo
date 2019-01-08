@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:with="lang=${#locale.language}" th:lang="${lang}">
+<head>
+    <meta charset="UTF-8">
+    <title>courses</title>
+</head>
+<body>
+
+<a th:fragment="group (group, course)" class="group"
+   th:href="|/professor/timeline?course=${course.code}&group=${group.code}|">
+    <th:block th:switch="${group.code}">
+        <th:block th:case="0" th:text="#{timeline.filter.extensionGroup}"></th:block>
+        <th:block th:case="*" th:text="${group.code}"></th:block>
+    </th:block>
+</a>
+
+<div th:fragment="professor-course-settings-modal (domId, lessonTemplates)"
+     class="professor-course-settings-modal modal-box modal-close"
+     th:id="${domId}">
+    <div class="modal-window">
+        <span class="modal-close">
+            <i class="fas fa-times"></i>
+        </span>
+        <div class="modal-header">
+            <h2 th:text="#{settings}"></h2>
+        </div>
+        <div class="modal-body">
+            <h3 th:text="#{courseSettings.defineNrOfPartialExams}"></h3>
+            <hr>
+            <label th:text="|#{courseSettings.nrOfSeminarPartials}:|" for="spinner_nrOfSeminarPartialExams"></label>
+            <input type="number" min="0" max="5" id="spinner_nrOfSeminarPartialExams"
+                   th:value="${viewHelper.getNrOfLessonsOfType(lessonTemplates, 'PARTIAL_EXAM_SEMINAR')}">
+            <br>
+            <label th:text="|#{courseSettings.nrOfLaboratoryPartials}:|"
+                   for="spinner_nrOfLaboratoryPartialExams"></label>
+            <input type="number" min="0" max="5" id="spinner_nrOfLaboratoryPartialExams"
+                   th:value="${viewHelper.getNrOfLessonsOfType(lessonTemplates, 'PARTIAL_EXAM_LABORATORY')}">
+            <br>
+            <label th:text="|#{courseSettings.nrOfCoursePartials}:|" for="spinner_nrOfCoursePartialExams"></label>
+            <input type="number" min="0" max="5" id="spinner_nrOfCoursePartialExams"
+                   th:value="${viewHelper.getNrOfLessonsOfType(lessonTemplates, 'PARTIAL_EXAM_COURSE')}">
+            <br>
+            <h3 th:text="#{courseSettings.defineWeights}"></h3>
+            <hr>
+            <p th:text="|*#{courseSettings.zeroWeightMeansNoGrade}|" class="footnote"></p>
+            <p th:text="|**#{courseSettings.sumOfWeightsMustBe100}|" class="footnote"></p>
+            <div th:each="lessonTemplate : ${lessonTemplates}" th:id="|lesson_template-${lessonTemplate.id}|"
+                 th:switch="${lessonTemplate.type.toString()}"
+                 th:class="'lesson-weight ' + ${lessonTemplate.type.toString().toLowerCase().replace('_', '-')}">
+                <th:block th:case="'LABORATORY'">
+                    <label th:text="|#{timeline.head.laboratory} ${lessonTemplate.nr}|"></label>
+                </th:block>
+                <th:block th:case="'PARTIAL_EXAM_SEMINAR'">
+                    <label th:text="|#{timeline.head.partial} #{timeline.head.seminar} ${lessonTemplate.nr}|"></label>
+                </th:block>
+                <th:block th:case="'PARTIAL_EXAM_LABORATORY'">
+                    <label th:text="|#{timeline.head.partial} #{timeline.head.laboratory} ${lessonTemplate.nr}|"></label>
+                </th:block>
+                <th:block th:case="'PARTIAL_EXAM_COURSE'">
+                    <label th:text="|#{timeline.head.partial} #{timeline.head.course} ${lessonTemplate.nr}|"></label>
+                </th:block>
+                <th:block th:unless="${lessonTemplate.type.toString() == 'SEMINAR'}">
+                    <input type="number" min="0" max="100" step="1" class="lesson-weight"
+                           th:id="|lessonWeight-${lessonTemplate.id}|"
+                           th:value="${lessonTemplate.weight}">
+                    <span>%</span>
+                </th:block>
+            </div>
+            </th:block>
+        </div>
+        <div class="modal-footer">
+            <input type="button" class="professor-course-save-btn modal-close" th:value="#{action.saveChanges}">
+            <input type="button" class="professor-course-discard-btn modal-close err"
+                   th:value="#{action.discardChanges}">
+            <div th:text="#{courseSettings.sumOfWeightsIsLessThan100}" class="sum-of-weights-lt-100-err err"></div>
+            <div th:text="#{courseSettings.sumOfWeightsIsGreaterThan100}" class="sum-of-weights-gt-100-err err"></div>
+            <div th:text="#{courseSettings.partialsMustHaveNon0Weight}"
+                 class="partials-must-have-non0-weight-err err"></div>
+            <div th:text="#{courseSettings.cannotAddSeminarPartial}" class="cannot-add-seminar-partial-err err"></div>
+        </div>
+    </div>
+</div>
+
+
+<div th:fragment="professor-course (professorCourse)" class="professor-course" th:object="${professorCourse}"
+     th:id="|professor_course-*{course.id}|">
+    <div class="professor-course-header">
+        <h4 th:text="*{course.name}"></h4>
+    </div>
+    <div class="professor-course-body">
+        <th:block th:each="group : *{groups}">
+            <div th:replace="this :: group(${group}, *{course})"></div>
+        </th:block>
+    </div>
+    <div class="professor-course-footer" th:if="*{coordinator}">
+        <span class="professor-course-settings-btn ">
+            <i class="fas fa-cog"></i>
+        </span>
+        <div th:replace="this :: professor-course-settings-modal (*{'professor_course_settings_modal-' + course.id}, *{course.lessonTemplates})"></div>
+    </div>
+</div>
+
+</body>
+</html>

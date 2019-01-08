@@ -1,10 +1,8 @@
 package web_layer.controllers;
 
 import bussiness_layer.dto.EnrollmentDto;
-import bussiness_layer.services.IStudentService;
+import bussiness_layer.services.IEnrollmentService;
 import org.springframework.beans.factory.annotation.Autowired;
-import java.security.Principal;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,13 +16,19 @@ import java.util.List;
 @RequestMapping("/student")
 public class StudentMvcController {
     @Autowired
-    private IStudentService service;
+    private IEnrollmentService enrollmentService;
+
+    @GetMapping("/")
+    public String getIndexPage() {
+        return "redirect:/student/timeline";
+    }
 
     @GetMapping("/timeline")
     public ModelAndView getTimelinePage(Principal crtUser) {
-        List<EnrollmentDto> enrollments = service.getEnrollments(crtUser.getName());
+        List<EnrollmentDto> enrollments = enrollmentService.getEnrollments(crtUser.getName());
         return new ModelAndView("/student/timeline")
                 .addObject("enrollments", enrollments)
                 .addObject("viewHelper", ViewHelper.class);
     }
+
 }

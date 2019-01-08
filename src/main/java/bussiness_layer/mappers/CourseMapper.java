@@ -2,30 +2,39 @@ package bussiness_layer.mappers;
 
 import bussiness_layer.dto.CourseDto;
 import data_layer.domain.Course;
+import data_layer.domain.ProfessorRight;
 import lombok.experimental.UtilityClass;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @UtilityClass
 public class CourseMapper {
 
     public static Course toEntity(CourseDto dto) {
-        Course entity = new Course();
-        entity.setId(dto.getId());
-        entity.setCode(dto.getCode());
-        entity.setName(dto.getName());
-        entity.setNrOfSeminars(dto.getNrOfSeminars());
-        entity.setNrOfLaboratories(dto.getNrOfLaboratories());
-        entity.setCoordinator(ProfessorMapper.toEntity(dto.getCoordinator()));
-        return entity;
+        return Course.builder()
+                .id(dto.getId())
+                .code(dto.getCode())
+                .name(dto.getName())
+                .lessonTemplates(LessonTemplateMapper.toEntityList(dto.getLessonTemplates()))
+                .coordinator(ProfessorMapper.toEntity(dto.getCoordinator()))
+                .build();
     }
 
     public static CourseDto toDto(Course entity) {
-        CourseDto dto = new CourseDto();
-        dto.setId(entity.getId());
-        dto.setCode(entity.getCode());
-        dto.setName(entity.getName());
-        dto.setNrOfSeminars(entity.getNrOfSeminars());
-        dto.setNrOfLaboratories(entity.getNrOfLaboratories());
-        dto.setCoordinator(ProfessorMapper.toDto(entity.getCoordinator()));
-        return dto;
+        return CourseDto.builder()
+                .id(entity.getId())
+                .code(entity.getCode())
+                .name(entity.getName())
+                .coordinator(ProfessorMapper.toDto(entity.getCoordinator()))
+                .lessonTemplates(LessonTemplateMapper.toDtoList(entity.getLessonTemplates()))
+                .build();
+    }
+
+    public static List<Course> toCoursesList(List<ProfessorRight> professorRights) {
+        return professorRights.stream()
+                .map(ProfessorRight::getCourse)
+                .distinct()
+                .collect(Collectors.toList());
     }
 }

@@ -1,17 +1,6 @@
 package business_layer.integration;
 
-import java.util.Arrays;
-import java.util.List;
-
-import org.junit.Ignore;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
-
 import business_layer.BaseIntegrationTest;
-import bussiness_layer.dto.EnrollmentDto;
 import bussiness_layer.dto.LessonDto;
 import bussiness_layer.dto.ProfessorCourseDto;
 import bussiness_layer.dto.ProfessorDto;
@@ -23,15 +12,21 @@ import data_layer.domain.Group;
 import data_layer.domain.Professor;
 import factory.LessonFactory;
 import factory.ProfessorFactory;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.ExpectedException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import utils.LessonType;
 import utils.RightType;
 import utils.TestConstants;
 import utils.exceptions.AccessForbiddenException;
 import utils.exceptions.ResourceNotFoundException;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import java.util.Arrays;
+import java.util.List;
+
+import static org.junit.Assert.*;
 
 public class ProfessorIT extends BaseIntegrationTest {
 
@@ -40,33 +35,6 @@ public class ProfessorIT extends BaseIntegrationTest {
 
     @Rule
     public final ExpectedException exception = ExpectedException.none();
-
-    @Test
-    @Transactional
-    public void givenProfessorHasRights_whenGetEnrollments_thenEnrollmentsRetrieved() {
-        //Given
-        createEnrollment(TestConstants.PROF_USERNAME, TestConstants.COURSE_CODE, TestConstants.GROUP_CODE);
-        createProfessorRights(TestConstants.PROF_USERNAME, TestConstants.COURSE_CODE, TestConstants.GROUP_CODE);
-        //When
-        List<EnrollmentDto> enrollmentDtoList = professorService.getEnrollments(
-                TestConstants.PROF_USERNAME, TestConstants.COURSE_CODE, TestConstants.GROUP_CODE);
-        //Then
-        assertNotNull(enrollmentDtoList);
-        assertEquals(1, enrollmentDtoList.size());
-    }
-
-    @Test
-    @Transactional
-    public void givenCourseDoesNotExist_whenGetEnrollments_thenResourceNotFoundExceptionThrown() {
-        //Given
-        createEnrollment(TestConstants.PROF_USERNAME, TestConstants.COURSE_CODE, TestConstants.GROUP_CODE);
-        createProfessorRights(TestConstants.PROF_USERNAME, TestConstants.COURSE_CODE, TestConstants.GROUP_CODE);
-        //Then
-        exception.expect(ResourceNotFoundException.class);
-        //When
-        List<EnrollmentDto> enrollmentDtoList = professorService.getEnrollments(
-                TestConstants.PROF_USERNAME, "__", TestConstants.GROUP_CODE);
-    }
 
     @Test
     @Transactional
@@ -83,7 +51,6 @@ public class ProfessorIT extends BaseIntegrationTest {
     }
 
     @Test
-    @Transactional
     public void givenProfessorDoesNotTeachAtCourse_whenGetProfessorRight_thenNoProfessorRightsRetrieved() {
         //Given
         createEnrollment(TestConstants.PROF_USERNAME, TestConstants.COURSE_CODE, TestConstants.GROUP_CODE);
@@ -102,7 +69,7 @@ public class ProfessorIT extends BaseIntegrationTest {
         //Given
         Enrollment enrollment = createEnrollment(TestConstants.PROF_USERNAME, TestConstants.COURSE_CODE, TestConstants.GROUP_CODE);
         createProfessorRights(TestConstants.PROF_USERNAME, TestConstants.COURSE_CODE, TestConstants.GROUP_CODE);
-        enrollment.getLessons().get(0).setType(LessonType.LABORATORY); //prof has LAB rights only so he can only write LABS
+        enrollment.getLessons().get(0).getTemplate().setType(LessonType.LABORATORY); //prof has LAB rights only so he can only write LABS
         int lessonId = enrollment.getLessons().get(0).getId();
         boolean attended = true;
         byte bonus = 2, grade = 10;
@@ -121,7 +88,6 @@ public class ProfessorIT extends BaseIntegrationTest {
     }
 
     @Test
-    @Transactional
     public void givenProfessorDoesNotHaveRights_whenUpdateLessons_thenAccessForbiddenExceptionThrown() {
         //Given
         Enrollment enrollment = createEnrollment(TestConstants.PROF_USERNAME, TestConstants.COURSE_CODE, TestConstants.GROUP_CODE);
@@ -142,7 +108,6 @@ public class ProfessorIT extends BaseIntegrationTest {
     }
 
     @Test
-    @Transactional
     public void givenLessonsDoesNotExist_whenUpdateLesson_thenResourceNotFoundExceptionThrown() {
         //Given
         LessonDto inexistentLessonDto = LessonFactory.generateLessonDtoBuilder()
@@ -167,12 +132,14 @@ public class ProfessorIT extends BaseIntegrationTest {
 
     }
 
-    @Ignore
     @Test
+    @Transactional
     public void givenProfessorWithTwoCoursesTaught_whenGetRelatedCourses_thenProfessorCourseDtoListIsReturned() {
         //Given
-        createEnrollment(TestConstants.PROF_USERNAME, TestConstants.COURSE_CODE, TestConstants.GROUP_CODE);
-        createEnrollment(TestConstants.PROF_USERNAME + "abc", TestConstants.COURSE_CODE + 1, TestConstants.GROUP_CODE + 1);
+        createEnrollment(TestConstants.PROF_USERNAME, TestConstants.COURSE_CODE, TestConstants.GROUP_CODE,
+                TestConstants.PROF_COORDINATOR, TestConstants.STUD_USERNAME);
+        createEnrollment(TestConstants.PROF_USERNAME2, TestConstants.COURSE_CODE2, TestConstants.GROUP_CODE2,
+                TestConstants.PROF_COORDINATOR, TestConstants.STUD_USERNAME2);
 
         Group group = groupRepository.findByCode(TestConstants.GROUP_CODE).get();
         Course course = courseRepository.findAll().get(courseRepository.findAll().size() - 1);
@@ -192,27 +159,32 @@ public class ProfessorIT extends BaseIntegrationTest {
     @Test
     @Transactional
     public void givenProfessorDto_whenUpdateProffesor_thenProfessorIsUpdated() {
+        //Given
         Professor professor = createProfessor(TestConstants.PROF_USERNAME);
         String web_page = "www.new-web-page.ro";
         ProfessorDto professorDto = ProfessorFactory.generateProfessorDtoBuilder()
                 .username(professor.getUsername())
                 .webPage(web_page)
                 .build();
-        //professorService.updateProfessor(professorDto);
+        //When
+        professorService.updateProfessor(professorDto, TestConstants.PROF_USERNAME);
+        //Then
         assertEquals(web_page, professorDto.getWebPage());
     }
 
     @Test
-    @Transactional
     public void givenProfessorDoesNotExist_whenUpdateProfessor_thenResourceNotFoundExceptionThrown() {
+        //Given
         Professor professor = createProfessor(TestConstants.PROF_USERNAME);
         String web_page = "www.new-web-page.ro";
         ProfessorDto professorDto = ProfessorFactory.generateProfessorDtoBuilder()
                 .username("Anonim")
                 .webPage(web_page)
                 .build();
+        //Then
         exception.expect(ResourceNotFoundException.class);
-        //professorService.updateProfessor(professorDto);
+        //When
+        professorService.updateProfessor(professorDto, professorDto.getUsername());
     }
 
 }

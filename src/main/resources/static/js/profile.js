@@ -3,7 +3,7 @@ const TYPR_PROFESOR = "PROFESSOR";
 const UPDATE_STUDENT_URL = "/app/student/";
 const UPDATE_PROFESSOR_URL = "/app/professor/";
 
-$(document).ready(function(){
+$(document).ready(function () {
     create_user_details();
 });
 
@@ -29,7 +29,7 @@ function create_profile_photo() {
 }
 
 function create_personal_details(user_data) {
-    (user_data.userRole === TYPE_STUDENT) ? create_student_details(user_data) : create_profesor_details(user_data);
+    (user_data.role === TYPE_STUDENT) ? create_student_details(user_data) : create_profesor_details(user_data);
     $("#personal-details").after(create_row(`${i18n.email}:`, user_data.email));
     $("#personal-details").after(create_row(`${i18n.username}:`, user_data.username));
     $("#personal-details").after(create_row(`${i18n.lastName}:`, user_data.lastName));
@@ -43,13 +43,13 @@ function create_student_details(user_details) {
 
 function create_profesor_details(user_details) {
     $("#personal-details").after(
-        "<div class='row'>"+
-            `<div class='col-md-4'><label style='color: #8c8c8c; display: inline'>${i18n.webpage}: </label></div>`  +
-            "<div class='col-md-8'>" +
-                "<input max='50' min='1' style='width: 40%; display: inline;' type='url' id='web-page' name='web-page' class='form-control' onchange='update_web_page()' type='url' data-bv-uri-message='The website address is not valid'>" +
-                '<small id = "error-msg" class="help-block" data-bv-validator="uri" data-bv-for="web-page" data-bv-result="INVALID" style="display: none;color: #a94442">The website address is not valid</small>'+
-            "</div>" +
-        "</div>"
+        `<div class='row'>` +
+        `<div class='col-md-4'><label id='lbl_webPage'>${i18n.webpage}: </label></div>` +
+        `<div class='col-md-8'>` +
+        `<input max='50' min='1'  type='url' id='web-page' name='web-page' class='form-control' onchange='update_web_page()' data-bv-uri-message='The website address is not valid'>` +
+        `<small id = "error-msg" class="help-block" data-bv-validator="uri" data-bv-for="web-page" data-bv-result="INVALID" >${i18n.invalidWebPage}</small>` +
+        `</div>` +
+        `</div>`
     );
     $("#web-page").val(user_details.webPage);
 }
@@ -61,8 +61,7 @@ function update_web_page() {
         valid_field("#web-page");
         save();
     }
-    else 
-    {
+    else {
         invalid_field("#web-page");
     }
 }
@@ -79,15 +78,15 @@ function valid_field(input) {
 
 function valid_URL(str) {
     try {
-        var pattern = new RegExp('^(https?:\\/\\/)?'+
-            '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+
-            '((\\d{1,3}\\.){3}\\d{1,3}))'+
-            '(\\:\\d+)?'+
-            '(\\/[-a-z\\d%@_.~+&:]*)*'+
-            '(\\?[;&a-z\\d%@_.,~+&:=-]*)?'+
-            '(\\#[-a-z\\d_]*)?$','i');
+        var pattern = new RegExp('^(https?:\\/\\/)?' +
+            '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' +
+            '((\\d{1,3}\\.){3}\\d{1,3}))' +
+            '(\\:\\d+)?' +
+            '(\\/[-a-z\\d%@_.~+&:]*)*' +
+            '(\\?[;&a-z\\d%@_.,~+&:=-]*)?' +
+            '(\\#[-a-z\\d_]*)?$', 'i');
         return pattern.test(str);
-    }catch (e) {
+    } catch (e) {
         return false;
     }
 }
@@ -110,38 +109,37 @@ function create_row(name, value) {
 
 function create_password_settings() {
     $("#password-settings").after(
-        `<label style='color: #8c8c8c'>${i18n.currentPassword}: </label>` +
-        "<input style='width: 40%' disabled type='password' id='current-password' class='form-control'>" +
-        `<label style='color: #8c8c8c'>${i18n.newPassword}: </label>` +
-        "<input style='width: 40%' disabled type='password' id='new-password' class='form-control'>" +
-        `<label style='color: #8c8c8c'>${i18n.repeatPassword}: </label>` +
-        "<input style='width: 40%' disabled type='password' id='repeat-password' class='form-control' name='passwd'>" +
+        `<label>${i18n.currentPassword}: </label>` +
+        "<input disabled type='password' id='current-password' class='form-control'>" +
+        `<label>${i18n.newPassword}: </label>` +
+        "<input disabled type='password' id='new-password' class='form-control'>" +
+        `<label>${i18n.repeatPassword}: </label>` +
+        "<input disabled type='password' id='repeat-password' class='form-control' name='passwd'>" +
         '<small id = "error-passwd-msg" class="help-block" data-bv-validator="uri" data-bv-for="passwd" ' +
-        'data-bv-result="INVALID" style="display: none;color: #a94442">The password is not valid</small>'
+        `data-bv-result="INVALID">${i18n.invalidPassword}</small>`
     );
 }
 
 function create_user_settings(user_details) {
-    if (user_details.userRole === TYPR_PROFESOR)
-    {
+    if (user_details.role === TYPR_PROFESOR) {
         $("#profile-settings").css("display", "none");
         return;
     }
 
     $("#profile-settings").after(
-        "<li style='display: block; padding-top: 10px'>" +
+        "<li>" +
         "<div class='material-switch'>" +
-        "<input id='notify-by-email' name='notify-by-email' type='checkbox' style='padding: 0px' onchange='update_user_settings()'>" +
-        "<label for='notify-by-email' class='label-default' style='padding: 0px'></label>" +
+        "<input id='notify-by-email' name='notify-by-email' type='checkbox' onchange='update_user_settings()'>" +
+        "<label for='notify-by-email' class='label-default'></label>" +
         `&nbsp;&nbsp;${i18n.notifyThroughEmail}.` +
         "</div>" +
         "</li>");
-    if (user_details.notifiedByEmail){
+    if (user_details.notifiedByEmail) {
         $("#notify-by-email").prop("checked", "true");
     }
 }
 
-function update_user_settings(){
+function update_user_settings() {
     let notify = $("#notify-by-email").is(":checked");
     user.notifiedByEmail = notify;
     save();
@@ -149,13 +147,30 @@ function update_user_settings(){
 
 function save_passwd() {
     let new_passwd = $("#new-password").val();
-    if (new_passwd != $("#repeat-password").val()) {
+    let repeat_passwd = $("#repeat-password").val();
+    let crt_password = $("#current-password").val();
+    if (!validatePasswords(crt_password, new_passwd, repeat_passwd)) {
         $("#error-passwd-msg").css('display', 'block');
         return;
     }
     $("#error-passwd-msg").css('display', 'none');
-    user.password = new_passwd;
-    save();
+    $.ajax({
+        url: `/app/password?crtPassword=${crt_password}&newPassword=${new_passwd}`,
+        type: "PUT",
+        contentType: "application/json; charset=utf-8",
+        success: (response, textStatus, xhr) => {
+            if (xhr.status == 200) {
+                displayModal("#modal_success", true);
+                disable_edit();
+            }
+        },
+        error: (xhr) => {
+            if (xhr.status == 403) {
+                displayModal("#modal_invalid_pwd", true);
+            }
+            displayModal("#modal_failure", true);
+        }
+    });
 }
 
 function change_password() {
@@ -168,7 +183,7 @@ function change_password() {
 }
 
 function save() {
-    url = (user.userRole == TYPE_STUDENT) ? UPDATE_STUDENT_URL : UPDATE_PROFESSOR_URL;
+    url = (user.role == TYPE_STUDENT) ? UPDATE_STUDENT_URL : UPDATE_PROFESSOR_URL;
     let reqBody = JSON.stringify(user);
     $.ajax({
         url: url,
@@ -206,10 +221,10 @@ function cancel() {
     disable_edit();
 }
 
-function previewFile(){
+function previewFile() {
     var preview = document.getElementById('profile-img-input'); //selects the query named img
-    var file    = document.querySelector('input[type=file]').files[0]; //sames as here
-    var reader  = new FileReader();
+    var file = document.querySelector('input[type=file]').files[0]; //sames as here
+    var reader = new FileReader();
 
     reader.onloadend = function (event) {
         let image = event.target.result;
@@ -219,11 +234,17 @@ function previewFile(){
     };
 
     if (file) {
-        if (file.size > 1048576)
-        {
+        if (file.size > 1048576) {
             alert("The dimension file has to be less than 1 MB.");
             return;
         }
         reader.readAsDataURL(file); //reads the data as a URL
     }
+}
+
+function validatePasswords(crtPassword, newPassword, repeatPassword){
+    return newPassword === repeatPassword &&
+        newPassword != undefined && newPassword != "" &&
+        repeatPassword != undefined && repeatPassword != "" &&
+        newPassword.length >= 6 && newPassword.length <= 32 ;
 }
