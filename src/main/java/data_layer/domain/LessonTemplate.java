@@ -36,7 +36,7 @@ public class LessonTemplate {
     @ManyToOne
     private Course course;
 
-    public boolean isOfTypePartial(){
+    public boolean isOfTypePartial() {
         return this.getType() == LessonType.PARTIAL_EXAM_SEMINAR
                 || this.getType() == LessonType.PARTIAL_EXAM_COURSE
                 || this.getType() == LessonType.PARTIAL_EXAM_LABORATORY;

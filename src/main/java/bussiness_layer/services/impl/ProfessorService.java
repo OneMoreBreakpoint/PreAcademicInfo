@@ -1,13 +1,5 @@
 package bussiness_layer.services.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import bussiness_layer.dto.GroupDto;
 import bussiness_layer.dto.LessonDto;
 import bussiness_layer.dto.ProfessorCourseDto;
@@ -26,10 +18,17 @@ import data_layer.repositories.ICourseRepository;
 import data_layer.repositories.IGroupRepository;
 import data_layer.repositories.ILessonRepository;
 import data_layer.repositories.IProfessorRightRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import utils.LessonType;
 import utils.RightType;
 import utils.exceptions.AccessForbiddenException;
 import utils.exceptions.ResourceNotFoundException;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional

@@ -1,19 +1,18 @@
 package business_layer.integration;
 
-import java.util.List;
-
+import business_layer.BaseIntegrationTest;
+import bussiness_layer.dto.EnrollmentDto;
+import bussiness_layer.services.impl.EnrollmentService;
+import data_layer.domain.Enrollment;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
-
-import business_layer.BaseIntegrationTest;
-import bussiness_layer.dto.EnrollmentDto;
-import bussiness_layer.services.impl.EnrollmentService;
-import data_layer.domain.Enrollment;
 import utils.TestConstants;
 import utils.exceptions.ResourceNotFoundException;
+
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;

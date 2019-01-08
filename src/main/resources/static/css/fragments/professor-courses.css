@@ -58,16 +58,16 @@
     margin-top: 10px;
 }
 
-.professor-course-settings-modal label{
+.professor-course-settings-modal label {
     min-width: 230px;
     display: inline-block;
 }
 
-.professor-course-settings-modal input{
+.professor-course-settings-modal input {
     text-align: center;
 }
 
-.professor-course-settings-modal div.lesson-weight label{
+.professor-course-settings-modal div.lesson-weight label {
     min-width: 180px;
     display: inline-block;
 }

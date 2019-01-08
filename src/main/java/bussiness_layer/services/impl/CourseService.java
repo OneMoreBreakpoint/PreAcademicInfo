@@ -1,29 +1,20 @@
 package bussiness_layer.services.impl;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import bussiness_layer.dto.CourseDto;
 import bussiness_layer.dto.LessonTemplateDto;
 import bussiness_layer.mappers.CourseMapper;
 import bussiness_layer.mappers.LessonTemplateMapper;
 import bussiness_layer.services.ICourseService;
 import bussiness_layer.utils.LessonTemplateDtoValidator;
-import data_layer.domain.Course;
-import data_layer.domain.Enrollment;
-import data_layer.domain.Lesson;
-import data_layer.domain.LessonTemplate;
-import data_layer.domain.ProfessorRight;
-import data_layer.repositories.ICourseRepository;
-import data_layer.repositories.IEnrollmentRepository;
-import data_layer.repositories.ILessonRepository;
-import data_layer.repositories.ILessonTemplateRepository;
-import data_layer.repositories.IProfessorRightRepository;
+import data_layer.domain.*;
+import data_layer.repositories.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import utils.exceptions.AccessForbiddenException;
 import utils.exceptions.ResourceNotFoundException;
+
+import java.util.List;
 
 @Service
 @Transactional

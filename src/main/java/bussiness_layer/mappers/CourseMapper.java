@@ -1,12 +1,12 @@
 package bussiness_layer.mappers;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 import bussiness_layer.dto.CourseDto;
 import data_layer.domain.Course;
 import data_layer.domain.ProfessorRight;
 import lombok.experimental.UtilityClass;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @UtilityClass
 public class CourseMapper {

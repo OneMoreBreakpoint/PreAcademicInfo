@@ -1,17 +1,5 @@
 package business_layer.integration;
 
-import java.util.Arrays;
-import java.util.List;
-
-import javax.transaction.TransactionScoped;
-
-import org.junit.Ignore;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
-
 import business_layer.BaseIntegrationTest;
 import bussiness_layer.dto.LessonDto;
 import bussiness_layer.dto.ProfessorCourseDto;
@@ -23,15 +11,21 @@ import data_layer.domain.Group;
 import data_layer.domain.Professor;
 import factory.LessonFactory;
 import factory.ProfessorFactory;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.ExpectedException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import utils.LessonType;
 import utils.RightType;
 import utils.TestConstants;
 import utils.exceptions.AccessForbiddenException;
 import utils.exceptions.ResourceNotFoundException;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import java.util.Arrays;
+import java.util.List;
+
+import static org.junit.Assert.*;
 
 public class ProfessorIT extends BaseIntegrationTest {
 
@@ -141,10 +135,10 @@ public class ProfessorIT extends BaseIntegrationTest {
     @Transactional
     public void givenProfessorWithTwoCoursesTaught_whenGetRelatedCourses_thenProfessorCourseDtoListIsReturned() {
         //Given
-        createEnrollment(TestConstants.PROF_USERNAME,TestConstants.COURSE_CODE,TestConstants.GROUP_CODE,
-                TestConstants.PROF_COORDINATOR,TestConstants.STUD_USERNAME);
-        createEnrollment(TestConstants.PROF_USERNAME2,TestConstants.COURSE_CODE2,TestConstants.GROUP_CODE2,
-                TestConstants.PROF_COORDINATOR,TestConstants.STUD_USERNAME2);
+        createEnrollment(TestConstants.PROF_USERNAME, TestConstants.COURSE_CODE, TestConstants.GROUP_CODE,
+                TestConstants.PROF_COORDINATOR, TestConstants.STUD_USERNAME);
+        createEnrollment(TestConstants.PROF_USERNAME2, TestConstants.COURSE_CODE2, TestConstants.GROUP_CODE2,
+                TestConstants.PROF_COORDINATOR, TestConstants.STUD_USERNAME2);
 
         Group group = groupRepository.findByCode(TestConstants.GROUP_CODE).get();
         Course course = courseRepository.findAll().get(courseRepository.findAll().size() - 1);

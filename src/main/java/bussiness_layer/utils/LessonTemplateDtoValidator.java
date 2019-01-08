@@ -32,21 +32,21 @@ public class LessonTemplateDtoValidator {
         validateAfterNrOfPartials(lessonTemplates);
     }
 
-    private static void validateAfterNrOfSeminars(List<LessonTemplateDto> lessonTemplates){
+    private static void validateAfterNrOfSeminars(List<LessonTemplateDto> lessonTemplates) {
         long nrOfSeminars = getNrOfLessonsOfType(lessonTemplates, LessonType.SEMINAR);
         if (nrOfSeminars > 14 || nrOfSeminars % 7 != 0 || nrOfSeminars < 0) {
             throw new UnprocessableEntityException();
         }
     }
 
-    private static void validateAfterNrOfLaboratories(List<LessonTemplateDto> lessonTemplates){
+    private static void validateAfterNrOfLaboratories(List<LessonTemplateDto> lessonTemplates) {
         long nrOfLaboratories = getNrOfLessonsOfType(lessonTemplates, LessonType.LABORATORY);
         if (nrOfLaboratories != 14 && nrOfLaboratories != 7) {
             throw new UnprocessableEntityException();
         }
     }
 
-    private static void validateAfterNrOfPartials(List<LessonTemplateDto> lessonTemplates){
+    private static void validateAfterNrOfPartials(List<LessonTemplateDto> lessonTemplates) {
         long nrOfSeminarPartials = getNrOfLessonsOfType(lessonTemplates, LessonType.PARTIAL_EXAM_SEMINAR);
         long nrOfLaboratoryPartials = getNrOfLessonsOfType(lessonTemplates, LessonType.PARTIAL_EXAM_LABORATORY);
         long nrOfCoursePartials = getNrOfLessonsOfType(lessonTemplates, LessonType.PARTIAL_EXAM_COURSE);
@@ -59,12 +59,12 @@ public class LessonTemplateDtoValidator {
     }
 
     private static void validateAfterParticularWeight(List<LessonTemplateDto> lessonTemplates) {
-       validateParticularWeightIsNullForSeminars(lessonTemplates);
-       validateParticularWeightIsNotNullForPartialsAndLabs(lessonTemplates);
-       validateParticularWeightIsNot0ForPartials(lessonTemplates);
+        validateParticularWeightIsNullForSeminars(lessonTemplates);
+        validateParticularWeightIsNotNullForPartialsAndLabs(lessonTemplates);
+        validateParticularWeightIsNot0ForPartials(lessonTemplates);
     }
 
-    private static void validateParticularWeightIsNullForSeminars(List<LessonTemplateDto> lessonTemplates){
+    private static void validateParticularWeightIsNullForSeminars(List<LessonTemplateDto> lessonTemplates) {
         lessonTemplates.stream()
                 .filter(lessonTemplate -> lessonTemplate.getType() == LessonType.SEMINAR)
                 .forEach(lessonTemplate -> {
@@ -74,7 +74,7 @@ public class LessonTemplateDtoValidator {
                 });
     }
 
-    private static void validateParticularWeightIsNotNullForPartialsAndLabs(List<LessonTemplateDto> lessonTemplates){
+    private static void validateParticularWeightIsNotNullForPartialsAndLabs(List<LessonTemplateDto> lessonTemplates) {
         lessonTemplates.stream()
                 .filter(lessonTemplate -> lessonTemplate.getType() == LessonType.PARTIAL_EXAM_SEMINAR
                         || lessonTemplate.getType() == LessonType.PARTIAL_EXAM_LABORATORY
@@ -87,7 +87,7 @@ public class LessonTemplateDtoValidator {
                 });
     }
 
-    private static void validateParticularWeightIsNot0ForPartials(List<LessonTemplateDto> lessonTemplates){
+    private static void validateParticularWeightIsNot0ForPartials(List<LessonTemplateDto> lessonTemplates) {
         lessonTemplates.stream()
                 .filter(lessonTemplate -> lessonTemplate.getType() == LessonType.PARTIAL_EXAM_SEMINAR
                         || lessonTemplate.getType() == LessonType.PARTIAL_EXAM_LABORATORY

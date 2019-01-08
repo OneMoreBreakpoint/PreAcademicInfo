@@ -134,7 +134,7 @@ function updateAverageGrade(enrlRow) {
     let weightSum = 0, sum = 0;
     let lessons = enrollments[enrlId].lessons;
     for (let id in lessons) {
-        if(lessons[id].template.type !== "SEMINAR"){
+        if (lessons[id].template.type !== "SEMINAR") {
             let grade = (lessons[id].grade != undefined) ? lessons[id].grade : 0;
             sum += (grade * lessons[id].template.weight);
             weightSum += lessons[id].template.weight;

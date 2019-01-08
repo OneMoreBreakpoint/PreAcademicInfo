@@ -6,10 +6,12 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import javax.validation.constraints.Size;
 import java.util.List;
 
-@Entity(name = "Professors")
+@Entity
+@Table(name = "professors")
 @Data
 @NoArgsConstructor
 public class Professor extends User {

@@ -1,14 +1,5 @@
 package business_layer.integration;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
-
 import business_layer.BaseIntegrationTest;
 import bussiness_layer.dto.CourseDto;
 import bussiness_layer.dto.LessonTemplateDto;
@@ -19,9 +10,17 @@ import data_layer.domain.Enrollment;
 import data_layer.domain.LessonTemplate;
 import data_layer.domain.Professor;
 import factory.LessonTemplateFactory;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.ExpectedException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import utils.LessonType;
 import utils.TestConstants;
 import utils.exceptions.AccessForbiddenException;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertEquals;
 

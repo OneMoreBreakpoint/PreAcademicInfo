@@ -71,7 +71,8 @@
         </div>
         <div class="modal-footer">
             <input type="button" class="professor-course-save-btn modal-close" th:value="#{action.saveChanges}">
-            <input type="button" class="professor-course-discard-btn modal-close err" th:value="#{action.discardChanges}">
+            <input type="button" class="professor-course-discard-btn modal-close err"
+                   th:value="#{action.discardChanges}">
             <div th:text="#{courseSettings.sumOfWeightsIsLessThan100}" class="sum-of-weights-lt-100-err err"></div>
             <div th:text="#{courseSettings.sumOfWeightsIsGreaterThan100}" class="sum-of-weights-gt-100-err err"></div>
             <div th:text="#{courseSettings.partialsMustHaveNon0Weight}"
