@@ -13,9 +13,10 @@
         <class>data_layer.domain.User</class>
         <properties>
             <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
-            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/PreAcademicInfo"/>
-            <property name="javax.persistence.jdbc.user" value="root"/>
-            <property name="javax.persistence.jdbc.password" value=""/>
+            <property name="javax.persistence.jdbc.url"
+                      value="jdbc:mysql://eu-cdbr-west-02.cleardb.net/heroku_6c5fa10b6fe4e19?reconnect=true"/>
+            <property name="javax.persistence.jdbc.user" value="b385578539c001"/>
+            <property name="javax.persistence.jdbc.password" value="17bb654b"/>
             <property name="show_sql" value="true"/>
             <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect"/>
             <!--<property name="hibernate.temp.use_jdbc_metadata_defaults" value="false"/>-->
@@ -54,9 +55,10 @@
         <class>data_layer.domain.User</class>
         <properties>
             <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
-            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/PreAcademicInfo"/>
-            <property name="javax.persistence.jdbc.user" value="root"/>
-            <property name="javax.persistence.jdbc.password" value=""/>
+            <property name="javax.persistence.jdbc.url"
+                      value="jdbc:mysql://eu-cdbr-west-02.cleardb.net/heroku_6c5fa10b6fe4e19?reconnect=true"/>
+            <property name="javax.persistence.jdbc.user" value="b385578539c001"/>
+            <property name="javax.persistence.jdbc.password" value="17bb654b"/>
             <property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>
             <property name="show_sql" value="true"/>
             <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect"/>
@@ -65,4 +67,26 @@
             <property name="hibernate.connection.charSet" value="UTF-8"/>
         </properties>
     </persistence-unit>
+    <!--</persistence-unit> <persistence-unit name="db-insert">-->
+        <!--<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>-->
+        <!--<class>data_layer.domain.Course</class>-->
+        <!--<class>data_layer.domain.Enrollment</class>-->
+        <!--<class>data_layer.domain.Lesson</class>-->
+        <!--<class>data_layer.domain.Professor</class>-->
+        <!--<class>data_layer.domain.Student</class>-->
+        <!--<class>data_layer.domain.ProfessorRight</class>-->
+        <!--<class>data_layer.domain.User</class>-->
+        <!--<properties>-->
+            <!--<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>-->
+            <!--<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/PreAcademicInfo"/>-->
+            <!--<property name="javax.persistence.jdbc.user" value="root"/>-->
+            <!--<property name="javax.persistence.jdbc.password" value=""/>-->
+            <!--<property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>-->
+            <!--<property name="show_sql" value="true"/>-->
+            <!--<property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect"/>-->
+            <!--<property name="hibernate.connection.characterEncoding" value="utf8"/>-->
+            <!--<property name="hibernate.connection.useUnicode" value="true"/>-->
+            <!--<property name="hibernate.connection.charSet" value="UTF-8"/>-->
+        <!--</properties>-->
+    <!--</persistence-unit>-->
 </persistence>

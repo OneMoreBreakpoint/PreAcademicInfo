@@ -41,7 +41,7 @@ public class ProfessorMvcController {
     @GetMapping("/dashboard")
     public ModelAndView getDashboardPage(Principal crtUser) {
         List<ProfessorCourseDto> professorCourses = professorService.getRelatedCourses(crtUser.getName());
-        return new ModelAndView("/professor/dashboard")
+        return new ModelAndView("professor/dashboard")
                 .addObject("professorCourses", professorCourses)
                 .addObject("viewHelper", ViewHelper.class);
     }
