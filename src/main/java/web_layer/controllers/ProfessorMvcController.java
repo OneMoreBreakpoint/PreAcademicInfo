@@ -51,7 +51,7 @@ public class ProfessorMvcController {
         List<EnrollmentDto> enrollments = enrollmentService.getEnrollments(crtUser.getName(), course, group);
         List<ProfessorRightDto> professorRights = professorService.getProfessorRights(crtUser.getName(), course, group);
         List<GroupDto> groups = professorService.getGroups(crtUser.getName(), course);
-        return new ModelAndView("/professor/timeline")
+        return new ModelAndView("professor/timeline")
                 .addObject("enrollments", enrollments)
                 .addObject("rights", professorRights)
                 .addObject("groups", groups)

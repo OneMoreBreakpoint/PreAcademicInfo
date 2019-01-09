@@ -49,17 +49,17 @@
 </div>
 <div class="timeline" id="timeline">
     <table>
-        <tr th:replace="/fragments/professor-timeline :: t-head-row (${enrollments[0]}, ${viewHelper})"></tr>
+        <tr th:replace="fragments/professor-timeline :: t-head-row (${enrollments[0]}, ${viewHelper})"></tr>
         <tbody>
         <th:block th:each="enrl : ${enrollments}">
-            <tr th:replace="/fragments/professor-timeline :: t-data-row (${enrl}, ${viewHelper})"></tr>
+            <tr th:replace="fragments/professor-timeline :: t-data-row (${enrl}, ${viewHelper})"></tr>
         </th:block>
         </tbody>
     </table>
 </div>
 <input type="button" th:value="#{timeline.action.submitChanges}" id="btn_submitChanges" disabled>
-<div th:replace="/fragments/response-modal :: response-modal ('modal_success', true, #{modal.response.success})"></div>
-<div th:replace="/fragments/response-modal :: response-modal ('modal_failure', false, #{modal.response.failure})"></div>
+<div th:replace="fragments/response-modal :: response-modal ('modal_success', true, #{modal.response.success})"></div>
+<div th:replace="fragments/response-modal :: response-modal ('modal_failure', false, #{modal.response.failure})"></div>
 </body>
 
 </html>
