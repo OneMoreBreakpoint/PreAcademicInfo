@@ -1,6 +1,7 @@
 package bussiness_layer.services;
 
 import bussiness_layer.dto.EnrollmentDto;
+import bussiness_layer.dto.LessonDto;
 
 import java.util.List;
 
@@ -20,5 +21,12 @@ public interface IEnrollmentService {
      * @return - the enrollments for the  given student
      */
     List<EnrollmentDto> getEnrollments(String studUsername);
+
+    /**
+     *
+     * @param lessonDtos
+     * @return
+     */
+    List<String> getAllStudentsEmails(List<LessonDto> lessonDtos);
 
 }

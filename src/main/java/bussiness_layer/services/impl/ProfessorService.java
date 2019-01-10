@@ -8,6 +8,8 @@ import bussiness_layer.dto.*;
 import data_layer.domain.*;
 import data_layer.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -54,12 +56,15 @@ public class ProfessorService implements IProfessorService {
     }
 
     @Override
+    @Async
     public void updateLessons(String profUsername, List<LessonDto> lessonDtos) {
         lessonDtos.forEach(lessonDto -> {
             //check if request is processable
             LessonDtoValidator.validate(lessonDto);
             //check if lesson exist
             Lesson lesson = lessonRepository.findById(lessonDto.getId()).orElseThrow(ResourceNotFoundException::new);
+
+
             String courseCode = lesson.getEnrollment().getCourse().getCode();
             String groupCode = lesson.getEnrollment().getStudent().getGroup().getCode();
             //check if crt prof has right to modify this lesson
@@ -74,6 +79,11 @@ public class ProfessorService implements IProfessorService {
             lesson.setGrade(lessonDto.getGrade());
         });
         lessonRepository.flush();
+    }
+
+    private void notifyStudentsViaEmail() {
+
+
     }
 
     @Override
