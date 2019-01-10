@@ -1,6 +1,7 @@
 package bussiness_layer.services.impl;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,9 @@ import data_layer.domain.ProfessorRight;
 import data_layer.repositories.ICourseRepository;
 import data_layer.repositories.IEnrollmentRepository;
 import data_layer.repositories.IGroupRepository;
+import data_layer.repositories.ILessonRepository;
 import data_layer.repositories.IProfessorRightRepository;
+import data_layer.repositories.IStudentRepository;
 import utils.RightType;
 import utils.exceptions.AccessForbiddenException;
 import utils.exceptions.ResourceNotFoundException;
@@ -36,6 +39,9 @@ public class EnrollmentService implements IEnrollmentService {
 
     @Autowired
     private IEnrollmentRepository enrollmentRepository;
+
+    @Autowired
+    private ILessonRepository lessonRepository;
 
     @Override
     public List<EnrollmentDto> getEnrollments(String profUsername, String courseCode, String groupCode) {
@@ -62,6 +68,17 @@ public class EnrollmentService implements IEnrollmentService {
             throw new ResourceNotFoundException();
         }
         return EnrollmentMapper.toDtoList(enrollments);
+    }
+
+    @Override
+    public List<String> getAllStudentsEmails(List<LessonDto> lessonDtos) {
+        return lessonDtos.stream()
+                .map(lessonDto -> lessonRepository.findById(lessonDto.getId()))
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .map(lesson -> lesson.getEnrollment().getStudent().getEmail())
+                .distinct()
+                .collect(Collectors.toList());
     }
 
     private void stripEnrollmentsOfUnauthorizedLessons(List<EnrollmentDto> enrollmentDtos, List<ProfessorRight> rights) {

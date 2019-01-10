@@ -26,6 +26,7 @@ public class EmailSender {
         if (toEmails.size() > 0) {
             final SimpleMailMessage message = new SimpleMailMessage();
             final String[] toEmailsArray = new String[toEmails.size()];
+            toEmails.toArray(toEmailsArray);
             message.setTo(toEmailsArray);
             message.setSubject(subject);
             message.setText(content);
