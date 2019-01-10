@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:with="lang=${#locale.language}" th:lang="${lang}">
+<head>
+    <meta charset="UTF-8">
+    <title>PreAcademic Info</title>
+    <link rel="stylesheet" th:href="@{/css/common.css}"/>
+    <link rel="stylesheet" th:href="@{/css/fragments/header.css}"/>
+    <script th:src="@{/dependencies/jquery-3.3.1.min.js}"></script>
+    <script th:src="@{/dependencies/bootstrap.min.js}"></script>
+    <script th:src="@{/dependencies/bootstrapValidator.js}"></script>
+    <link th:href="@{/dependencies/bootstrap.min.css} " rel="stylesheet">
+    <script th:src="@{/js/common.js}"></script>
+    <script th:src="@{/js/profile.js}"></script>
+    <script th:src="@{/js/fragments/lang-picker.js}"></script>
+    <link rel="stylesheet" th:href="@{/css/fragments/modals.css}"/>
+    <link rel="stylesheet" th:href="@{/css/profile.css}"/>
+    <script th:inline="javascript">
+        let user = /*[[${user}]]*/ '';
+        let i18n = {};
+        i18n.personalDetails = /*[[#{user.personalDetails}]]*/ '';
+        i18n.firstName = /*[[#{user.firstName}]]*/ '';
+        i18n.lastName = /*[[#{user.lastName}]]*/ '';
+        i18n.username = /*[[#{user.username}]]*/ '';
+        i18n.email = /*[[#{user.email}]]*/ '';
+        i18n.webpage = /*[[#{user.webpage}]]*/ '';
+        i18n.registrationNr = /*[[#{user.registrationNr}]]*/ '';
+        i18n.group = /*[[#{user.group}]]*/ '';
+        i18n.changePassword = /*[[#{user.changePassword}]]*/ '';
+        i18n.currentPassword = /*[[#{user.currentPassword}]]*/ '';
+        i18n.newPassword = /*[[#{user.newPassword}]]*/ '';
+        i18n.repeatPassword = /*[[#{user.repeatPassword}]]*/ '';
+        i18n.changePhoto = /*[[#{user.changePhoto}]]*/ '';
+        i18n.removePhoto = /*[[#{user.removePhoto}]]*/ '';
+        i18n.profileSettings = /*[[#{user.profileSettings}]]*/ '';
+        i18n.notifyThroughEmail = /*[[#{user.notifyThroughEmail}]]*/ '';
+        i18n.invalidPassword = /*[[#{user.invalidPassword}]]*/ '';
+        i18n.invalidWebPage = /*[[#{user.invalidWebPage}]]*/ '';
+    </script>
+    <script defer src="https://use.fontawesome.com/releases/v5.5.0/js/all.js"
+            integrity="sha384-GqVMZRt5Gn7tB9D9q7ONtcp4gtHIUEW/yG7h98J7IpE3kpi+srfFyyB/04OV6pG0"
+            crossorigin="anonymous"></script>
+</head>
+<body>
+<div th:replace="fragments/header :: header(true)"></div>
+
+<div class="emp-profile form-group" id="validator">
+    <div class="row">
+        <div class="col-lg-3">
+            <div class="profile-img">
+                <img id="profile-img-input" src="../../static/images/profile.jpg" th:src="@{/images/profile.jpg}"
+                     alt="Image preview..."/>
+                <div class="file btn btn-primary" id="btn_uploadPhoto">
+                    <span th:text="#{user.changePhoto}"></span>
+                    <input type="file" name="file" onchange="previewFile()"/>
+                </div>
+                <div class="file btn btn-danger" onclick="delete_photo()" th:text="#{user.removePhoto}"></div>
+            </div>
+        </div>
+        <div class="col-lg-9">
+            <div id="profile-div" class="profile-head">
+                <div class="row" id="personal-details">
+                    <div class="col-sm-12"><h4 th:text="#{user.personalDetails}"></h4></div>
+                </div>
+
+                <div class="row" id="password-settings">
+                    <div class="col-sm-4"><h4 th:text="#{user.changePassword}"></h4></div>
+                    <div class="col-md-8">
+                        <button type="button" onclick="change_password()" class="btn btn-danger" id="change_passwd-btn"
+                                name="Change" th:text="#{action.change}">
+                        </button>
+                        <button type="button" onclick="save_passwd()" class="btn btn-danger" id="save-btn" name="Save"
+                                style="display: none" th:text="#{action.save}">Save
+                        </button>
+                        <button type="button" onclick="cancel()" class="btn btn-default" id="cancel-btn" name="Cancel"
+                                style="display: none" th:text="#{action.cancel}">
+                        </button>
+                    </div>
+                </div>
+
+                <div class="row" id="profile-settings">
+                    <div class="col-sm-4"><h4 th:text="#{user.profileSettings}"></h4></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div th:replace="/fragments/response-modal :: response-modal ('modal_success', true, #{modal.response.success})"></div>
+    <div th:replace="/fragments/response-modal :: response-modal ('modal_failure', false, #{modal.response.failure})"></div>
+    <div th:replace="/fragments/response-modal :: response-modal ('modal_invalid_pwd', false, #{user.invalidPassword})"></div>
+</div>
+</body>
+</html>

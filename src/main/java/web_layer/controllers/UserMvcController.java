@@ -31,4 +31,13 @@ public class UserMvcController {
         UserDto user = userService.getUserByUsername(crtUser.getName());
         return Constants.REDIRECT + user.getRole().toLowerCase() + "/";
     }
+
+    @GetMapping("/profile")
+    public ModelAndView getProfilePage(Principal crtUser) {
+        UserDto user = userService.getUserByUsername(crtUser.getName());
+        return new ModelAndView("/profile")
+                .addObject("user", user);
+    }
+
+
 }

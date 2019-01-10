@@ -19,6 +19,10 @@
     top: 10px;
 }
 
+.header h1 {
+    font-weight: bold !important;
+}
+
 /*anonymous*/
 .header.anonymous h1 {
     color: var(--color4);

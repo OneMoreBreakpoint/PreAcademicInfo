@@ -5,7 +5,7 @@
     --color1-light: #2ec7b9;
     --color2: #ff4f19;
     --color2-light: #ff9d49;
-    --color2-dark: #a21818;
+    --color2-dark: #a94442;
     --color2-ultralight: #ddc69f;
     --color3: #2b9b48;
     --color4: #bababa;
@@ -68,10 +68,10 @@ input[type=submit].err:hover, input[type=button].err:hover, button.err:hover {
 
 input[type=checkbox] {
     -webkit-appearance: none;
-    border-style: solid;
-    border-width: 3px;
-    border-color: var(--color1);
-    padding: 8px;
+    border-style: solid !important;
+    border-width: 3px !important;
+    border-color: var(--color1) !important;
+    padding: 5px !important;
     position: relative;
     font-weight: normal;
     top: 3px;
@@ -130,4 +130,92 @@ input[type=button].err {
 
 input[type=button].ok {
     background-color: var(--color3);
+}
+
+.emp-profile {
+    padding: 3%;
+}
+
+.profile-img {
+    max-width: 400px;
+    max-height: 400px;
+    text-align: center;
+}
+
+.profile-img img {
+    width: 70%;
+    height: 100%;
+}
+
+.profile-img .file {
+    position: relative;
+    overflow: hidden;
+    margin-top: -12%;
+    width: 70%;
+    border: none;
+    border-radius: 0;
+    font-size: 15px;
+}
+
+.profile-img .file input {
+    position: absolute;
+    opacity: 0;
+    right: 0;
+    top: 0;
+}
+
+.profile-head h5 {
+    color: #333;
+}
+
+.profile-head h6 {
+    color: #0062cc;
+}
+
+.material-switch > input[type="checkbox"] {
+    display: none;
+}
+
+.material-switch > label {
+    cursor: pointer;
+    height: 0px;
+    position: relative;
+    width: 40px;
+}
+
+.material-switch > label::before {
+    background: rgb(0, 0, 0);
+    box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.5);
+    border-radius: 8px;
+    content: '';
+    height: 16px;
+    margin-top: -8px;
+    position: absolute;
+    opacity: 0.3;
+    transition: all 0.4s ease-in-out;
+    width: 40px;
+}
+
+.material-switch > label::after {
+    background: rgb(255, 255, 255);
+    border-radius: 16px;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
+    content: '';
+    height: 24px;
+    left: -4px;
+    margin-top: -8px;
+    position: absolute;
+    top: -4px;
+    transition: all 0.3s ease-in-out;
+    width: 24px;
+}
+
+.material-switch > input[type="checkbox"]:checked + label::before {
+    background: inherit;
+    opacity: 0.5;
+}
+
+.material-switch > input[type="checkbox"]:checked + label::after {
+    background: inherit;
+    left: 20px;
 }

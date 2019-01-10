@@ -4,6 +4,7 @@ public class TestConstants {
 
     public static final String USERNAME = "username";
     public static final String PASSWORD = "password";
+    public static final String PASSWORD2 = "password2";
     public static final String FIRSTNAME = "firstname";
     public static final String LASTNAME = "lastname";
     public static final String EMAIL = "abcd1234@scs.ubbcluj.ro";
@@ -19,6 +20,10 @@ public class TestConstants {
     public static final String PROF_COORDINATOR = "prof coordinator";
 
     public static final String STUD_USERNAME = "stud";
+    public static final String WEB_PAGE = "css.ubbcluj.ro/dana";
+    public static final String IMAGE = "FEWBFJ2U92hvbje2i3233ed32nj";
+    public static final String IMAGE2 = "njer908v498gvn4jrv54";
+
     public static final String STUD_USERNAME2 = "stud2";
 
 }

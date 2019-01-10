@@ -3,6 +3,7 @@ package business_layer.integration;
 import business_layer.BaseIntegrationTest;
 import bussiness_layer.dto.LessonDto;
 import bussiness_layer.dto.ProfessorCourseDto;
+import bussiness_layer.dto.ProfessorDto;
 import bussiness_layer.dto.ProfessorRightDto;
 import bussiness_layer.services.IProfessorService;
 import data_layer.domain.Course;
@@ -153,6 +154,37 @@ public class ProfessorIT extends BaseIntegrationTest {
 
         //Then
         assertEquals(professorCourseDtos.size(), 2);
+    }
+
+    @Test
+    @Transactional
+    public void givenProfessorDto_whenUpdateProffesor_thenProfessorIsUpdated() {
+        //Given
+        Professor professor = createProfessor(TestConstants.PROF_USERNAME);
+        String web_page = "www.new-web-page.ro";
+        ProfessorDto professorDto = ProfessorFactory.generateProfessorDtoBuilder()
+                .username(professor.getUsername())
+                .webPage(web_page)
+                .build();
+        //When
+        professorService.updateProfessor(professorDto, TestConstants.PROF_USERNAME);
+        //Then
+        assertEquals(web_page, professorDto.getWebPage());
+    }
+
+    @Test
+    public void givenProfessorDoesNotExist_whenUpdateProfessor_thenResourceNotFoundExceptionThrown() {
+        //Given
+        Professor professor = createProfessor(TestConstants.PROF_USERNAME);
+        String web_page = "www.new-web-page.ro";
+        ProfessorDto professorDto = ProfessorFactory.generateProfessorDtoBuilder()
+                .username("Anonim")
+                .webPage(web_page)
+                .build();
+        //Then
+        exception.expect(ResourceNotFoundException.class);
+        //When
+        professorService.updateProfessor(professorDto, professorDto.getUsername());
     }
 
 }

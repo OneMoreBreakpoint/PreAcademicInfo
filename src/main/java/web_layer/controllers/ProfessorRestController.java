@@ -1,7 +1,9 @@
 package web_layer.controllers;
 
+
 import bussiness_layer.dto.CourseDto;
 import bussiness_layer.dto.LessonDto;
+import bussiness_layer.dto.ProfessorDto;
 import bussiness_layer.services.ICourseService;
 import bussiness_layer.services.IProfessorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +31,12 @@ public class ProfessorRestController {
     @PutMapping("/lessons")
     public ResponseEntity<?> putLessons(@RequestBody ArrayList<LessonDto> lessons, Principal crtUser) {
         professorService.updateLessons(crtUser.getName(), lessons);
+        return ResponseEntity.ok(null);
+    }
+
+    @PutMapping("/")
+    public ResponseEntity<?> put(@RequestBody ProfessorDto professorDto, Principal crtUser) {
+        professorService.updateProfessor(professorDto, crtUser.getName());
         return ResponseEntity.ok(null);
     }
 

@@ -1,17 +1,13 @@
 package bussiness_layer.services;
 
-import bussiness_layer.dto.GroupDto;
-import bussiness_layer.dto.LessonDto;
-import bussiness_layer.dto.ProfessorCourseDto;
-import bussiness_layer.dto.ProfessorRightDto;
-
 import java.util.List;
+
+import bussiness_layer.dto.*;
 
 public interface IProfessorService {
 
     /**
      * Return a list of professor rights in dto format.
-     *
      * @param profUsername
      * @param courseCode
      * @param groupCode
@@ -21,7 +17,6 @@ public interface IProfessorService {
 
     /**
      * Return for a given professor and course all correlated groups in dto format.
-     *
      * @param profUsername
      * @param courseCode
      * @return
@@ -30,11 +25,12 @@ public interface IProfessorService {
 
     /**
      * Update lessons data via a list of lessonDtos
-     *
      * @param profUsername - professor that initiates the update operation
-     * @param lessonDtos   - lessons data
+     * @param lessonDtos - lessons data
      */
     void updateLessons(String profUsername, List<LessonDto> lessonDtos);
+
+    void updateProfessor(ProfessorDto professorDto, String profUsername);
 
     /**
      * Return a list with all courses taught by a specific professor and the groups linked with, in dto format

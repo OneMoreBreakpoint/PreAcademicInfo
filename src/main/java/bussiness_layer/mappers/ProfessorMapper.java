@@ -13,7 +13,7 @@ public class ProfessorMapper {
                 .firstName(dto.getFirstName())
                 .email(dto.getEmail())
                 .webPage(dto.getWebPage())
-                .pathToProfilePhoto(dto.getPathToProfilePhoto())
+                .profilePhoto(dto.getProfilePhoto())
                 .build();
     }
 
@@ -24,7 +24,7 @@ public class ProfessorMapper {
                 .lastName(entity.getLastName())
                 .email(entity.getEmail())
                 .webPage(entity.getWebPage())
-                .pathToProfilePhoto(entity.getPathToProfilePhoto())
+                .profilePhoto(entity.getProfilePhoto())
                 .role(entity.getRole())
                 .build();
     }

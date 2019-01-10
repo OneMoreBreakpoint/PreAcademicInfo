@@ -14,7 +14,7 @@ public class StudentMapper {
                 .lastName(dto.getLastName())
                 .email(dto.getEmail())
                 .fathersInitials(dto.getFathersInitials())
-                .pathToProfilePhoto(dto.getPathToProfilePhoto())
+                .profilePhoto(dto.getProfilePhoto())
                 .notifiedByEmail(dto.isNotifiedByEmail())
                 .group(GroupMapper.toEntity(dto.getGroup()))
                 .build();
@@ -28,7 +28,7 @@ public class StudentMapper {
                 .email(entity.getEmail())
                 .registrationNr(entity.getRegistrationNr())
                 .fathersInitials(entity.getFathersInitials())
-                .pathToProfilePhoto(entity.getPathToProfilePhoto())
+                .profilePhoto(entity.getProfilePhoto())
                 .notifiedByEmail(entity.isNotifiedByEmail())
                 .group(GroupMapper.toDto(entity.getGroup()))
                 .role(entity.getRole())

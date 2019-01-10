@@ -32,7 +32,6 @@ public class ProfessorMvcController {
         this.enrollmentService = enrollmentService;
     }
 
-
     @GetMapping("/")
     public String getIndexPage() {
         return "redirect:/professor/dashboard";

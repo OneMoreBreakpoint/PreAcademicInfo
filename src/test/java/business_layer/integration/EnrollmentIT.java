@@ -2,8 +2,12 @@ package business_layer.integration;
 
 import business_layer.BaseIntegrationTest;
 import bussiness_layer.dto.EnrollmentDto;
-import bussiness_layer.services.impl.EnrollmentService;
+import bussiness_layer.dto.StudentDto;
+import bussiness_layer.services.IEnrollmentService;
+import bussiness_layer.services.IStudentService;
 import data_layer.domain.Enrollment;
+import data_layer.domain.Student;
+import factory.StudentFactory;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -20,7 +24,10 @@ import static org.junit.Assert.assertNotNull;
 public class EnrollmentIT extends BaseIntegrationTest {
 
     @Autowired
-    private EnrollmentService enrollmentService;
+    private IEnrollmentService enrollmentService;
+
+    @Autowired
+    IStudentService studentService;
 
     @Rule
     public final ExpectedException exception = ExpectedException.none();
@@ -75,4 +82,35 @@ public class EnrollmentIT extends BaseIntegrationTest {
         enrollmentService.getEnrollments("__");
     }
 
+    @Test
+    @Transactional
+    public void givenStudentDto_whenUpdateStudent_thenStudentIsUpdated() {
+        //Given
+        Student student = createStudent(TestConstants.STUD_USERNAME);
+        String image = TestConstants.IMAGE2;
+        StudentDto studentDto = StudentFactory.generateStudentDtoBuilder()
+                .username(student.getUsername())
+                .profilePhoto(image)
+                .build();
+        //When
+        studentService.updateStudent(studentDto, studentDto.getUsername());
+        //Then
+        assertEquals(image, studentDto.getProfilePhoto());
+    }
+
+    @Test
+    @Transactional
+    public void givenStudentDoesNotExist_whenUpdateStudent_thenResourceNotFoundExceptionThrown() {
+        //Given
+        Student student = createStudent(TestConstants.STUD_USERNAME);
+        String image = TestConstants.IMAGE2;
+        StudentDto studentDto = StudentFactory.generateStudentDtoBuilder()
+                .username("Anonim")
+                .profilePhoto(image)
+                .build();
+        //Then
+        exception.expect(ResourceNotFoundException.class);
+        //When
+        studentService.updateStudent(studentDto, studentDto.getUsername());
+    }
 }

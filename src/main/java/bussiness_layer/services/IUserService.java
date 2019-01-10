@@ -10,4 +10,6 @@ public interface IUserService {
      * @return
      */
     UserDto getUserByUsername(String username);
+
+    void updatePassword(String username, String crtPassword, String newPassword);
 }

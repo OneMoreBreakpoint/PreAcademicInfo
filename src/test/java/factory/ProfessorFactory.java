@@ -1,6 +1,8 @@
 package factory;
 
+import bussiness_layer.dto.ProfessorDto;
 import data_layer.domain.Professor;
+import utils.TestConstants;
 
 import static utils.TestConstants.*;
 
@@ -13,6 +15,16 @@ public class ProfessorFactory {
                 .lastName(LASTNAME)
                 .email(EMAIL);
         //TODO(All) add rest of the fields when necessary.
+    }
+
+    public static ProfessorDto.ProfessorDtoBuilder generateProfessorDtoBuilder() {
+        return ProfessorDto.builder()
+                .username(TestConstants.PROF_USERNAME)
+                .firstName(FIRSTNAME)
+                .lastName(LASTNAME)
+                .email(EMAIL)
+                .webPage(WEB_PAGE)
+                .profilePhoto(IMAGE);
     }
 
     public static Professor generateProfessor() {

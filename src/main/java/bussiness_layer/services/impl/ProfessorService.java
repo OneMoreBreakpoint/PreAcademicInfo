@@ -1,34 +1,26 @@
 package bussiness_layer.services.impl;
 
-import bussiness_layer.dto.GroupDto;
-import bussiness_layer.dto.LessonDto;
-import bussiness_layer.dto.ProfessorCourseDto;
-import bussiness_layer.dto.ProfessorRightDto;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import bussiness_layer.dto.*;
+import data_layer.domain.*;
+import data_layer.repositories.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import bussiness_layer.mappers.CourseMapper;
 import bussiness_layer.mappers.GroupMapper;
 import bussiness_layer.mappers.ProfessorCourseMapper;
 import bussiness_layer.mappers.ProfessorRightMapper;
 import bussiness_layer.services.IProfessorService;
 import bussiness_layer.utils.LessonDtoValidator;
-import data_layer.domain.Course;
-import data_layer.domain.Group;
-import data_layer.domain.Lesson;
-import data_layer.domain.ProfessorRight;
-import data_layer.repositories.ICourseRepository;
-import data_layer.repositories.IGroupRepository;
-import data_layer.repositories.ILessonRepository;
-import data_layer.repositories.IProfessorRightRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import utils.LessonType;
 import utils.RightType;
 import utils.exceptions.AccessForbiddenException;
 import utils.exceptions.ResourceNotFoundException;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -45,6 +37,9 @@ public class ProfessorService implements IProfessorService {
 
     @Autowired
     private ICourseRepository courseRepository;
+
+    @Autowired
+    private IProfessorRepository professorRepository;
 
     @Override
     public List<ProfessorRightDto> getProfessorRights(String profUsername, String courseCode, String groupCode) {
@@ -79,6 +74,15 @@ public class ProfessorService implements IProfessorService {
             lesson.setGrade(lessonDto.getGrade());
         });
         lessonRepository.flush();
+    }
+
+    @Override
+    public void updateProfessor(ProfessorDto professorDto, String profUsername) {
+        Professor professor = professorRepository.findByUsername(profUsername)
+                .orElseThrow(ResourceNotFoundException::new);
+        professor.setWebPage(professorDto.getWebPage());
+        professor.setProfilePhoto(professorDto.getProfilePhoto());
+        professorRepository.flush();
     }
 
     @Override
