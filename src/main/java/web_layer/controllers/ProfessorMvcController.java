@@ -40,7 +40,7 @@ public class ProfessorMvcController {
     @GetMapping("/dashboard")
     public ModelAndView getDashboardPage(Principal crtUser) {
         List<ProfessorCourseDto> professorCourses = professorService.getRelatedCourses(crtUser.getName());
-        return new ModelAndView("/professor/dashboard")
+        return new ModelAndView("professor/dashboard")
                 .addObject("professorCourses", professorCourses)
                 .addObject("viewHelper", ViewHelper.class);
     }
@@ -50,7 +50,7 @@ public class ProfessorMvcController {
         List<EnrollmentDto> enrollments = enrollmentService.getEnrollments(crtUser.getName(), course, group);
         List<ProfessorRightDto> professorRights = professorService.getProfessorRights(crtUser.getName(), course, group);
         List<GroupDto> groups = professorService.getGroups(crtUser.getName(), course);
-        return new ModelAndView("/professor/timeline")
+        return new ModelAndView("professor/timeline")
                 .addObject("enrollments", enrollments)
                 .addObject("rights", professorRights)
                 .addObject("groups", groups)

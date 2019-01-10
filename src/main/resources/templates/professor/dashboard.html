@@ -33,7 +33,7 @@
         <div th:replace="fragments/professor-courses :: professor-course(${profCourse})"></div>
     </th:block>
 </div>
-<div th:replace="/fragments/response-modal :: response-modal ('modal_success', true, #{modal.response.success})"></div>
-<div th:replace="/fragments/response-modal :: response-modal ('modal_failure', false, #{modal.response.failure})"></div>
+<div th:replace="fragments/response-modal :: response-modal ('modal_success', true, #{modal.response.success})"></div>
+<div th:replace="fragments/response-modal :: response-modal ('modal_failure', false, #{modal.response.failure})"></div>
 </body>
 </html>

@@ -7,19 +7,17 @@
         <class>data_layer.domain.Course</class>
         <class>data_layer.domain.Enrollment</class>
         <class>data_layer.domain.Lesson</class>
-        <class>data_layer.domain.PartialExam</class>
         <class>data_layer.domain.Professor</class>
         <class>data_layer.domain.Student</class>
         <class>data_layer.domain.ProfessorRight</class>
         <class>data_layer.domain.User</class>
         <properties>
-            <property name="javax.persistence.jdbc.driver" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/>
-            <property name="javax.persistence.jdbc.url"
-                      value="jdbc:sqlserver://localhost:1433;databaseName=PreAcademicInfo;integratedSecurity=true"/>
-            <property name="hibernate.dialect" value="org.hibernate.dialect.SQLServerDialect"/>
+            <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
+            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/PreAcademicInfo"/>
+            <property name="javax.persistence.jdbc.user" value="root"/>
+            <property name="javax.persistence.jdbc.password" value=""/>
             <property name="show_sql" value="true"/>
-            <property name="hibernate.temp.use_jdbc_metadata_defaults" value="false"/>
-            <property name="hibernate.classloading.use_current_tccl_as_parent" value="false"/>
+            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect"/>
         </properties>
     </persistence-unit>
 
@@ -27,7 +25,6 @@
         <class>data_layer.domain.Course</class>
         <class>data_layer.domain.Enrollment</class>
         <class>data_layer.domain.Lesson</class>
-        <class>data_layer.domain.PartialExam</class>
         <class>data_layer.domain.Professor</class>
         <class>data_layer.domain.Student</class>
         <class>data_layer.domain.ProfessorRight</class>
@@ -49,20 +46,18 @@
         <class>data_layer.domain.Course</class>
         <class>data_layer.domain.Enrollment</class>
         <class>data_layer.domain.Lesson</class>
-        <class>data_layer.domain.PartialExam</class>
         <class>data_layer.domain.Professor</class>
         <class>data_layer.domain.Student</class>
         <class>data_layer.domain.ProfessorRight</class>
         <class>data_layer.domain.User</class>
         <properties>
-            <property name="javax.persistence.jdbc.driver" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/>
-            <property name="javax.persistence.jdbc.url"
-                      value="jdbc:sqlserver://localhost:1433;databaseName=PreAcademicInfo;integratedSecurity=true"/>
-            <property name="hibernate.dialect" value="org.hibernate.dialect.SQLServerDialect"/>
-            <property name="show_sql" value="true"/>
-            <property name="hibernate.temp.use_jdbc_metadata_defaults" value="false"/>
-            <property name="hibernate.classloading.use_current_tccl_as_parent" value="false"/>
+            <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
+            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/PreAcademicInfo"/>
+            <property name="javax.persistence.jdbc.user" value="root"/>
+            <property name="javax.persistence.jdbc.password" value=""/>
             <property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>
+            <property name="show_sql" value="true"/>
+            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect"/>
             <property name="hibernate.connection.characterEncoding" value="utf8"/>
             <property name="hibernate.connection.useUnicode" value="true"/>
             <property name="hibernate.connection.charSet" value="UTF-8"/>

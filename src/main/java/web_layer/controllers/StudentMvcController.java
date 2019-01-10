@@ -26,7 +26,7 @@ public class StudentMvcController {
     @GetMapping("/timeline")
     public ModelAndView getTimelinePage(Principal crtUser) {
         List<EnrollmentDto> enrollments = enrollmentService.getEnrollments(crtUser.getName());
-        return new ModelAndView("/student/timeline")
+        return new ModelAndView("student/timeline")
                 .addObject("enrollments", enrollments)
                 .addObject("viewHelper", ViewHelper.class);
     }
