@@ -4,21 +4,33 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import bussiness_layer.dto.*;
-import data_layer.domain.*;
-import data_layer.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import bussiness_layer.dto.EmailNotificationDto;
+import bussiness_layer.dto.GroupDto;
+import bussiness_layer.dto.LessonDto;
+import bussiness_layer.dto.ProfessorCourseDto;
+import bussiness_layer.dto.ProfessorDto;
+import bussiness_layer.dto.ProfessorRightDto;
 import bussiness_layer.mappers.CourseMapper;
 import bussiness_layer.mappers.GroupMapper;
+import bussiness_layer.mappers.LessonMapper;
 import bussiness_layer.mappers.ProfessorCourseMapper;
 import bussiness_layer.mappers.ProfessorRightMapper;
 import bussiness_layer.services.IProfessorService;
 import bussiness_layer.utils.LessonDtoValidator;
+import data_layer.domain.Course;
+import data_layer.domain.Group;
+import data_layer.domain.Lesson;
+import data_layer.domain.Professor;
+import data_layer.domain.ProfessorRight;
+import data_layer.repositories.ICourseRepository;
+import data_layer.repositories.IGroupRepository;
+import data_layer.repositories.ILessonRepository;
+import data_layer.repositories.IProfessorRepository;
+import data_layer.repositories.IProfessorRightRepository;
 import utils.LessonType;
 import utils.RightType;
 import utils.exceptions.AccessForbiddenException;
@@ -56,14 +68,13 @@ public class ProfessorService implements IProfessorService {
     }
 
     @Override
-    @Async
-    public void updateLessons(String profUsername, List<LessonDto> lessonDtos) {
+    @Transactional
+    public List<EmailNotificationDto> updateLessons(String profUsername, List<LessonDto> lessonDtos) {
         lessonDtos.forEach(lessonDto -> {
             //check if request is processable
             LessonDtoValidator.validate(lessonDto);
             //check if lesson exist
             Lesson lesson = lessonRepository.findById(lessonDto.getId()).orElseThrow(ResourceNotFoundException::new);
-
 
             String courseCode = lesson.getEnrollment().getCourse().getCode();
             String groupCode = lesson.getEnrollment().getStudent().getGroup().getCode();
@@ -79,11 +90,16 @@ public class ProfessorService implements IProfessorService {
             lesson.setGrade(lessonDto.getGrade());
         });
         lessonRepository.flush();
+
+        return lessonDtos.stream()
+                .map(lessonDto -> LessonMapper.toEmailNotificationEntity(
+                        lessonDto, getAssociatedStudentEmailAdress(lessonDto.getId())))
+                .collect(Collectors.toList());
     }
 
-    private void notifyStudentsViaEmail() {
-
-
+    private String getAssociatedStudentEmailAdress(Integer lessonId) {
+        Lesson lesson = lessonRepository.findById(lessonId).orElseThrow(ResourceNotFoundException::new);
+        return lesson.getEnrollment().getStudent().getEmail();
     }
 
     @Override

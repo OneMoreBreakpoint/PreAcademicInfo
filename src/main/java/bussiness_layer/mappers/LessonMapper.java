@@ -1,11 +1,12 @@
 package bussiness_layer.mappers;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
+import bussiness_layer.dto.EmailNotificationDto;
 import bussiness_layer.dto.LessonDto;
 import data_layer.domain.Lesson;
 import lombok.experimental.UtilityClass;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @UtilityClass
 public class LessonMapper {
@@ -43,4 +44,17 @@ public class LessonMapper {
                 .sorted()
                 .collect(Collectors.toList());
     }
+
+    public static EmailNotificationDto toEmailNotificationEntity(LessonDto lessonDto, String emailAdress) {
+        return EmailNotificationDto.builder()
+                .attended(lessonDto.isAttended())
+                .grade(lessonDto.getGrade())
+                .bonus(lessonDto.getBonus())
+                .emailAddress(emailAdress)
+                .courseName(lessonDto.getTemplate().getCourseName())
+                .lessonType(lessonDto.getTemplate().getType())
+                .lessonNumber(lessonDto.getTemplate().getNr())
+                .build();
+    }
+
 }

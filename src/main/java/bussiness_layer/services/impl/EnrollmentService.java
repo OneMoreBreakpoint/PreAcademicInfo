@@ -40,9 +40,6 @@ public class EnrollmentService implements IEnrollmentService {
     @Autowired
     private IEnrollmentRepository enrollmentRepository;
 
-    @Autowired
-    private ILessonRepository lessonRepository;
-
     @Override
     public List<EnrollmentDto> getEnrollments(String profUsername, String courseCode, String groupCode) {
         groupRepository.findByCode(groupCode).orElseThrow(ResourceNotFoundException::new);
@@ -68,17 +65,6 @@ public class EnrollmentService implements IEnrollmentService {
             throw new ResourceNotFoundException();
         }
         return EnrollmentMapper.toDtoList(enrollments);
-    }
-
-    @Override
-    public List<String> getAllStudentsEmails(List<LessonDto> lessonDtos) {
-        return lessonDtos.stream()
-                .map(lessonDto -> lessonRepository.findById(lessonDto.getId()))
-                .filter(Optional::isPresent)
-                .map(Optional::get)
-                .map(lesson -> lesson.getEnrollment().getStudent().getEmail())
-                .distinct()
-                .collect(Collectors.toList());
     }
 
     private void stripEnrollmentsOfUnauthorizedLessons(List<EnrollmentDto> enrollmentDtos, List<ProfessorRight> rights) {

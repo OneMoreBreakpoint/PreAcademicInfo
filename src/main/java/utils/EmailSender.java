@@ -6,13 +6,17 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Component;
+
+import bussiness_layer.dto.EmailNotificationDto;
 
 /**
  * Send an email.
  */
 @Component("emailSender")
 @EnableAutoConfiguration
+@EnableAsync
 public class EmailSender {
 
     private final JavaMailSender javaMailSender;
@@ -22,16 +26,18 @@ public class EmailSender {
     }
 
     @Async
-    public void sendEmail(final List<String> toEmails, final String subject, final String content) {
-        if (toEmails.size() > 0) {
-            final SimpleMailMessage message = new SimpleMailMessage();
-            final String[] toEmailsArray = new String[toEmails.size()];
-            toEmails.toArray(toEmailsArray);
-            message.setTo(toEmailsArray);
-            message.setSubject(subject);
-            message.setText(content);
-            javaMailSender.send(message);
+    public void sendEmail(final List<EmailNotificationDto> notificationList) {
+        if (notificationList.size() > 0) {
+            notificationList.forEach(this::sendEmail);
         }
+    }
+
+    private void sendEmail(EmailNotificationDto emailNotificationDto) {
+        final SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(emailNotificationDto.getEmailAddress());
+        message.setSubject(EmailMessage.getSubject(emailNotificationDto.getCourseName()));
+        message.setText(EmailMessage.getContent(emailNotificationDto));
+        javaMailSender.send(message);
     }
 
 }

@@ -7,7 +7,6 @@ import org.mockito.Mock;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import bussiness_layer.services.ICourseService;
-import bussiness_layer.services.IEnrollmentService;
 import bussiness_layer.services.IProfessorService;
 import lombok.extern.slf4j.Slf4j;
 import utils.EmailSender;
@@ -27,14 +26,11 @@ public class ProfessorControllerTest extends BaseControllerTest {
     private ICourseService courseService;
 
     @Mock
-    private IEnrollmentService enrollmentService;
-
-    @Mock
     private EmailSender mailSender;
 
     @Before
     public void init() {
-        professorRestController = new ProfessorRestController(professorService, courseService, enrollmentService, mailSender);
+        professorRestController = new ProfessorRestController(professorService, courseService, mailSender);
         this.mockMvc = MockMvcBuilders.standaloneSetup(professorRestController)
                 .build();
     }

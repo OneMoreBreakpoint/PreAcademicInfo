@@ -2,10 +2,12 @@ package web_layer.controllers;
 
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -14,12 +16,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import bussiness_layer.dto.CourseDto;
+import bussiness_layer.dto.EmailNotificationDto;
 import bussiness_layer.dto.LessonDto;
 import bussiness_layer.dto.ProfessorDto;
 import bussiness_layer.services.ICourseService;
-import bussiness_layer.services.IEnrollmentService;
 import bussiness_layer.services.IProfessorService;
-import utils.Constants;
 import utils.EmailSender;
 
 @RestController
@@ -34,25 +35,21 @@ public class ProfessorRestController {
     private final ICourseService courseService;
 
     @Autowired
-    private final IEnrollmentService enrollmentService;
-
-    @Autowired
     private final EmailSender mailSender;
 
     @Autowired
-    public ProfessorRestController(IProfessorService professorService, ICourseService courseService, IEnrollmentService enrollmentService, EmailSender mailSender) {
+    public ProfessorRestController(IProfessorService professorService, ICourseService courseService, EmailSender mailSender) {
         this.professorService = professorService;
         this.courseService = courseService;
-        this.enrollmentService = enrollmentService;
         this.mailSender = mailSender;
     }
 
     @PutMapping("/lessons")
     public ResponseEntity<?> putLessons(@RequestBody ArrayList<LessonDto> lessons, Principal crtUser) {
-        professorService.updateLessons(crtUser.getName(), lessons);
-        mailSender.sendEmail(
-                enrollmentService.getAllStudentsEmails(lessons)
-                , Constants.EMAIL_SUBJECT, Constants.EMAIL_TEXT);
+        List<EmailNotificationDto> emailNotificationDtos = professorService.updateLessons(crtUser.getName(), lessons);
+
+        mailSender.sendEmail(emailNotificationDtos);
+
         return ResponseEntity.ok(null);
     }
 

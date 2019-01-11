@@ -1,13 +1,20 @@
 package bussiness_layer.dto;
 
-import lombok.*;
-import utils.LessonType;
-import utils.RightType;
+import java.io.Serializable;
 
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import java.io.Serializable;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import utils.LessonType;
+import utils.RightType;
 
 @Getter
 @Setter
@@ -30,7 +37,11 @@ public class LessonTemplateDto implements Comparable<LessonTemplateDto>, Seriali
     @NotNull
     private LessonType type;
 
+    @Enumerated(EnumType.STRING)
     private RightType rightType;
+
+    @NotNull
+    private String courseName;
 
     @Override
     public int compareTo(LessonTemplateDto o) {

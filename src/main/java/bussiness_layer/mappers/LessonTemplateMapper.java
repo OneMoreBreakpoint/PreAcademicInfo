@@ -1,11 +1,11 @@
 package bussiness_layer.mappers;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import bussiness_layer.dto.LessonTemplateDto;
 import data_layer.domain.LessonTemplate;
 import lombok.experimental.UtilityClass;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @UtilityClass
 public class LessonTemplateMapper {
@@ -25,6 +25,7 @@ public class LessonTemplateMapper {
                 .weight(entity.getWeight())
                 .nr(entity.getNr())
                 .type(entity.getType())
+                .courseName(entity.getCourse().getName())
                 .build();
     }
 
