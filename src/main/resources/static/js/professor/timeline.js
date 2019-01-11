@@ -1,5 +1,5 @@
-let dataHasBeenChanged = false;
 let crtGroupCode;
+let enrollmentsSnapshot = deepClone(enrollments);
 
 $(document).ready(function () {
     crtGroupCode = $("#combo_groupCode").val();
@@ -10,10 +10,11 @@ $(document).ready(function () {
 
 
 function setDataHasBeenChangedFlag(value) {
-    if (dataHasBeenChanged !== value) {
-        dataHasBeenChanged = value;
-        $("#btn_submitChanges").prop('disabled', !value);
+    if(!value){
+        enrollmentsSnapshot = deepClone(enrollments);
     }
+    let dataHasBeenChanged = enrollmentsStateHasChanged();
+    $("#btn_submitChanges").prop('disabled', !dataHasBeenChanged);
     if (dataHasBeenChanged) {
         window.onbeforeunload = () => {
             return true
@@ -55,8 +56,8 @@ function assignLessonCellHandlers(enrlRow, lessonCell) {
             $(bonusField).val(undefined);
             $(bonusField).trigger('change');
         }
-        setDataHasBeenChangedFlag(true);
         updateTotalAttendance(enrlRow);
+        setDataHasBeenChangedFlag(true);
     });
     $(gradeField).change((event) => {
         let lessonId = getNumericIdFromDomId(lessonCell.id);
@@ -65,8 +66,8 @@ function assignLessonCellHandlers(enrlRow, lessonCell) {
             $(gradeField).val(actualValue);
         }
         enrollments[enrlId].lessons[lessonId].grade = actualValue;
-        setDataHasBeenChangedFlag(true);
         updateAverageGrade(enrlRow);
+        setDataHasBeenChangedFlag(true);
     });
     $(bonusField).change((event) => {
         let lessonId = getNumericIdFromDomId(lessonCell.id);
@@ -79,8 +80,8 @@ function assignLessonCellHandlers(enrlRow, lessonCell) {
             $(attendanceField).prop('checked', true);
             $(attendanceField).trigger('change');
         }
-        setDataHasBeenChangedFlag(true);
         updateTotalBonus(enrlRow);
+        setDataHasBeenChangedFlag(true);
     });
 }
 
@@ -113,7 +114,7 @@ function assignFilterHandlers() {
 
 function assignActionHandlers() {
     $("#btn_submitChanges").click(() => {
-        let reqBody = JSON.stringify(stripReadOnlyLessons(getLessonList()));
+        let reqBody = JSON.stringify(stripReadOnlyLessons(getModifiedLessonList()));
         $.ajax({
             url: "/app/professor/lessons",
             type: "PUT",
@@ -161,11 +162,13 @@ function profHasRight(lessonType, rightType) {
     return false;
 }
 
-function getLessonList() {
+function getModifiedLessonList() {
     let lessons = [];
-    for (let ikey in enrollments) {
-        for (let jkey in enrollments[ikey].lessons) {
-            lessons.push(enrollments[ikey].lessons[jkey]);
+    for (let enrlId in enrollments) {
+        for (let lessonId in enrollments[enrlId].lessons) {
+            if(!equals(enrollments[enrlId].lessons[lessonId], enrollmentsSnapshot[enrlId].lessons[lessonId])){
+                lessons.push(enrollments[enrlId].lessons[lessonId]);
+            }
         }
     }
     return lessons;
@@ -187,4 +190,21 @@ function getValidGrade(actualValue) {
 
 function getValidBonus(actualValue) {
     return getValidNumber(actualValue, -10, 10);
+}
+
+function enrollmentsStateHasChanged(){
+    for(let enrlId in enrollments){
+        for(let lessonId in enrollments[enrlId].lessons){
+            if(!equals(enrollments[enrlId].lessons[lessonId], enrollmentsSnapshot[enrlId].lessons[lessonId])){
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+function equals(firstLesson, secondLesson){
+    return firstLesson.attended == secondLesson.attended &&
+        firstLesson.bonus == secondLesson.bonus &&
+        firstLesson.grade == secondLesson.grade;
 }
