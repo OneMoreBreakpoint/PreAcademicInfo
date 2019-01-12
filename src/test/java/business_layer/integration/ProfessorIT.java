@@ -1,7 +1,18 @@
 package business_layer.integration;
 
+import java.util.Arrays;
+import java.util.List;
+
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.ExpectedException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
+
 import business_layer.BaseIntegrationTest;
+import bussiness_layer.dto.EmailNotificationDto;
 import bussiness_layer.dto.LessonDto;
+import bussiness_layer.dto.LessonTemplateDto;
 import bussiness_layer.dto.ProfessorCourseDto;
 import bussiness_layer.dto.ProfessorDto;
 import bussiness_layer.dto.ProfessorRightDto;
@@ -9,24 +20,19 @@ import bussiness_layer.services.IProfessorService;
 import data_layer.domain.Course;
 import data_layer.domain.Enrollment;
 import data_layer.domain.Group;
+import data_layer.domain.Lesson;
 import data_layer.domain.Professor;
 import factory.LessonFactory;
 import factory.ProfessorFactory;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 import utils.LessonType;
 import utils.RightType;
 import utils.TestConstants;
 import utils.exceptions.AccessForbiddenException;
 import utils.exceptions.ResourceNotFoundException;
 
-import java.util.Arrays;
-import java.util.List;
-
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 public class ProfessorIT extends BaseIntegrationTest {
 
@@ -70,7 +76,9 @@ public class ProfessorIT extends BaseIntegrationTest {
         Enrollment enrollment = createEnrollment(TestConstants.PROF_USERNAME, TestConstants.COURSE_CODE, TestConstants.GROUP_CODE);
         createProfessorRights(TestConstants.PROF_USERNAME, TestConstants.COURSE_CODE, TestConstants.GROUP_CODE);
         enrollment.getLessons().get(0).getTemplate().setType(LessonType.LABORATORY); //prof has LAB rights only so he can only write LABS
-        int lessonId = enrollment.getLessons().get(0).getId();
+
+        Lesson lesson = enrollment.getLessons().get(0);
+        int lessonId = lesson.getId();
         boolean attended = true;
         byte bonus = 2, grade = 10;
         LessonDto lessonDto = LessonFactory.generateLessonDtoBuilder()
@@ -78,13 +86,30 @@ public class ProfessorIT extends BaseIntegrationTest {
                 .attended(attended)
                 .bonus(bonus)
                 .grade(grade)
+                .template(LessonTemplateDto.builder()
+                        .type(lesson.getTemplate().getType())
+                        .courseName(lesson.getEnrollment().getCourse().getName())
+                        .nr(lesson.getTemplate().getNr())
+                        .build())
                 .build();
         //When
-        professorService.updateLessons(TestConstants.PROF_USERNAME, Arrays.asList(lessonDto));
+        List<EmailNotificationDto> emailNotificationDtos = professorService.updateLessons(
+                TestConstants.PROF_USERNAME, Arrays.asList(lessonDto));
+
         //Then
-        assertEquals(attended, enrollment.getLessons().get(0).isAttended());
-        assertEquals(bonus, (byte) enrollment.getLessons().get(0).getBonus());
-        assertEquals(grade, (byte) enrollment.getLessons().get(0).getGrade());
+        assertEquals(emailNotificationDtos.size(), 1);
+
+        EmailNotificationDto emailNotificationDto = emailNotificationDtos.get(0);
+        Lesson updatedLesson = enrollment.getLessons().get(0);
+
+        assertEquals(emailNotificationDto.isAttended(), updatedLesson.isAttended());
+        assertEquals(emailNotificationDto.getBonus(), updatedLesson.getBonus());
+        assertEquals(emailNotificationDto.getGrade(), updatedLesson.getGrade());
+        assertEquals(emailNotificationDto.getCourseName(), updatedLesson.getTemplate().getCourse().getName());
+        assertEquals(emailNotificationDto.getLessonType(), updatedLesson.getTemplate().getType());
+        assertEquals(emailNotificationDto.getLessonNumber(), updatedLesson.getTemplate().getNr());
+        assertEquals(emailNotificationDto.getEmailAddress(), updatedLesson.getEnrollment().getStudent().getEmail());
+
     }
 
     @Test
