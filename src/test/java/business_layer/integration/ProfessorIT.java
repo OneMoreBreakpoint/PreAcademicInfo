@@ -88,7 +88,6 @@ public class ProfessorIT extends BaseIntegrationTest {
                 .grade(grade)
                 .template(LessonTemplateDto.builder()
                         .type(lesson.getTemplate().getType())
-                        .courseName(lesson.getEnrollment().getCourse().getName())
                         .nr(lesson.getTemplate().getNr())
                         .build())
                 .build();

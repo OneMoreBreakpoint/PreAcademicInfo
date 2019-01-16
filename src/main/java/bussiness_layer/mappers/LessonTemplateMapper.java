@@ -25,7 +25,6 @@ public class LessonTemplateMapper {
                 .weight(entity.getWeight())
                 .nr(entity.getNr())
                 .type(entity.getType())
-                .courseName(entity.getCourse().getName())
                 .build();
     }
 
