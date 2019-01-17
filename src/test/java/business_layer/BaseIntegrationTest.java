@@ -117,10 +117,21 @@ public abstract class BaseIntegrationTest {
         Group group = groupRepository.save(GroupFactory.generateGroupBuilder()
                 .code(groupCode)
                 .build());
-        Student student = userRepository.save(StudentFactory.generateStudentBuilder()
-                .group(group)
-                .username(studentUsername)
-                .build());
+
+        Student student = null;
+
+        Optional<User> optionalUser = userRepository.findByUsername(studentUsername);
+        if (optionalUser.isPresent()) {
+            student = (Student) optionalUser.get();
+            student.setGroup(group);
+        } else {
+            student = userRepository.save(StudentFactory.generateStudentBuilder()
+                    .username(studentUsername)
+                    .group(group)
+                    .build());
+        }
+        group.setStudents(Arrays.asList(student));
+
         Enrollment enrollment = enrollmentRepository.save(Enrollment.builder()
                 .course(course)
                 .student(student)

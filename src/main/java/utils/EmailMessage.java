@@ -7,8 +7,8 @@ import lombok.experimental.UtilityClass;
 public class EmailMessage {
 
     private static final String EMAIL_SUBJECT = "Preacademicinfo: news about {}!";
-    private static final String EMAIL_CONTENT_NEW_GRADE = "Lesson type:{1} , attended:{2}\n Grade:{3} , Bonus:{4}." +
-            "\n Visit the site for more details!";
+    private static final String EMAIL_CONTENT_NEW_GRADE = "Lesson type:{1}\n Lesson number:{2} , attended:{3};" +
+            "\n Grade:{4} , Bonus:{5}.\n Visit the site for more details!";
 
     private static final String NOT_GRADED = "not graded";
 
@@ -23,9 +23,10 @@ public class EmailMessage {
 
         return EMAIL_CONTENT_NEW_GRADE
                 .replace("{1}", notificationDto.getLessonType().toString())
-                .replace("{2}", String.valueOf(notificationDto.isAttended()))
-                .replace("{3}", gradeText)
-                .replace("{4}", bonusText);
+                .replace("{2}", String.valueOf(notificationDto.getLessonNumber()))
+                .replace("{3}", String.valueOf(notificationDto.isAttended()))
+                .replace("{4}", gradeText)
+                .replace("{5}", bonusText);
     }
 
 }

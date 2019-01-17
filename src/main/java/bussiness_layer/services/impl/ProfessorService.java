@@ -1,22 +1,40 @@
 package bussiness_layer.services.impl;
 
-import bussiness_layer.dto.*;
-import bussiness_layer.mappers.*;
-import bussiness_layer.services.IProfessorService;
-import bussiness_layer.utils.LessonDtoValidator;
-import data_layer.domain.*;
-import data_layer.repositories.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import bussiness_layer.dto.EmailNotificationDto;
+import bussiness_layer.dto.GroupDto;
+import bussiness_layer.dto.LessonDto;
+import bussiness_layer.dto.ProfessorCourseDto;
+import bussiness_layer.dto.ProfessorDto;
+import bussiness_layer.dto.ProfessorRightDto;
+import bussiness_layer.mappers.CourseMapper;
+import bussiness_layer.mappers.GroupMapper;
+import bussiness_layer.mappers.LessonMapper;
+import bussiness_layer.mappers.ProfessorCourseMapper;
+import bussiness_layer.mappers.ProfessorRightMapper;
+import bussiness_layer.services.IProfessorService;
+import bussiness_layer.utils.LessonDtoValidator;
+import data_layer.domain.Course;
+import data_layer.domain.Group;
+import data_layer.domain.Lesson;
+import data_layer.domain.Professor;
+import data_layer.domain.ProfessorRight;
+import data_layer.repositories.ICourseRepository;
+import data_layer.repositories.IGroupRepository;
+import data_layer.repositories.ILessonRepository;
+import data_layer.repositories.IProfessorRepository;
+import data_layer.repositories.IProfessorRightRepository;
 import utils.LessonType;
 import utils.RightType;
 import utils.exceptions.AccessForbiddenException;
 import utils.exceptions.ResourceNotFoundException;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional

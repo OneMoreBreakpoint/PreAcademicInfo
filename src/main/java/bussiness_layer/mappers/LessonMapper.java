@@ -1,12 +1,12 @@
 package bussiness_layer.mappers;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import bussiness_layer.dto.EmailNotificationDto;
 import bussiness_layer.dto.LessonDto;
 import data_layer.domain.Lesson;
 import lombok.experimental.UtilityClass;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @UtilityClass
 public class LessonMapper {

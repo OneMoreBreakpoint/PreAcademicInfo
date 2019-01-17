@@ -22,8 +22,10 @@ import data_layer.domain.Enrollment;
 import data_layer.domain.Group;
 import data_layer.domain.Lesson;
 import data_layer.domain.Professor;
+import data_layer.domain.Student;
 import factory.LessonFactory;
 import factory.ProfessorFactory;
+import factory.StudentFactory;
 import utils.LessonType;
 import utils.RightType;
 import utils.TestConstants;
@@ -73,7 +75,15 @@ public class ProfessorIT extends BaseIntegrationTest {
     @Transactional
     public void givenProfessorHasRights_whenUpdateLessons_thenLessonsAreUpdated() {
         //Given
-        Enrollment enrollment = createEnrollment(TestConstants.PROF_USERNAME, TestConstants.COURSE_CODE, TestConstants.GROUP_CODE);
+
+        Student student = StudentFactory.generateStudentBuilder()
+                .username(TestConstants.STUD_USERNAME)
+                .notifiedByEmail(false)
+                .build();
+        createUser(student);
+
+        Enrollment enrollment = createEnrollment(TestConstants.PROF_USERNAME, TestConstants.COURSE_CODE, TestConstants.GROUP_CODE,
+                TestConstants.PROF_COORDINATOR, TestConstants.STUD_USERNAME);
         createProfessorRights(TestConstants.PROF_USERNAME, TestConstants.COURSE_CODE, TestConstants.GROUP_CODE);
         enrollment.getLessons().get(0).getTemplate().setType(LessonType.LABORATORY); //prof has LAB rights only so he can only write LABS
 
@@ -96,7 +106,46 @@ public class ProfessorIT extends BaseIntegrationTest {
                 TestConstants.PROF_USERNAME, Arrays.asList(lessonDto));
 
         //Then
-        assertEquals(emailNotificationDtos.size(), 1);
+        assertEquals(emailNotificationDtos.size(), 0); //student doesn't want to be notified
+
+    }
+
+    @Test
+    @Transactional
+    public void givenProfessorHasRights_whenUpdateLessons_thenLessonsAreUpdatedAndNotNullEmailNotificationDtoIsReturned() {
+        //Given
+
+        Student student = StudentFactory.generateStudentBuilder()
+                .username(TestConstants.STUD_USERNAME)
+                .notifiedByEmail(true)
+                .build();
+        createUser(student);
+
+        Enrollment enrollment = createEnrollment(TestConstants.PROF_USERNAME, TestConstants.COURSE_CODE, TestConstants.GROUP_CODE,
+                TestConstants.PROF_COORDINATOR, TestConstants.STUD_USERNAME);
+        createProfessorRights(TestConstants.PROF_USERNAME, TestConstants.COURSE_CODE, TestConstants.GROUP_CODE);
+        enrollment.getLessons().get(0).getTemplate().setType(LessonType.LABORATORY); //prof has LAB rights only so he can only write LABS
+
+        Lesson lesson = enrollment.getLessons().get(0);
+        int lessonId = lesson.getId();
+        boolean attended = true;
+        byte bonus = 2, grade = 10;
+        LessonDto lessonDto = LessonFactory.generateLessonDtoBuilder()
+                .id(lessonId)
+                .attended(attended)
+                .bonus(bonus)
+                .grade(grade)
+                .template(LessonTemplateDto.builder()
+                        .type(lesson.getTemplate().getType())
+                        .nr(lesson.getTemplate().getNr())
+                        .build())
+                .build();
+        //When
+        List<EmailNotificationDto> emailNotificationDtos = professorService.updateLessons(
+                TestConstants.PROF_USERNAME, Arrays.asList(lessonDto));
+
+        //Then
+        assertEquals(emailNotificationDtos.size(), 1); //student want to be notified
 
         EmailNotificationDto emailNotificationDto = emailNotificationDtos.get(0);
         Lesson updatedLesson = enrollment.getLessons().get(0);
