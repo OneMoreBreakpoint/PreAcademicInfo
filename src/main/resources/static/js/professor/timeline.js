@@ -203,6 +203,27 @@ function enrollmentsStateHasChanged(){
     return false;
 }
 
+function doExport(){
+    let public =document.getElementById("contactChoice1").checked;
+
+    $.ajax({
+        contentType: "application/json; charset=utf-8",
+            url: `/professor/export?publicTipe=${public}`,
+            type: "GET",
+            contentType: "application/json; charset=utf-8",
+            success: (response, textStatus, xhr) => {
+            if (xhr.status = 200) {
+            displayModal("#modal_success", true);
+            setDataHasBeenChangedFlag(false);
+        }
+        },
+        error: () => {
+            displayModal("#modal_failure", true);
+        }
+    });
+
+}
+
 function equals(firstLesson, secondLesson){
     return firstLesson.attended == secondLesson.attended &&
         firstLesson.bonus == secondLesson.bonus &&
