@@ -1,4 +1,4 @@
-package bussiness_layer.exportToXML;
+package bussiness_layer.utils;
 
 import bussiness_layer.dto.CourseDto;
 import bussiness_layer.dto.EnrollmentDto;
@@ -28,7 +28,7 @@ public class ApachePOIExcelWrite {
 
     public void exportData(List listToExport,Boolean isPublic) {
 
-        this.FILE_NAME="../../Downloads/Excel_"+((EnrollmentDto)listToExport.get(0)).getCourse().getCode()+"_"+((EnrollmentDto)listToExport.get(0)).getStudent().getGroup().getCode()+".xlsx";
+        this.FILE_NAME="src\\main\\resources\\static\\export\\Excel.xlsx";
         List<EnrollmentDto> enrollments=listToExport;
 
         XSSFWorkbook workbook = new XSSFWorkbook();

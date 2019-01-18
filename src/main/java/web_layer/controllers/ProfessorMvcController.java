@@ -4,7 +4,7 @@ import bussiness_layer.dto.EnrollmentDto;
 import bussiness_layer.dto.GroupDto;
 import bussiness_layer.dto.ProfessorCourseDto;
 import bussiness_layer.dto.ProfessorRightDto;
-import bussiness_layer.exportToXML.ApachePOIExcelWrite;
+import bussiness_layer.utils.ApachePOIExcelWrite;
 import bussiness_layer.services.IEnrollmentService;
 import bussiness_layer.services.IProfessorService;
 import org.springframework.beans.factory.annotation.Autowired;

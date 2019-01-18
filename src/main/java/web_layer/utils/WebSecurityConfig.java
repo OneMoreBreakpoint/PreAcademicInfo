@@ -20,7 +20,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 "/static/images/**",
                 "/fonts/**",
                 "/js/**",
-                "/dependencies/**"
+                "/dependencies/**",
+                "/excel/**"
         };
         http
                 .csrf().disable()

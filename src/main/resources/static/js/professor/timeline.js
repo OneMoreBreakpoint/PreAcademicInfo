@@ -213,7 +213,7 @@ function doExport(){
             contentType: "application/json; charset=utf-8",
             success: (response, textStatus, xhr) => {
             if (xhr.status = 200) {
-            displayModal("#modal_success", true);
+            //displayModal("#modal_success", true);
             setDataHasBeenChangedFlag(false);
         }
         },
