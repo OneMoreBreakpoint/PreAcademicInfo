@@ -14,9 +14,9 @@
         <properties>
             <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
             <property name="javax.persistence.jdbc.url"
-                      value="jdbc:mysql://eu-cdbr-west-02.cleardb.net/heroku_6c5fa10b6fe4e19?reconnect=true"/>
-            <property name="javax.persistence.jdbc.user" value="b385578539c001"/>
-            <property name="javax.persistence.jdbc.password" value="17bb654b"/>
+                      value="jdbc:mysql://q7cxv1zwcdlw7699.chr7pe7iynqr.eu-west-1.rds.amazonaws.com/bgbk4m465uj6q3zl"/>
+            <property name="javax.persistence.jdbc.user" value="qkim3uqx09mqz8hw"/>
+            <property name="javax.persistence.jdbc.password" value="j6g5obco2h9em835"/>
             <property name="show_sql" value="true"/>
             <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect"/>
             <!--<property name="hibernate.temp.use_jdbc_metadata_defaults" value="false"/>-->
@@ -56,12 +56,12 @@
         <properties>
             <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
             <property name="javax.persistence.jdbc.url"
-                      value="jdbc:mysql://eu-cdbr-west-02.cleardb.net/heroku_6c5fa10b6fe4e19?reconnect=true"/>
-            <property name="javax.persistence.jdbc.user" value="b385578539c001"/>
-            <property name="javax.persistence.jdbc.password" value="17bb654b"/>
-            <property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>
+                      value="jdbc:mysql://q7cxv1zwcdlw7699.chr7pe7iynqr.eu-west-1.rds.amazonaws.com/bgbk4m465uj6q3zl"/>
+            <property name="javax.persistence.jdbc.user" value="qkim3uqx09mqz8hw"/>
+            <property name="javax.persistence.jdbc.password" value="j6g5obco2h9em835"/>
             <property name="show_sql" value="true"/>
             <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect"/>
+            <property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>
             <property name="hibernate.connection.characterEncoding" value="utf8"/>
             <property name="hibernate.connection.useUnicode" value="true"/>
             <property name="hibernate.connection.charSet" value="UTF-8"/>
