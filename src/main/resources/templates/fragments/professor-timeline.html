@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:with="lang=${#locale.language}" th:lang="${lang}">
+<head>
+</head>
+<body>
+
+<div th:fragment="student-details-modal(student)" class="modal fade" th:id="'student_details'+${student.username}"
+     role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title" th:text="#{timeline.modal.detailsHeader}"></h4>
+            </div>
+            <div class="modal-body" id="modal-student-content">
+                <div class="emp-profile form-group" id="validator">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="profile-img">
+                                <th:block th:switch="${student.profilePhoto}">
+                                    <i th:case="null" class="photo-cell fas fa-user-circle"></i>
+                                    <img th:case="*" th:src="${student.profilePhoto}" alt="Image preview...">
+                                </th:block>
+                            </div>
+                        </div>
+                        <div class="col-sm-8">
+                            <div id="profile-div" class="profile-head">
+                                <div class="row" id="personal-details">
+                                    <div class="col-sm-12"><h4 th:text="#{timeline.modal.personalDetails}"></h4></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <label th:text="|#{user.firstName}:|"></label>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <p id="first-name" th:text="${student.firstName}"/>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <label th:text="|#{user.lastName}:|"></label>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <p id="last-name" th:text="${student.lastName}"/>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <label th:text="|#{user.group}:|"></label>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <th:block th:switch="${student.group.code}">
+                                            <p id="grupa" th:case="0" th:text="#{timeline.filter.extensionGroup}"></p>
+                                            <p id="grupa" th:case="*" th:text="${student.group.code}"></p>
+                                        </th:block>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <label th:text="|#{user.email}:|"></label>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <p id="email" th:text="${student.email}"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" th:text="#{action.close}">Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<td th:fragment="photo-cell (url, data_target)" class="photo-cell" data-toggle="modal"
+    th:attr="data-target='#'+${data_target}">
+    <th:block th:switch="${url}">
+        <i th:case="null" class="photo-cell fas fa-user-circle"></i>
+        <img th:case="*" th:src="${url}" width="20" height="20" class="photo-cell">
+    </th:block>
+</td>
+
+<td th:fragment="name-cell (student, data_target)" class="name-cell" th:object="${student}" data-toggle="modal"
+    th:attr="data-target='#'+${data_target}" th:text="|*{lastName} *{fathersInitials} *{firstName}|">
+</td>
+
+
+<td th:fragment="lesson-cell (lesson)" class="lesson-cell" th:id="|lessonCell-${lesson.id}|"
+    th:with="writable=${lesson.template.getRightType().toString() == 'WRITE'}"
+    th:switch="${lesson.template.type.toString()}">
+    <th:block th:case="'SEMINAR'">
+        <th:block th:switch="${writable}">
+            <th:block th:case="${true}">
+                <input type="checkbox" th:checked="${lesson.attended}" class="attendance-field">
+                <input type="number" th:value="${lesson.bonus}" th:placeholder="#{timeline.head.bonus}" min="-10"
+                       max="10" class="bonus-field">
+            </th:block>
+            <th:block th:case="*">
+                <input type="checkbox" th:checked="${lesson.attended}" disabled class="attendance-field">
+                <input type="number" th:value="${lesson.bonus}" min="-10" max="10" disabled class="bonus-field">
+            </th:block>
+        </th:block>
+    </th:block>
+    <th:block th:case="'LABORATORY'">
+        <th:block th:switch="${writable}">
+            <th:block th:case="${true}">
+                <input type="checkbox" th:checked="${lesson.attended}" class="attendance-field">
+                <input type="number" th:value="${lesson.grade}" min="0" max="10" th:placeholder="#{timeline.head.grade}"
+                       th:if="${lesson.template.weight > 0}" class="grade-field">
+                <input type="number" th:value="${lesson.bonus}" th:placeholder="#{timeline.head.bonus}" min="-10"
+                       max="10" class="bonus-field">
+            </th:block>
+            <th:block th:case="*">
+                <input type="checkbox" th:checked="${lesson.attended}" disabled class="attendance-field">
+                <input type="number" th:value="${lesson.grade}" min="0" max="10" disabled
+                       th:if="${lesson.template.weight > 0}" class="grade-field">
+                <input type="number" th:value="${lesson.bonus}" min="-10" max="10" disabled class="bonus-field">
+            </th:block>
+        </th:block>
+    </th:block>
+    <th:block th:case="*">
+        <th:block th:switch="${writable}">
+            <th:block th:case="${true}">
+                <input type="number" th:value="${lesson.grade}" th:placeholder="#{timeline.head.grade}" min="0" max="10"
+                       th:if="${lesson.template.weight > 0}" class="grade-field">
+            </th:block>
+            <th:block th:case="*">
+                <input type="number" th:value="${lesson.grade}" min="0" max="10" disabled
+                       th:if="${lesson.template.weight > 0}" class="grade-field">
+            </th:block>
+        </th:block>
+    </th:block>
+</td>
+
+<td th:fragment="bonus-cell (enrollment)" class="bonus-cell">
+</td>
+
+
+<td th:fragment="sem-attendances-cell (enrollment)" class="sem-attendances-cell">
+</td>
+
+<td th:fragment="lab-attendances-cell (enrollment)" class="lab-attendances-cell">
+</td>
+
+
+<td th:fragment="average-cell (enrollment)" class="average-cell">
+</td>
+
+
+<thead th:fragment="t-head-row (enrollmentTemplate, viewHelper)">
+<tr>
+    <th th:text="#{timeline.head.profilePhotoThumb}" class="photo-cell"></th>
+    <th th:text="#{timeline.head.fullName}" class="name-cell"></th>
+    <th:block th:each="lesson : ${enrollmentTemplate.lessons}">
+        <th:block th:object="${lesson}" th:switch="*{template.type.toString()}">
+            <th th:case="'SEMINAR'" class="lesson-cell"
+                th:text="|#{timeline.head.seminar} *{template.nr} (#{timeline.head.attendance}/#{timeline.head.bonus})|">
+            </th>
+            <th:block th:case="'LABORATORY'">
+                <th:block th:switch="*{template.weight > 0}">
+                    <th th:case="${true}" class="lesson-cell"
+                        th:text="|#{timeline.head.laboratory} *{template.nr} (#{timeline.head.attendance}/#{timeline.head.grade}/#{timeline.head.bonus})|">
+                    </th>
+                    <th th:case="${false}" class="lesson-cell"
+                        th:text="|#{timeline.head.laboratory} *{template.nr} (#{timeline.head.attendance}/#{timeline.head.bonus})|">
+                    </th>
+                </th:block>
+            </th:block>
+            <th th:case="'PARTIAL_EXAM_SEMINAR'" class="lesson-cell"
+                th:text="|#{timeline.head.partial} #{timeline.head.seminar} *{template.nr}|">
+            </th>
+            <th th:case="'PARTIAL_EXAM_LABORATORY'" class="lesson-cell"
+                th:text="|#{timeline.head.partial} #{timeline.head.laboratory} *{template.nr}|">
+            </th>
+            <th th:case="'PARTIAL_EXAM_COURSE'" class="lesson-cell"
+                th:text="|#{timeline.head.partial} #{timeline.head.course} *{template.nr}|">
+            </th>
+        </th:block>
+    </th:block>
+    <th class="bonus-cell" th:text="#{timeline.head.bonus}"></th>
+    <th class="attendances-cell sem-attendances-cell" th:text="#{timeline.head.totalSemAttendances}"
+        th:if="${viewHelper.shouldRenderTotalSemAttendanceCell(enrollmentTemplate)}"></th>
+    <th class="attendances-cell lab-attendances-cell" th:text="#{timeline.head.totalLabAttendances}"
+        th:if="${viewHelper.shouldRenderTotalLabAttendanceCell(enrollmentTemplate)}"></th>
+    <th class="average-cell" th:text="#{timeline.head.averageGrade}"
+        th:if="${viewHelper.shouldRenderAverageCell(enrollmentTemplate)}"></th>
+</tr>
+</thead>
+
+
+<tr th:fragment="t-data-row (enrollment, viewHelper)" th:object="${enrollment}"
+    th:id="|enrollmentRow-${enrollment.id}|" class="enrollment-row">
+    <td th:replace="this :: photo-cell (*{student.profilePhoto}, 'student_details'+*{student.username})"></td>
+    <td th:replace="this :: name-cell (*{student},'student_details'+*{student.username})"></td>
+    <th:block th:each="lesson : *{lessons}">
+        <td th:replace="this :: lesson-cell(${lesson})"></td>
+    </th:block>
+    <td th:replace="this :: bonus-cell (${enrollment})"></td>
+    <th:block th:if="${viewHelper.shouldRenderTotalSemAttendanceCell(enrollment)}">
+        <td th:replace="this :: sem-attendances-cell (${enrollment})"></td>
+    </th:block>
+    <th:block th:if="${viewHelper.shouldRenderTotalLabAttendanceCell(enrollment)}">
+        <td th:replace="this :: lab-attendances-cell (${enrollment})"></td>
+    </th:block>
+    <th:block th:if="${viewHelper.shouldRenderAverageCell(enrollment)}">
+        <td th:replace="this :: average-cell (${enrollment})"></td>
+    </th:block>
+    <div th:replace="this:: student-details-modal(${enrollment.student})"></div>
+</tr>
+</body>
+</html>

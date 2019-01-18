@@ -1,43 +1,37 @@
 package data_layer.domain;
 
-import javax.persistence.*;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.Entity;
+import javax.persistence.Lob;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 @Entity
-@Table(name = "Professors")
+@Table(name = "professors")
+@Data
+@NoArgsConstructor
 public class Professor extends User {
 
-    @Column(name = "web_page", length = 50)
+    @Size(max = 50)
     private String webPage;
 
-    @Column(name = "path_to_profile_photo")
-    private String pathToProfilePhoto;
+    @Lob
+    private String profilePhoto;
 
-    @OneToMany
-    @JoinColumn(name = "professor_id")
-    private List<Teaching> teachingList;
+    @OneToMany(mappedBy = "professor")
+    private List<ProfessorRight> rights;
 
-    public String getWebPage() {
-        return webPage;
-    }
-
-    public void setWebPage(String webPage) {
+    @Builder
+    public Professor(String username, String encryptedPassword, String firstName, String lastName, String email,
+                     String webPage, String profilePhoto, List<ProfessorRight> rights) {
+        super(username, encryptedPassword, firstName, lastName, email);
         this.webPage = webPage;
-    }
-
-    public String getPathToProfilePhoto() {
-        return pathToProfilePhoto;
-    }
-
-    public void setPathToProfilePhoto(String pathToProfilePhoto) {
-        this.pathToProfilePhoto = pathToProfilePhoto;
-    }
-
-    public List<Teaching> getTeachingList() {
-        return teachingList;
-    }
-
-    public void setTeachingList(List<Teaching> teachingList) {
-        this.teachingList = teachingList;
+        this.profilePhoto = profilePhoto;
+        this.rights = rights;
     }
 }

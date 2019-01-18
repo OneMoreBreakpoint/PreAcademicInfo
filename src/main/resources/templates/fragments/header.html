@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:with="lang=${#locale.language}" th:lang="${lang}">
+<head>
+    <meta charset="UTF-8">
+    <title>header</title>
+</head>
+<body>
+<header th:fragment="header(authenticated)" th:class="${authenticated} ? 'header authenticated' : 'header anonymous'">
+    <th:block th:switch="${authenticated}">
+        <th:block th:case="false">
+            <div class="header-line">
+                <div th:replace="fragments/lang-picker :: lang-picker"></div>
+            </div>
+            <div class="header-line">
+                <h1>PreAcademic Info</h1>
+            </div>
+        </th:block>
+        <th:block th:case="true">
+            <div class="header-line">
+                <img th:src="@{/images/cs-logo.png}" width="125" height="50" class="logo">
+                <h1>PreAcademic Info</h1>
+                <span th:replace="fragments/lang-picker :: lang-picker"></span>
+            </div>
+            <div id="toolbar_header" class="header-line">
+                <a class="toolbar-btn left-sided" href="/">
+                    <span class="toolbar-icon fas fa-home"></span>
+                    <th:block class="toolbar-text" th:text="#{header.home}"></th:block>
+                </a>
+                <a class="toolbar-btn right-sided" href="/logout">
+                    <span class="toolbar-icon fas fa-power-off"></span>
+                    <th:block class="toolbar-text" th:text="#{header.logout}"></th:block>
+                </a>
+                <a class="toolbar-btn right-sided" href="/profile">
+                    <span class="toolbar-icon fas fa-user"></span>
+                    <th:block class="toolbar-text" th:text="#{header.profile}"></th:block>
+                </a>
+                <a class="toolbar-btn left-sided" href="/user-guide">
+                    <span class="toolbar-icon left-sided fas fa-question"></span>
+                    <th:block class="toolbar-text" th:text="#{header.user_guide}"></th:block>
+                </a>
+            </div>
+        </th:block>
+    </th:block>
+</header>
+</body>
+</html>

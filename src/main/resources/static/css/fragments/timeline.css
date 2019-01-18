@@ -1,0 +1,157 @@
+.timeline {
+    overflow-x: auto;
+    white-space: nowrap;
+    min-height: 100px;
+    max-height: 70vh;
+    position: relative;
+    font-size: 14px;
+}
+
+.timeline table {
+    border-spacing: 1px !important;
+    border-collapse: separate;
+}
+
+.timeline thead {
+    font-size: 14px;
+    white-space: normal;
+}
+
+.timeline tbody {
+    font-size: 12px;
+}
+
+.timeline th, .timeline td {
+    padding: 10px;
+    text-align: center;
+}
+
+.timeline th {
+    background-color: var(--color1);
+    color: var(--color0-light);
+}
+
+.timeline tr:nth-child(odd) td {
+    background-color: var(--color4-light);
+}
+
+.timeline tr:nth-child(even) td {
+    background-color: var(--color4);
+}
+
+/*sticky left side*/
+.timeline th.name-cell, .timeline td.name-cell {
+    position: sticky;
+    left: 0px;
+    box-shadow: 1px 0px 7px var(--color0-dark);
+}
+
+.timeline td.name-cell {
+    z-index: 1;
+}
+
+.timeline th.name-cell {
+    z-index: 3;
+}
+
+.timeline th:nth-child(-n+1),
+.timeline td:nth-child(-n+1) {
+    box-shadow: 0px 1px 7px var(--color0-dark);
+}
+
+/*sticky right side - mostly with js*/
+.timeline th.bonus-cell,
+.timeline td.bonus-cell {
+    box-shadow: -1px 0px 7px var(--color0-dark);
+}
+
+.timeline .average-cell,
+.timeline .sem-attendances-cell,
+.timeline .lab-attendances-cell {
+    box-shadow: 0px -1px 7px var(--color0-dark);
+}
+
+/*sticky head*/
+.timeline th {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    box-shadow: 1px 0px 7px;
+}
+
+/*photo-cell styling*/
+.timeline svg.photo-cell,
+.timeline img.photo-cell {
+    border-radius: 50px;
+    height: auto;
+    width: 80%;
+}
+
+.timeline svg.photo-cell:hover,
+.timeline img.photo-cell:hover,
+.timeline td.name-cell:hover {
+    cursor: pointer;
+}
+
+.timeline tr:hover td.name-cell,
+.timeline tr:hover td.photo-cell {
+    background-color: white;
+}
+
+.timeline tr:nth-child(odd) svg.photo-cell {
+    color: var(--color4);
+}
+
+.timeline tr:nth-child(even) svg.photo-cell {
+    color: var(--color4-light);
+}
+
+/**-cell styling*/
+.timeline td {
+    font-weight: normal;
+}
+
+.timeline td.sem-attendances-cell.err,
+.timeline td.lab-attendances-cell.err,
+.timeline td.average-cell.err {
+    background-color: var(--color2-light);
+    color: var(--color0-dark);
+}
+
+.lesson-cell input[type=text],
+.lesson-cell input[type=number],
+.exam-cell input[type=number] {
+    text-align: center;
+    font-weight: normal;
+    width: 70px;
+    height: 30px;
+    padding: 0px;
+    box-sizing: border-box;
+    border: 1px solid var(--color4);
+    background-color: var(--color0-light);
+}
+
+.timeline input[type=checkbox] {
+    -webkit-appearance: checkbox;
+}
+
+.timeline input[type=checkbox]:checked::after {
+    content: '';
+}
+
+.timeline input[disabled] {
+    background-color: inherit;
+    border-style: none
+}
+
+.profile-head {
+    color: var(--color4-dark);
+}
+
+body > *:not(.header) {
+    margin: 15px;
+}
+
+.fade {
+    margin: 0px !important;
+}

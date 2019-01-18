@@ -1,10 +1,16 @@
 package data_layer.domain;
 
+import lombok.*;
+
 import javax.persistence.*;
 import java.util.List;
 
-@Entity
-@Table(name = "Enrollments")
+@Entity(name = "Enrollments")
+@Getter
+@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Enrollment {
 
     @Id
@@ -12,46 +18,13 @@ public class Enrollment {
     private Integer id;
 
     @ManyToOne
+    private Student student;
+
+    @ManyToOne
     @JoinColumn(name = "course_id", nullable = false)
     private Course course;
 
-    @OneToMany
-    @JoinColumn(name = "enrollment_id")
-    private List<PartialExam> partialExams;
-
-    @OneToMany
-    @JoinColumn(name = "enrollment_id")
+    @OneToMany(mappedBy = "enrollment")
     private List<Lesson> lessons;
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Course getCourse() {
-        return course;
-    }
-
-    public void setCourse(Course course) {
-        this.course = course;
-    }
-
-    public List<PartialExam> getPartialExams() {
-        return partialExams;
-    }
-
-    public void setPartialExams(List<PartialExam> partialExams) {
-        this.partialExams = partialExams;
-    }
-
-    public List<Lesson> getLessons() {
-        return lessons;
-    }
-
-    public void setLessons(List<Lesson> lessons) {
-        this.lessons = lessons;
-    }
 }

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:with="lang=${#locale.language}" th:lang="${lang}">
+<head>
+    <meta charset="UTF-8">
+    <title>PreAcademic Info</title>
+    <link rel="stylesheet" th:href="@{/css/common.css}"/>
+    <link rel="stylesheet" th:href="@{/css/fragments/header.css}"/>
+    <link rel="stylesheet" th:href="@{/css/login.css}"/>
+    <script th:inline="javascript">
+        let msgs = {};
+        msgs.usernameRequired = /*[[#{login.err_req_username}]]*/ '';
+        msgs.passwordRequired = /*[[#{login.err_req_password}]]*/ '';
+    </script>
+    <script th:src="@{/dependencies/jquery-3.3.1.min.js}"></script>
+    <script th:src="@{/js/common.js}"></script>
+    <script th:src="@{/js/fragments/lang-picker.js}"></script>
+    <script th:src="@{/js/login.js}"></script>
+</head>
+<body>
+<header id="header_login" th:replace="fragments/header :: header(false)"></header>
+<div id="panel_main">
+    <span th:class="${#request.getParameter('error')=='true'} ? 'err' : 'err invisible'"
+          th:text="#{login.invalid}"></span>
+    <form action="/login" method="post" id="form_login">
+        <img src="../static/images/cs-logo.png" th:src="@{/images/cs-logo.png}" width="125" height="50" id="img_logo">
+        <h2 id="heading_loginForm">Login</h2>
+        <label th:text="|#{login.username}:|" for="lbl_username"></label>
+        <input type="text" name="username" id="lbl_username"/>
+        <div id="err_username" class="err invisible">*</div>
+        <label th:text="|#{login.password}:|" for="lbl_password"></label>
+        <input type="password" name="password" id="lbl_password"/>
+        <div id="err_password" class="err invisible">*</div>
+        <input type="submit" value="Login" id="btn_submitLoginForm"/>
+    </form>
+</div>
+</body>
+</html>

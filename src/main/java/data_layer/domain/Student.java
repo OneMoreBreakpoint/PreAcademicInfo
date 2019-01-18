@@ -1,84 +1,48 @@
 package data_layer.domain;
 
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.util.List;
 
-@Entity
-@Table(name = "Students")
-public class Student extends User implements Comparable<Student>{
 
-    @Column(name = "registration_nr", unique = true, nullable = false)
+@Entity(name = "Students")
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = "registrationNr"))
+@Getter
+@Setter
+@NoArgsConstructor
+public class Student extends User {
+
     private Integer registrationNr;
 
-    @Column(name = "fathers_initials", length = 6, columnDefinition = "NVARCHAR(6)", nullable = false)
+    @Size(max = 6)
     private String fathersInitials;
 
-    @Column(name = "group_nr")
-    private Short groupNr;
+    @ManyToOne
+    private Group group;
 
-    @Column(name = "path_to_profile_photo")
-    private String pathToProfilePhoto;
+    @Lob
+    private String profilePhoto;
 
-    @OneToMany
-    @JoinColumn(name = "student_id")
+    @OneToMany(mappedBy = "student")
     private List<Enrollment> enrollments;
 
-    @Column(name = "notified_by_email", nullable = false)
     private boolean notifiedByEmail;
 
-
-    public int getRegistrationNr() {
-        return registrationNr;
-    }
-
-    public void setRegistrationNr(int registrationNr) {
+    @Builder
+    public Student(String username, String encryptedPassword, String firstName, String lastName, String email, Integer registrationNr,
+                   String fathersInitials, Group group, String profilePhoto, List<Enrollment> enrollments, boolean notifiedByEmail) {
+        super(username, encryptedPassword, firstName, lastName, email);
         this.registrationNr = registrationNr;
-    }
-
-    public String getPathToProfilePhoto() {
-        return pathToProfilePhoto;
-    }
-
-    public void setPathToProfilePhoto(String pathToProfilePhoto) {
-        this.pathToProfilePhoto = pathToProfilePhoto;
-    }
-
-    public List<Enrollment> getEnrollments() {
-        return enrollments;
-    }
-
-    public void setEnrollments(List<Enrollment> enrollments) {
-        this.enrollments = enrollments;
-    }
-
-    public Short getGroupNr() {
-        return groupNr;
-    }
-
-    public void setGroupNr(Short groupNr) {
-        this.groupNr = groupNr;
-    }
-
-    public String getFathersInitials() {
-        return fathersInitials;
-    }
-
-    public void setFathersInitials(String fathersInitials) {
         this.fathersInitials = fathersInitials;
-    }
-
-    public boolean isNotifiedByEmail() {
-        return notifiedByEmail;
-    }
-
-    public void setNotifiedByEmail(boolean notifiedByEmail) {
+        this.group = group;
+        this.profilePhoto = profilePhoto;
+        this.enrollments = enrollments;
         this.notifiedByEmail = notifiedByEmail;
     }
 
-    @Override
-    public int compareTo(Student o) {
-        String thisfullName = this.getLastName() + " " + this.getFirstName();
-        String thatFullName = o.getLastName() + " " + o.getFirstName();
-        return thisfullName.compareTo(thatFullName);
-    }
 }

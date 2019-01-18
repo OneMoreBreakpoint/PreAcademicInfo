@@ -1,0 +1,87 @@
+.professor-course {
+    background-color: var(--color4);
+    border-radius: 10px;
+    padding: 30px;
+}
+
+.professor-course h4 {
+    margin: 0px;
+    word-wrap: break-word;
+    display: inline-block;
+    width: 80%;
+}
+
+.professor-course-header {
+    border-bottom: 2px solid;
+    overflow: hidden;
+}
+
+.professor-course-body {
+    padding: 10px 0px;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.professor-course-body > * {
+    margin: 10px;
+}
+
+.professor-course .group {
+    text-decoration: none;
+    background-color: var(--color2-ultralight);
+    border: 1px solid var(--color4-dark);
+    padding: 10px;
+}
+
+.professor-course .group:hover {
+    background-color: var(--color1-light);
+}
+
+.professor-course .professor-course-settings-btn {
+    float: right;
+}
+
+.professor-course .professor-course-settings-btn:hover {
+    cursor: pointer;
+}
+
+.professor-course-settings-modal .modal-footer {
+    display: block;
+}
+
+.professor-course-settings-modal .modal-footer > * {
+    margin: 5px;
+    float: right;
+}
+
+.professor-course-settings-modal .modal-body * {
+    margin-top: 10px;
+}
+
+.professor-course-settings-modal label {
+    min-width: 230px;
+    display: inline-block;
+}
+
+.professor-course-settings-modal input {
+    text-align: center;
+}
+
+.professor-course-settings-modal div.lesson-weight label {
+    min-width: 180px;
+    display: inline-block;
+}
+
+.professor-course-settings-modal h3 {
+    margin: 30px 0 0 0 !important;
+    color: var(--color1);
+}
+
+.professor-course-settings-modal h2 {
+    margin: 0;
+}
+
+.professor-course-settings-modal div.err {
+    display: none;
+    clear: right;
+}

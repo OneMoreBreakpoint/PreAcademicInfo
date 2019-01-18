@@ -1,0 +1,50 @@
+.modal-box {
+    position: fixed;
+    z-index: 1000;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-window {
+    position: relative;
+    background-color: var(--color0-light);
+    min-width: 350px;
+    min-height: 120px;
+    max-width: 80vw;
+    max-height: 80vh;
+    border-radius: 5px;
+    box-shadow: 0px 0px 40px;
+    padding: 20px;
+    overflow: auto;
+}
+
+.modal-window > * {
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+}
+
+.modal-window > .modal-close {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+}
+
+.response-modal input[type=button].modal-close {
+    min-width: 120px;
+}
+
+.modal-body {
+    display: block;
+    max-height: 60vh;
+    overflow: auto;
+    border-style: solid none;
+    border-width: 1px;
+    border-color: var(--color0-dark);
+}

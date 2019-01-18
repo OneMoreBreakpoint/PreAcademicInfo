@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:with="lang=${#locale.language}" th:lang="${lang}">
+<head>
+    <meta charset="UTF-8">
+    <title>lang-picker</title>
+</head>
+<body>
+<span th:fragment="lang-picker" class="lang-picker">
+    <label th:text="|#{lang.choose_lang}:|" for="combo_lang"></label>
+    <img src="" width="20" height="15" id="img_langPicker"/>
+    <select id="combo_lang">
+        <option th:value="ro" th:text="#{lang.ro}" th:selected="__${#locale}__=='ro'"></option>
+        <option th:value="en" th:text="#{lang.en}" th:selected="__${#locale}__=='en'"></option>
+        <option th:value="hu" th:text="#{lang.hu}" th:selected="__${#locale}__=='hu'"></option>
+    </select>
+</span>
+</body>
+</html>

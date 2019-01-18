@@ -1,74 +1,53 @@
 package data_layer.domain;
 
-import javax.persistence.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+@Data
+@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"username"})})
 @Entity
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@Inheritance(strategy = InheritanceType.JOINED)
+@NoArgsConstructor
 public abstract class User {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "username", length = 16, unique = true, nullable = false)
+    @NotNull
+    @Size(min = 4, max = 16)
     private String username;
 
-    @Column(name = "password", nullable = false)
+    @NotNull
+    @Size(min = 6)
     private String encryptedPassword;
 
-    @Column(name = "firstname", length = 40, columnDefinition = "NVARCHAR(40)", nullable = false)
+    @NotNull
+    @Size(max = 40)
     private String firstName;
 
-    @Column(name = "lastname", length = 40, columnDefinition = "NVARCHAR(40)", nullable = false)
+    @NotNull
+    @Size(max = 40)
     private String lastName;
 
-    @Column(name = "email", length = 60, nullable = false)
+    @NotNull
     private String email;
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
+    public User(String username, String encryptedPassword, String firstName, String lastName, String email) {
         this.username = username;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
+        this.encryptedPassword = encryptedPassword;
         this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
         this.lastName = lastName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
         this.email = email;
     }
 
-    public String getEncryptedPassword() {
-        return encryptedPassword;
-    }
-
-    public void setEncryptedPassword(String encryptedPassword) {
-        this.encryptedPassword = encryptedPassword;
+    public String getRole() {
+        return this.getClass().getSimpleName().toUpperCase();
     }
 }
+
+
