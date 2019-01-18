@@ -1,13 +1,15 @@
 package web_layer.unit;
 
-import bussiness_layer.services.ICourseService;
-import bussiness_layer.services.IProfessorService;
-import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+
+import bussiness_layer.services.ICourseService;
+import bussiness_layer.services.IProfessorService;
+import lombok.extern.slf4j.Slf4j;
+import utils.EmailSender;
 import web_layer.BaseControllerTest;
 import web_layer.controllers.ProfessorRestController;
 
@@ -23,9 +25,12 @@ public class ProfessorControllerTest extends BaseControllerTest {
     @Mock
     private ICourseService courseService;
 
+    @Mock
+    private EmailSender mailSender;
+
     @Before
     public void init() {
-        professorRestController = new ProfessorRestController(professorService, courseService);
+        professorRestController = new ProfessorRestController(professorService, courseService, mailSender);
         this.mockMvc = MockMvcBuilders.standaloneSetup(professorRestController)
                 .build();
     }

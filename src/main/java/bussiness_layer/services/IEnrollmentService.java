@@ -1,8 +1,8 @@
 package bussiness_layer.services;
 
-import bussiness_layer.dto.EnrollmentDto;
-
 import java.util.List;
+
+import bussiness_layer.dto.EnrollmentDto;
 
 public interface IEnrollmentService {
 

@@ -4,6 +4,8 @@ import lombok.*;
 import utils.LessonType;
 import utils.RightType;
 
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -15,6 +17,8 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 public class LessonTemplateDto implements Comparable<LessonTemplateDto>, Serializable {
+
+    private static final long serialVersionUID = 1261435878488824343L;
 
     private Integer id;
 
@@ -30,6 +34,7 @@ public class LessonTemplateDto implements Comparable<LessonTemplateDto>, Seriali
     @NotNull
     private LessonType type;
 
+    @Enumerated(EnumType.STRING)
     private RightType rightType;
 
     @Override
