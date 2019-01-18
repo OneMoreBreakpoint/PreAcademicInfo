@@ -1,11 +1,19 @@
 package data_layer.domain;
 
-import lombok.*;
-
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity(name = "Lessons")
 @Getter
@@ -13,7 +21,7 @@ import javax.validation.constraints.NotNull;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Lesson {
+public class Lesson implements Comparable<Lesson> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,4 +45,8 @@ public class Lesson {
     @ManyToOne
     private LessonTemplate template;
 
+    @Override
+    public int compareTo(Lesson o) {
+        return this.id.compareTo(o.id);
+    }
 }

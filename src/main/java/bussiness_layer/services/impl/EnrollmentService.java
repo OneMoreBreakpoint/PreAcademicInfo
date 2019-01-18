@@ -1,5 +1,13 @@
 package bussiness_layer.services.impl;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import bussiness_layer.dto.EnrollmentDto;
 import bussiness_layer.dto.LessonDto;
 import bussiness_layer.mappers.EnrollmentMapper;
@@ -9,16 +17,12 @@ import data_layer.domain.ProfessorRight;
 import data_layer.repositories.ICourseRepository;
 import data_layer.repositories.IEnrollmentRepository;
 import data_layer.repositories.IGroupRepository;
+import data_layer.repositories.ILessonRepository;
 import data_layer.repositories.IProfessorRightRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import data_layer.repositories.IStudentRepository;
 import utils.RightType;
 import utils.exceptions.AccessForbiddenException;
 import utils.exceptions.ResourceNotFoundException;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -83,5 +87,4 @@ public class EnrollmentService implements IEnrollmentService {
             enrollmentDto.setLessons(filteredLessons);
         });
     }
-
 }

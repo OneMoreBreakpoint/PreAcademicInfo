@@ -1,22 +1,43 @@
 package business_layer;
 
-import bd_config.H2TestConfiguration;
-import data_layer.domain.*;
-import data_layer.repositories.*;
-import factory.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import bd_config.H2TestConfiguration;
+import data_layer.domain.Course;
+import data_layer.domain.Enrollment;
+import data_layer.domain.Group;
+import data_layer.domain.Lesson;
+import data_layer.domain.LessonTemplate;
+import data_layer.domain.Professor;
+import data_layer.domain.ProfessorRight;
+import data_layer.domain.Student;
+import data_layer.domain.User;
+import data_layer.repositories.ICourseRepository;
+import data_layer.repositories.IEnrollmentRepository;
+import data_layer.repositories.IGroupRepository;
+import data_layer.repositories.ILessonRepository;
+import data_layer.repositories.ILessonTemplateRepository;
+import data_layer.repositories.IProfessorRightRepository;
+import data_layer.repositories.IUserRepository;
+import factory.CourseFactory;
+import factory.GroupFactory;
+import factory.LessonFactory;
+import factory.LessonTemplateFactory;
+import factory.ProfessorFactory;
+import factory.ProfessorRightFactory;
+import factory.StudentFactory;
 import utils.LessonType;
 import utils.RightType;
 import utils.TestConstants;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
 
 /**
  * Utilitary class for tests.
@@ -96,10 +117,21 @@ public abstract class BaseIntegrationTest {
         Group group = groupRepository.save(GroupFactory.generateGroupBuilder()
                 .code(groupCode)
                 .build());
-        Student student = userRepository.save(StudentFactory.generateStudentBuilder()
-                .group(group)
-                .username(studentUsername)
-                .build());
+
+        Student student = null;
+
+        Optional<User> optionalUser = userRepository.findByUsername(studentUsername);
+        if (optionalUser.isPresent()) {
+            student = (Student) optionalUser.get();
+            student.setGroup(group);
+        } else {
+            student = userRepository.save(StudentFactory.generateStudentBuilder()
+                    .username(studentUsername)
+                    .group(group)
+                    .build());
+        }
+        group.setStudents(Arrays.asList(student));
+
         Enrollment enrollment = enrollmentRepository.save(Enrollment.builder()
                 .course(course)
                 .student(student)

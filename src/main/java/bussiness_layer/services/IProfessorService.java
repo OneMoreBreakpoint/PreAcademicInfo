@@ -2,12 +2,18 @@ package bussiness_layer.services;
 
 import java.util.List;
 
-import bussiness_layer.dto.*;
+import bussiness_layer.dto.EmailNotificationDto;
+import bussiness_layer.dto.GroupDto;
+import bussiness_layer.dto.LessonDto;
+import bussiness_layer.dto.ProfessorCourseDto;
+import bussiness_layer.dto.ProfessorDto;
+import bussiness_layer.dto.ProfessorRightDto;
 
 public interface IProfessorService {
 
     /**
      * Return a list of professor rights in dto format.
+     *
      * @param profUsername
      * @param courseCode
      * @param groupCode
@@ -17,6 +23,7 @@ public interface IProfessorService {
 
     /**
      * Return for a given professor and course all correlated groups in dto format.
+     *
      * @param profUsername
      * @param courseCode
      * @return
@@ -25,10 +32,12 @@ public interface IProfessorService {
 
     /**
      * Update lessons data via a list of lessonDtos
+     *
      * @param profUsername - professor that initiates the update operation
-     * @param lessonDtos - lessons data
+     * @param lessonDtos   - lessons data
+     * @return a list of email notifications in dto format in order to be used by the email sender component
      */
-    void updateLessons(String profUsername, List<LessonDto> lessonDtos);
+    List<EmailNotificationDto> updateLessons(String profUsername, List<LessonDto> lessonDtos);
 
     void updateProfessor(ProfessorDto professorDto, String profUsername);
 

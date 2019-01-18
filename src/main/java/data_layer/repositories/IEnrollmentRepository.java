@@ -21,4 +21,5 @@ public interface IEnrollmentRepository extends JpaRepository<Enrollment, Integer
 
     @Query("SELECT e FROM Enrollments e WHERE e.course.code = (?1)")
     List<Enrollment> findByCourse(String courseCode);
+
 }

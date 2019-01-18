@@ -4,7 +4,13 @@ import bussiness_layer.dto.ProfessorDto;
 import data_layer.domain.Professor;
 import utils.TestConstants;
 
-import static utils.TestConstants.*;
+import static utils.TestConstants.EMAIL;
+import static utils.TestConstants.FIRSTNAME;
+import static utils.TestConstants.IMAGE;
+import static utils.TestConstants.LASTNAME;
+import static utils.TestConstants.PASSWORD;
+import static utils.TestConstants.USERNAME;
+import static utils.TestConstants.WEB_PAGE;
 
 public class ProfessorFactory {
     public static Professor.ProfessorBuilder generateProfessorBuilder() {
