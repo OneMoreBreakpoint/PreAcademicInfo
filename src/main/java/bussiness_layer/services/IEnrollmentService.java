@@ -21,4 +21,6 @@ public interface IEnrollmentService {
      */
     List<EnrollmentDto> getEnrollments(String studUsername);
 
+    public String generateExcelExportFile(String profUsername, String courseCode, String groupCode, boolean publicType);
+
 }

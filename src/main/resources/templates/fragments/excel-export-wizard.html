@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:with="lang=${#locale.language}" th:lang="${lang}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<div th:fragment="excel-export-wizard" class="container excel-export-wizard">
+    <!-- Trigger the modal with a button -->
+    <button type="button" class="btn btn-info btn-lg right w3-teal" data-toggle="modal" data-target="#myModal">
+        <span class="glyphicon glyphicon-floppy-disk"></span>
+    </button>
+
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <!-- Action for the save button.-->
+
+                    <h4 class="modal-title">Export data</h4>
+                </div>
+
+                <div class="modal-body">
+                    <form >
+                        <p>Data restriction:</p>
+                        <div>
+                            <input type="radio" id="contactChoice1"
+                                   name="contact" value="email" checked>
+                            <label for="contactChoice1">Public (Student ID)</label>
+
+                            <input type="radio" id="contactChoice2"
+                                   name="contact" value="phone">
+                            <label for="contactChoice2">Private (Student Name)</label>
+                        </div>
+                        <p> </p>
+                    </form>
+
+                    <p style="font-size: small">*Note: Please save the choice before the download.</p>
+                </div>
+
+                <div class="modal-footer">
+                    <form method="get">
+                        <button id="btnWizardExport" type="button" class="btn btn-default" onclick="doExport()">Export</button>
+                        <a id="btnWizardDownload" type="button" class="btn btn-default" hidden="hidden">Download</a>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </form>
+                </div>
+
+            </div>
+
+
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

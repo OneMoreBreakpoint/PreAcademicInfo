@@ -21,6 +21,7 @@
     <script th:src="@{/js/common.js}"></script>
     <script th:src="@{/js/fragments/lang-picker.js}"></script>
     <script th:src="@{/js/fragments/timeline.js}"></script>
+    <script th:src="@{/js/fragments/excel-export-wizard.js}"></script>
     <script th:src="@{/js/professor/timeline.js}"></script>
     <script defer src="https://use.fontawesome.com/releases/v5.5.0/js/all.js"
             integrity="sha384-GqVMZRt5Gn7tB9D9q7ONtcp4gtHIUEW/yG7h98J7IpE3kpi+srfFyyB/04OV6pG0"
@@ -53,61 +54,10 @@
         <input type="checkbox" id="check_excludePassingAttendances"/>
         <label for="check_excludePassingGrade" th:text="#{timeline.filter.excludePassingAttendances}"></label>
     </div>
-    <div class="container">
-        <!-- Trigger the modal with a button -->
-        <button type="button" class="btn btn-info btn-lg right w3-teal" data-toggle="modal" data-target="#myModal">
-            <span class="glyphicon glyphicon-floppy-disk"></span>
-        </button>
+    <div th:replace="fragments/excel-export-wizard :: excel-export-wizard"></div>
 
-        <!-- Modal -->
-        <div class="modal fade" id="myModal" role="dialog">
-            <div class="modal-dialog">
-
-                <!-- Modal content-->
-                <div class="modal-content">
-
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <!-- Action for the save button.-->
-
-                        <h4 class="modal-title">Export data</h4>
-                    </div>
-
-                    <div class="modal-body">
-                        <form >
-                            <p>Data restriction:</p>
-                            <div>
-                                <input type="radio" id="contactChoice1"
-                                       name="contact" value="email" checked>
-                                <label for="contactChoice1">Public (Student ID)</label>
-
-                                <input type="radio" id="contactChoice2"
-                                       name="contact" value="phone">
-                                <label for="contactChoice2">Private (Student Name)</label>
-                            </div>
-                            <p> </p>
-                        </form>
-
-                        <p style="font-size: small">*Note: Please save the choice before the download.</p>
-                    </div>
-
-                    <div class="modal-footer">
-                        <form method="get" action="/export/Excel.xlsx">
-                            <button type="submit" class="btn btn-default">Download</button>
-
-                            <button type="button" class="btn btn-default" onclick="doExport()">Save</button>
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        </form>
-                    </div>
-
-                </div>
-
-
-            </div>
-        </div>
-
-    </div>
 </div>
+
 <div class="timeline" id="timeline">
     <table>
         <tr th:replace="fragments/professor-timeline :: t-head-row (${enrollments[0]}, ${viewHelper})"></tr>

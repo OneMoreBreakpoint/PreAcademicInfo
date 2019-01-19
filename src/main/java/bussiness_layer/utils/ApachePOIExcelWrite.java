@@ -4,13 +4,10 @@ import bussiness_layer.dto.CourseDto;
 import bussiness_layer.dto.EnrollmentDto;
 import bussiness_layer.dto.LessonDto;
 import bussiness_layer.dto.StudentDto;
-import bussiness_layer.services.IEnrollmentService;
-import bussiness_layer.services.impl.EnrollmentService;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import utils.LessonType;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -18,17 +15,15 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static utils.LessonType.*;
-
 public class ApachePOIExcelWrite {
 
-    private static String FILE_NAME ;
+    private static String fileName;
 
     public ApachePOIExcelWrite() { }
 
-    public void exportData(List listToExport,Boolean isPublic) {
+    public String exportData(List listToExport,Boolean isPublic) {
 
-        this.FILE_NAME="src\\main\\resources\\static\\export\\Excel.xlsx";
+        this.fileName ="src\\main\\resources\\static\\export\\Excel.xlsx";
         List<EnrollmentDto> enrollments=listToExport;
 
         XSSFWorkbook workbook = new XSSFWorkbook();
@@ -77,7 +72,7 @@ public class ApachePOIExcelWrite {
 
         try {
 
-            FileOutputStream outputStream = new FileOutputStream(FILE_NAME);
+            FileOutputStream outputStream = new FileOutputStream(fileName);
             workbook.write(outputStream);
             workbook.close();
         } catch (FileNotFoundException e) {
@@ -87,9 +82,11 @@ public class ApachePOIExcelWrite {
         }
 
         System.out.println("Done");
+
+        return "export/Excel.xlsx";
     }
 
-    /*
+    /**
      *   Returns an array of Objects representing the enrolment data to write in an row.
      *   Parameters: enrolment EnrollmentDto - the enrolment wich represents the data
      *               isPrivate Boolean - flag to determine wheter to display the registration nr. or a name of a student

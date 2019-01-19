@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import bussiness_layer.utils.ApachePOIExcelWrite;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -65,6 +66,12 @@ public class EnrollmentService implements IEnrollmentService {
             throw new ResourceNotFoundException();
         }
         return EnrollmentMapper.toDtoList(enrollments);
+    }
+
+    public String generateExcelExportFile(String profUsername, String courseCode, String groupCode, boolean publicType){
+        List<EnrollmentDto> enrollments = this.getEnrollments(profUsername, courseCode, groupCode);
+        ApachePOIExcelWrite apachePOIExcelWrite=new ApachePOIExcelWrite();
+        return apachePOIExcelWrite.exportData(enrollments,publicType);
     }
 
     private void stripEnrollmentsOfUnauthorizedLessons(List<EnrollmentDto> enrollmentDtos, List<ProfessorRight> rights) {

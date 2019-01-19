@@ -4,11 +4,9 @@ import bussiness_layer.dto.EnrollmentDto;
 import bussiness_layer.dto.GroupDto;
 import bussiness_layer.dto.ProfessorCourseDto;
 import bussiness_layer.dto.ProfessorRightDto;
-import bussiness_layer.utils.ApachePOIExcelWrite;
 import bussiness_layer.services.IEnrollmentService;
 import bussiness_layer.services.IProfessorService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,9 +26,6 @@ public class ProfessorMvcController {
 
     @Autowired
     private final IEnrollmentService enrollmentService;
-
-    private String courseExp;
-    private String groupExp;
 
     public ProfessorMvcController(IProfessorService professorService, IEnrollmentService enrollmentService) {
         this.professorService = professorService;
@@ -53,8 +48,6 @@ public class ProfessorMvcController {
     @GetMapping("/timeline")
     public ModelAndView getTimelinePage(@RequestParam String course, @RequestParam String group, Principal crtUser) {
         List<EnrollmentDto> enrollments = enrollmentService.getEnrollments(crtUser.getName(), course, group);
-        this.courseExp=course;
-        this.groupExp=group;
         List<ProfessorRightDto> professorRights = professorService.getProfessorRights(crtUser.getName(), course, group);
         List<GroupDto> groups = professorService.getGroups(crtUser.getName(), course);
         return new ModelAndView("professor/timeline")
@@ -63,15 +56,5 @@ public class ProfessorMvcController {
                 .addObject("groups", groups)
                 .addObject("crtGroupCode", group)
                 .addObject("viewHelper", ViewHelper.class);
-    }
-
-    @GetMapping("/export")
-    public ResponseEntity<?> doExport(@RequestParam  Boolean publicTipe, Principal crtUser) {
-        List<EnrollmentDto> enrollments = enrollmentService.getEnrollments(crtUser.getName(), this.courseExp, this.groupExp);
-
-        ApachePOIExcelWrite apachePOIExcelWrite=new ApachePOIExcelWrite();
-        apachePOIExcelWrite.exportData(enrollments,publicTipe);
-
-        return ResponseEntity.ok(null);
     }
 }

@@ -54,3 +54,7 @@
 div.material-switch input {
     padding: 0px;
 }
+
+li{
+    list-style-type: none;
+}

@@ -22,3 +22,6 @@ body > * {
 .modal-dialog{
     text-align: left;
 }
+.excel-export-wizard{
+    width: 100px !important;
+}
