@@ -21,10 +21,16 @@
     <script th:src="@{/js/common.js}"></script>
     <script th:src="@{/js/fragments/lang-picker.js}"></script>
     <script th:src="@{/js/fragments/timeline.js}"></script>
+    <script th:src="@{/js/fragments/excel-export-wizard.js}"></script>
     <script th:src="@{/js/professor/timeline.js}"></script>
     <script defer src="https://use.fontawesome.com/releases/v5.5.0/js/all.js"
             integrity="sha384-GqVMZRt5Gn7tB9D9q7ONtcp4gtHIUEW/yG7h98J7IpE3kpi+srfFyyB/04OV6pG0"
             crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 </head>
 <body>
 <div th:replace="fragments/header :: header(true)"></div>
@@ -48,7 +54,10 @@
         <input type="checkbox" id="check_excludePassingAttendances"/>
         <label for="check_excludePassingGrade" th:text="#{timeline.filter.excludePassingAttendances}"></label>
     </div>
+    <div th:replace="fragments/excel-export-wizard :: excel-export-wizard"></div>
+
 </div>
+
 <div class="timeline" id="timeline">
     <table>
         <tr th:replace="fragments/professor-timeline :: t-head-row (${enrollments[0]}, ${viewHelper})"></tr>

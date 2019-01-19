@@ -14,3 +14,14 @@ body > * {
 #btn_submitChanges {
     float: right;
 }
+
+.container{
+    text-align: right;
+}
+
+.modal-dialog{
+    text-align: left;
+}
+.excel-export-wizard{
+    width: 100px !important;
+}

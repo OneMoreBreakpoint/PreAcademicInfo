@@ -1,5 +1,6 @@
 package web_layer.unit;
 
+import bussiness_layer.services.IEnrollmentService;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -23,6 +24,9 @@ public class ProfessorControllerTest extends BaseControllerTest {
     private IProfessorService professorService;
 
     @Mock
+    private IEnrollmentService enrollmentService;
+
+    @Mock
     private ICourseService courseService;
 
     @Mock
@@ -30,7 +34,7 @@ public class ProfessorControllerTest extends BaseControllerTest {
 
     @Before
     public void init() {
-        professorRestController = new ProfessorRestController(professorService, courseService, mailSender);
+        professorRestController = new ProfessorRestController(professorService, courseService, enrollmentService, mailSender);
         this.mockMvc = MockMvcBuilders.standaloneSetup(professorRestController)
                 .build();
     }
